@@ -96,7 +96,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "Roboto-Thin.ttf");
 			textName.setTypeface(typeFace);
 			textHi.setTypeface(typeFace);
-			//textName.setText(_content.get(position).toString());
+			textName.setText(_content.get(position).toString());
 
 			rowView.setTag("userinfo");
 		}

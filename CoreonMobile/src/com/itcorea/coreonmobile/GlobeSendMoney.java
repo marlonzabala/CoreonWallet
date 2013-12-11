@@ -22,5 +22,4 @@ public class GlobeSendMoney extends Activity
 		getMenuInflater().inflate(R.menu.send_money, menu);
 		return true;
 	}
-
 }

@@ -577,9 +577,9 @@ class MyPagerAdapter extends PagerAdapter
 
 								SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(con);
 
-								String fname = prefs.getString("fname", null);
-								String lname = prefs.getString("lname", null);
-								String points = prefs.getString("points", null);
+								String fname = prefs.getString("fname", "firstname");
+								String lname = prefs.getString("lname", "lastname");
+								String points = prefs.getString("points", "0");
 								//TextView t = new TextView(con);
 								
 								try
@@ -598,10 +598,10 @@ class MyPagerAdapter extends PagerAdapter
 
 								addStrings("space", "space", "space", 0, "space", "space");
 
-								addStrings("userinfo", "user", "userinfo", 0, "userinfo", "userinfo");
+								addStrings("userinfo", fname, "userinfo", 0, "userinfo", "userinfo");
 								addStrings("My Cards", "0 Cards", "userinfo", 0, "userinfo", "usercontent");
 								addStrings("", "", "", 0, "", "userline");
-								addStrings("Coreon Points", "0" + " Points", "userinfo", 0, "userinfo", "usercontent");
+								addStrings("Coreon Points", points + " Points", "userinfo", 0, "userinfo", "usercontent");
 								addStrings("", "", "", 0, "", "userline");
 								addStrings("Notice", "12", "userinfo", 0, "userinfo", "usercontent");
 								addStrings("userinfo", "userinfo", "userinfo", 0, "userinfo", "userbottom");
@@ -958,6 +958,8 @@ class MyPagerAdapter extends PagerAdapter
 								break;
 
 							case 3:
+								//logo click
+								//add egg
 
 								Log.i("info", "Logo click");
 								break;
