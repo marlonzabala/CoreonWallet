@@ -18,7 +18,6 @@ public class GlobeSendMoney extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		//test commit changes
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.send_money, menu);
 		return true;
