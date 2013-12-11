@@ -41,10 +41,9 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:fontFamily="sans-serif"
-            android:paddingBottom="0dp"
             android:paddingLeft="@dimen/card_horizontal_margin"
             android:paddingRight="@dimen/card_horizontal_margin"
-            android:paddingTop="8dp"
+            android:gravity="center_vertical|left"
             android:text="Exclusive Offers"
             android:textColor="@color/card_font_color_text"
             android:textSize="20sp" />
