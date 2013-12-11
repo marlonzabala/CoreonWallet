@@ -78,6 +78,8 @@ public class CoreonMain extends FragmentActivity
 
 		adapter = new MyPagerAdapter();
 		mPager.setAdapter(adapter);
+		
+		//test commit
 
 		// add margin for viewpager
 		margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
