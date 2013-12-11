@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/card_horizontal_margin"
+    android:paddingRight="@dimen/card_horizontal_margin" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/clickable_card_content" >
+
+        <!-- android:fontFamily="sans-serif-thin" -->
+
+
+        <!-- line -->
+
+
+        <!-- line -->
+
+        <TextView
+            android:id="@+id/textContent"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="content"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="@dimen/card_text_size" />
+
+        <TextView
+            android:id="@+id/textContentNumber"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="7dp"
+            android:text="number"
+            android:textColor="#FF9000"
+            android:textSize="@dimen/card_text_size" />
+    </RelativeLayout>
+
+</RelativeLayout>

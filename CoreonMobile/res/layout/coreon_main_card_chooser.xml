@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/main_margin"
+    tools:context=".MainInformation" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <!-- android:background="@drawable/card_choose_bg" -->
+        <!-- android:paddingLeft="@dimen/main_margin" -->
+        <!-- android:background="@drawable/card_choose_bg" -->
+        <!-- android:background="@drawable/background_card_repeating" -->
+
+
+        <!-- android:background="@color/header_bg_color" -->
+
+        <TextView
+            android:id="@+id/textViewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/header_card"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="0dp"
+            android:paddingTop="8dp"
+            android:shadowColor="#000000"
+            android:shadowDx="-1"
+            android:shadowDy="-1"
+            android:shadowRadius="0.01"
+            android:text="@string/pyc"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#898989"
+            android:textSize="27sp"
+            android:textStyle="normal"
+            android:typeface="normal" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textViewHeader"
+            android:background="#000000" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/line1"
+            android:background="@drawable/card_choose_bg" />
+        <!-- android:background="@drawable/top_down_shadow_card" -->
+        <!-- android:layout_height="70dp" -->
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="130dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/card_choose_logo" />
+    </RelativeLayout>
+
+</RelativeLayout>

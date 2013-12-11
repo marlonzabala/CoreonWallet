@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="anyarray">
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+        <item>TEST</item>
+    </string-array>
+    <string-array name="Menu">
+        <item>Account Info</item>
+        <item>Change Password</item>
+        <item>App Settings</item>
+        <item>Logout</item>
+        <item>Enroll Card</item>
+        <item>Promos</item>
+        <item>Notices</item>
+    </string-array>
+    <string-array name="Cards">
+        <item>Coreon Card</item>
+        <item>Gcash</item>
+        <item>Smart Money</item>
+    </string-array>
+</resources>

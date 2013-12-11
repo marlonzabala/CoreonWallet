@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/clickable_card_content_notice" >
+
+    <!-- android:paddingLeft="@dimen/card_horizontal_margin" -->
+    <!-- android:paddingRight="@dimen/card_horizontal_margin" -->
+
+    <View
+        android:id="@+id/lineHeaderBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:background="@color/line_card_color" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:paddingBottom="@dimen/card_horizontal_margin"
+        android:paddingLeft="@dimen/card_horizontal_margin"
+        android:paddingRight="@dimen/card_horizontal_margin"
+        android:paddingTop="@dimen/card_horizontal_margin" >
+
+        <!-- android:clickable="true" -->
+
+
+        <!-- android:background="@drawable/clickable_card_content"" -->
+        <!-- android:clickable="true" -->
+        <!-- android:layout_height="match_parent" -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp" >
+
+            <ImageView
+                android:id="@+id/imageViewContentImage"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/offer_image_1" />
+
+            <TextView
+                android:id="@+id/lblSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/imageViewContentImage"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="0dp"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:text="Title"
+                android:textColor="@color/card_font_color_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblContentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/lblSubTitleText"
+                android:layout_below="@+id/lblSubTitleText"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="0dp"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:maxLines="3"
+                android:text="Content"
+                android:textColor="@color/card_font_color_text"
+                android:textSize="17sp" />
+            <!-- android:background="#000000" -->
+
+            <TextView
+                android:id="@+id/lblDateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/lblSubTitleText"
+                android:layout_below="@+id/lblContentText"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="0dp"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:text="Date Date"
+                android:textColor="@color/card_font_color_text"
+                android:textSize="10sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

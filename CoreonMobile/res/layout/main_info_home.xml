@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!-- android:layout_width="match_parent" -->
+<!-- android:layout_height="match_parent" > -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/buttonTest"
+    android:layout_centerHorizontal="true"
+    android:background="@color/backgroundcolor" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/card_horizontal_margin"
+        android:paddingRight="@dimen/card_horizontal_margin"
+        android:paddingTop="@dimen/card_horizontal_margin" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="@dimen/card_vertical_margin"
+            android:layout_marginTop="@dimen/card_vertical_margin"
+            android:background="@drawable/container_dropshadow"
+            android:fontFamily="sans-serif-thin"
+            android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="10dp"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Hi"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="@dimen/card_header_main_size" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="@dimen/card_vertical_margin"
+            android:fontFamily="sans-serif-thin"
+            android:paddingLeft="55dp"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Username"
+            android:textColor="#FF9000"
+            android:textSize="@dimen/card_header_main_size" />
+
+        <TextView
+            android:id="@+id/textMyCards"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/textViewName"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:text="My Cards"
+            android:textColor="@color/card_font_color_header"
+            android:textSize="@dimen/card_text_size" />
+
+        <TextView
+            android:id="@+id/textMyCardsNumber"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/textViewName"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="200dp"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="10dp"
+            android:text="7 Cards"
+            android:textColor="#FF9000"
+            android:textSize="@dimen/card_text_size" />
+
+        <!-- line -->
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textMyCards"
+            android:layout_marginLeft="@dimen/card_horizontal_margin"
+            android:layout_marginRight="@dimen/card_horizontal_margin"
+            android:background="@color/line_card_color" />
+
+        <TextView
+            android:id="@+id/textCoreonPoints"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/line1"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="7dp"
+            android:text="Coreon Points"
+            android:textColor="@color/card_font_color_header"
+            android:textSize="@dimen/card_text_size" />
+
+        <TextView
+            android:id="@+id/textCoreonPointsNumber"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/line1"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="200dp"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="7dp"
+            android:text="207 Points"
+            android:textColor="#FF9000"
+            android:textSize="@dimen/card_text_size" />
+
+        <!-- line -->
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textCoreonPoints"
+            android:layout_marginLeft="@dimen/card_horizontal_margin"
+            android:layout_marginRight="@dimen/card_horizontal_margin"
+            android:background="@color/line_card_color" />
+
+        <TextView
+            android:id="@+id/textNotice"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/line2"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Notice"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="@dimen/card_text_size" />
+
+        <TextView
+            android:id="@+id/textNoticeNumber"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/line2"
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="200dp"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="7dp"
+            android:text="12"
+            android:textColor="#FF9000"
+            android:textSize="@dimen/card_text_size" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_below="@+id/textView2"
+            android:layout_marginBottom="@dimen/card_vertical_margin"
+            android:layout_marginTop="@dimen/card_vertical_margin"
+            android:background="@drawable/clickable_card_header"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:text="" />
+        <!-- android:background="@drawable/container_dropshadow" -->
+
+        <TextView
+            android:id="@+id/textExclusiveOffers"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_alignTop="@+id/textView3"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Exclusive Offers"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="18sp" />
+
+        <!-- line -->
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textExclusiveOffers"
+            android:background="@color/line_card_color" />
+        <!-- android:layout_marginLeft="@dimen/card_horizontal_margin" -->
+        <!-- android:layout_marginRight="@dimen/card_horizontal_margin" -->
+        <!-- android:layout_marginLeft="@dimen/card_horizontal_margin" -->
+        <!-- android:layout_marginRight="@dimen/card_horizontal_margin" -->
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/textView3"
+            android:layout_marginBottom="@dimen/card_horizontal_margin"
+            android:layout_marginTop="@dimen/card_vertical_margin"
+            android:background="@drawable/container_dropshadow"
+            android:fontFamily="sans-serif"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textNotice"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignTop="@+id/textView4"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Notice"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="18sp" />
+
+        <!-- line -->
+
+        <View
+            android:id="@+id/line5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textNotice"
+            android:background="@color/line_card_color" />
+        <!-- android:layout_marginLeft="3dp" -->
+        <!-- android:layout_marginRight="3dp" -->
+
+        <View
+            android:id="@+id/line6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/line5"
+            android:layout_marginTop="70dp"
+            android:background="@color/line_card_color" />
+        <!-- android:layout_marginLeft="3dp" -->
+        <!-- android:layout_marginRight="3dp" -->
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_alignBottom="@+id/line4"
+            android:layout_alignLeft="@+id/line3"
+            android:layout_below="@+id/line3"
+            android:layout_marginLeft="@dimen/card_horizontal_margin"
+            android:paddingBottom="@dimen/home_image_padding"
+            android:paddingLeft="@dimen/home_image_padding"
+            android:paddingRight="@dimen/home_image_padding"
+            android:paddingTop="@dimen/home_image_padding"
+            android:scaleType="centerCrop"
+            android:src="@drawable/offer_image_1" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_marginTop="@dimen/home_image_padding"
+            android:layout_toRightOf="@+id/imageView1"
+            android:fontFamily="sans-serif"
+            android:text="Dong Won Restaurant"
+            android:textColor="@color/card_font_color_header"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_below="@+id/textView1"
+            android:fontFamily="sans-serif"
+            android:text="Get 50% off on your payment of Coreon Card"
+            android:textColor="@color/card_font_color_header" />
+
+        <TextView
+            android:id="@+id/textViewOffer1Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView6"
+            android:layout_below="@+id/textView6"
+            android:fontFamily="sans-serif"
+            android:text="Dec 1, 2013 at 11:30 PM"
+            android:textColor="@color/card_font_color_header"
+            android:textSize="@dimen/card_text_date_size" />
+        <!-- android:textSize="@dimen/card_text_date_size" -->
+
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_alignLeft="@+id/imageView1"
+            android:layout_below="@+id/line4"
+            android:paddingBottom="@dimen/home_image_padding"
+            android:paddingLeft="@dimen/home_image_padding"
+            android:paddingRight="@dimen/home_image_padding"
+            android:paddingTop="@dimen/home_image_padding"
+            android:scaleType="centerCrop"
+            android:src="@drawable/offer_image_2" />
+
+        <View
+            android:id="@+id/line4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_below="@+id/line3"
+            android:layout_marginTop="80dp"
+            android:background="@color/line_card_color" />
+
+        <TextView
+            android:id="@+id/TextViewOffer2Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/ImageView01"
+            android:layout_marginTop="@dimen/home_image_padding"
+            android:layout_toRightOf="@+id/ImageView01"
+            android:fontFamily="sans-serif"
+            android:text="Dong Won Restaurant"
+            android:textColor="@color/card_font_color_header"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextViewOffer2Title"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/TextViewOffer2Title"
+            android:fontFamily="sans-serif"
+            android:text="Get 50% off on your payment of Coreon Card"
+            android:textColor="@color/card_font_color_header" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView02"
+            android:layout_below="@+id/TextView02"
+            android:fontFamily="sans-serif"
+            android:text="Dec 1, 2013 at 11:30 PM"
+            android:textColor="@color/card_font_color_header"
+            android:textSize="@dimen/card_text_date_size" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ImageView01"
+            android:layout_below="@+id/line5"
+            android:layout_marginTop="@dimen/home_image_padding"
+            android:fontFamily="sans-serif"
+            android:text="Dong Won Restaurant"
+            android:textColor="@color/card_font_color_header"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextView04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView03"
+            android:layout_below="@+id/TextView03"
+            android:fontFamily="sans-serif"
+            android:text="Get 50% off on your payment of Coreon Card"
+            android:textColor="@color/card_font_color_header" />
+
+        <TextView
+            android:id="@+id/TextView05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView04"
+            android:layout_below="@+id/TextView04"
+            android:fontFamily="sans-serif"
+            android:text="Dec 1, 2013 at 11:30 PM"
+            android:textColor="@color/card_font_color_header"
+            android:textSize="@dimen/card_text_date_size" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView3"
+            android:layout_toRightOf="@+id/textView3"
+            android:src="@drawable/button_plus" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView4"
+            android:layout_toRightOf="@+id/textView4"
+            android:src="@drawable/button_plus" />
+
+    </RelativeLayout>
+
+</ScrollView> <!-- <TextView -->
+<!-- android:id="@+id/shadowTops" -->
+<!-- android:layout_width="match_parent" -->
+<!-- android:layout_height="5dp" -->
+<!-- android:layout_alignParentTop="true" -->
+<!-- android:background="@drawable/shadow_menu_info_top" /> -->
+
+
+<!-- </RelativeLayout> -->

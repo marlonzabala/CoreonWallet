@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:paddingLeft="@dimen/card_horizontal_margin"
+    android:paddingRight="@dimen/card_horizontal_margin" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/clickable_card_header" >
+
+        <TextView
+            android:id="@+id/lblHeaderTitleBox"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="" />
+        <!-- android:background="@drawable/clickable_card_header" -->
+
+        <ImageView
+            android:id="@+id/imageViewPlus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="-1dp"
+            android:layout_marginTop="0dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/button_plus" />
+
+        <TextView
+            android:id="@+id/lblHeaderTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingRight="@dimen/card_horizontal_margin"
+            android:paddingTop="8dp"
+            android:text="Exclusive Offers"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="20sp" />
+
+        <!-- <View -->
+        <!-- android:id="@+id/lineHeaderBottom" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="1dp" -->
+        <!-- android:layout_alignBottom="@+id/lblHeaderTitleBox" -->
+        <!-- android:layout_marginLeft="0dp" -->
+        <!-- android:layout_marginRight="0dp" -->
+        <!-- android:background="@color/line_card_color" -->
+        <!-- android:focusable="false" -->
+        <!-- android:focusableInTouchMode="false" /> -->
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#9f4600" />
+
+    <TextView
+        android:id="@+id/lblListItem"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/line1"
+        android:background="@drawable/list_item"
+        android:fontFamily="sans-serif"
+        android:paddingBottom="5dp"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="12dp"
+        android:shadowColor="#000000"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="0.01"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/lblListItem"
+        android:background="#5f2a00" />
+
+    <ImageView
+        android:id="@+id/imageViewIcon"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line1"
+        android:paddingBottom="@dimen/image_menu_margin"
+        android:paddingLeft="@dimen/image_menu_margin"
+        android:paddingRight="@dimen/image_menu_margin"
+        android:paddingTop="@dimen/image_menu_margin" />
+
+</RelativeLayout>

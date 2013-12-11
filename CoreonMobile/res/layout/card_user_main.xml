@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/card_horizontal_margin"
+    android:paddingRight="@dimen/card_horizontal_margin" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/clickable_card_header" >
+
+        <TextView
+            android:id="@+id/textViewHi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:paddingLeft="@dimen/card_horizontal_margin"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Hi"
+            android:textColor="@color/card_font_color_text"
+            android:textSize="@dimen/card_header_main_size" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:fontFamily="sans-serif-light"
+            android:paddingLeft="55dp"
+            android:paddingTop="@dimen/card_horizontal_margin"
+            android:text="Username"
+            android:textColor="#FF9000"
+            android:textSize="@dimen/card_header_main_size" />
+<!--         android:fontFamily="sans-serif-thin" -->
+
+        <!-- line -->
+
+        <!-- line -->
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignRight="@+id/textViewHi"
+            android:layout_alignTop="@+id/textViewHi"
+            android:src="@drawable/bookmark" />
+
+    </RelativeLayout>
+</RelativeLayout>

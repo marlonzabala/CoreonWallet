@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="red">#ffff0000</color>
+    <color name="orange">#FF9000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="titlebackgroundcolor">#FF7A01</color>
+    <color name="titletextcolor">#FFFF00</color>
+    <color name="card_bg_color">#424242</color>
+    <color name="header_bg_color">#252525</color>
+    <color name="titlebarupper">#FF7A01</color>
+    <color name="titlebarlower">#FE5E00</color>
+    <color name="menu_bg_color">#FF5D00</color>
+    <color name="backgroundcolor">#ececec</color>
+    <color name="orangetop">#FF9800</color>
+    <color name="orangebottom">#FF6E00</color>
+    <color name="menu_text_color">#ff9c00</color>
+    <color name="card_font_color_header">#666666</color>
+    <color name="card_font_color_text">#7f7f7f</color>
+    <color name="semitransparent_white">#505050</color>
+    <color name="line_card_color">#e5e5e5</color>
+    <color name="selected_bg_color">#ff9700</color>
+    <color name="list_menu_bg">#7f3800</color>
+    <color name="list_menu_selected_bg">#ff8a00</color>
+    <color name="button_color">#ff9100</color>
+    <color name="button_selected_color">#ffbb4e</color>
+    
+    
+
+</resources>
