@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,7 +55,11 @@ public class LogIn extends Activity
 
 		// for dev
 		// test for errors
-		LoggedIn = true;
+		// LoggedIn = true;
+		EditText ep = (EditText) findViewById(R.id.editPassword);
+		EditText eu = (EditText) findViewById(R.id.editUsername);
+		ep.setText("admin");
+		eu.setText("admin");
 
 		if (LoggedIn == true)
 		{
@@ -63,7 +68,7 @@ public class LogIn extends Activity
 			// Intent intent = new Intent(mContext, MainSliderActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			getApplicationContext().startActivity(intent);
-			
+
 			finish();
 		}
 		else
@@ -96,9 +101,10 @@ public class LogIn extends Activity
 		{
 			// Check login credentials then proceed
 			// execute in asynchronous task
-			new CheckCredentials(getBaseContext()).execute(editUsername.getText().toString(), editPassword.getText().toString());
+			new CheckCredentials(getApplicationContext(), LogIn.this).execute(editUsername.getText().toString(), editPassword.getText().toString());
 
-			// remove code
+			// to be removed code
+			// used for early testing
 			if (editUsername.getText().toString().equals("admin") && editPassword.getText().toString().equals("admin"))
 			{
 				// Intent intent = new Intent(this, MainSliderActivity.class);
@@ -118,15 +124,18 @@ public class LogIn extends Activity
 class CheckCredentials extends AsyncTask<String, Integer, Long>
 {
 
-	String			useremail	= "";
-	boolean			logIn		= false;
-	boolean			network		= true;
-	boolean			timeout		= false;
-	private Context	mContext;
+	String				useremail	= "";
+	boolean				logIn		= false;
+	boolean				network		= true;
+	boolean				timeout		= false;
+	private Context		mContext;
+	private Activity	mActivity;
+	ProgressDialog		mDialog;
 
-	public CheckCredentials(Context context)
+	public CheckCredentials(Context context, Activity activity)
 	{
 		mContext = context;
+		mActivity = activity;
 	}
 
 	private boolean isNetworkAvailable()
@@ -139,6 +148,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 	@Override
 	protected Long doInBackground(String... params)
 	{
+
 		timeout = false;
 
 		if (!isNetworkAvailable())
@@ -163,7 +173,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		try
 		{
 			int timeoutsec = 20000; // 20 second timeout
-			//desktop set to static ip 192.168.123.111
+			// desktop set to static ip 192.168.123.111
 			String ipAdd = "192.168.123.111";
 			String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'";
 
@@ -267,19 +277,28 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		// setProgressPercent(progress[0]);
 	}
 
+	@Override
+	protected void onPreExecute()
+	{
+		super.onPreExecute();
+
+		mDialog = new ProgressDialog(mActivity);
+		mDialog.setMessage("Loggin in..");
+		mDialog.show();
+	}
+
 	protected void onPostExecute(Long result)
 	{
+		// developer only no net connection on emulator
+		// Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
+		// Intent intents = new Intent(mContext, CoreonMain.class);
+		// intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		// mContext.startActivity(intents);
 
-		// /////dev only no net connection on emulator
-		Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
-		Intent intents = new Intent(mContext, CoreonMain.class);
-		// Intent intent = new Intent(mContext, MainSliderActivity.class);
-		intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mContext.startActivity(intents);
+		mDialog.dismiss();
 
 		if (logIn)
 		{
-
 			Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(mContext, CoreonMain.class);
 			// Intent intent = new Intent(mContext, MainSliderActivity.class);
