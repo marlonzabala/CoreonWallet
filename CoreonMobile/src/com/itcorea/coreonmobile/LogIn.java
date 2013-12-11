@@ -31,6 +31,7 @@ import android.net.ParseException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -144,27 +145,10 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
-
-	@Override
-	protected Long doInBackground(String... params)
+	
+	private String sendPost(String httpAddress)
 	{
-
-		timeout = false;
-
-		if (!isNetworkAvailable())
-		{
-			// Log.e("info_tag", "No network Available");
-			network = false;
-			return null;
-		}
-		else
-		{
-			// Log.e("info_tag", "Network Available");
-			network = true;
-		}
-
-		JSONArray jArray = null;
-		String result = null;
+		String result = "";
 		StringBuilder sb = null;
 		InputStream is = null;
 
@@ -173,10 +157,6 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		try
 		{
 			int timeoutsec = 20000; // 20 second timeout
-			// desktop set to static ip 192.168.123.111
-			String ipAdd = "192.168.123.111";
-			String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'";
-
 			HttpParams httpParameters = new BasicHttpParams();
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutsec);
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutsec);
@@ -193,7 +173,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		{
 			// Log.e("info_tag", "timeout!!!!!");
 			timeout = true;
-			return null;
+			return "";
 		}
 		catch (Exception e)
 		{
@@ -218,11 +198,40 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		{
 			// Log.e("log_tag", "Error converting result " + e.toString());
 		}
+		return result;
+	}
 
+	@Override
+	protected Long doInBackground(String... params)
+	{
+
+		timeout = false;
+
+		if (!isNetworkAvailable())
+		{
+			// Log.e("info_tag", "No network Available");
+			network = false;
+			return null;
+		}
+		else
+		{
+			// Log.e("info_tag", "Network Available");
+			network = true;
+		}
+		
+
+		// desktop set to static ip 192.168.123.111
+		String ipAdd = "192.168.123.111";
+		String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'";
+		String result = sendPost(httpAddress);
+		
+
+		JSONArray jArray = null;
 		String name = null;
 		String fname = null;
 		String lname = null;
 		String points = null;
+		
 		try
 		{
 			jArray = new JSONArray(result);
@@ -240,6 +249,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		catch (JSONException e1)
 		{
 			useremail = "No data found";
+			Log.e("Exception", e1.toString());
 		}
 		catch (ParseException e1)
 		{
@@ -266,9 +276,6 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		editor.putString("points", points); // value to store
 		editor.commit();
 
-		// Log.e("info_tag", "usermail: " + name.toString());
-		// Toast.makeText(getBaseContext(),name, Toast.LENGTH_SHORT).show();
-
 		return null;
 	}
 
@@ -289,19 +296,13 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 
 	protected void onPostExecute(Long result)
 	{
-		// developer only no net connection on emulator
-		// Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
-		// Intent intents = new Intent(mContext, CoreonMain.class);
-		// intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		// mContext.startActivity(intents);
-
+		//remove progress dialog
 		mDialog.dismiss();
 
 		if (logIn)
 		{
 			Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(mContext, CoreonMain.class);
-			// Intent intent = new Intent(mContext, MainSliderActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mContext.startActivity(intent);
 		}
