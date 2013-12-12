@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewWhiteHeader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#f8f8f8"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewWhiteHeader"
+        android:layout_alignTop="@+id/textViewWhiteHeader"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="CASH CARDS"
+        android:textColor="#555555"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <!-- <ProgressBar -->
+    <!-- android:id="@+id/imgProgress" -->
+    <!-- style="?android:attr/progressBarStyleLarge" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_centerInParent="true" -->
+    <!-- android:layout_below="@+id/textViewWhiteHeader" -->
+    <!-- android:layout_height="wrap_content" /> -->
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewWhiteHeader"
+        android:background="#ffffff"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/shadowTops"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/textViewWhiteHeader"
+        android:background="@drawable/shadow_menu_info_top" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TextView01"
+        android:background="@color/line_card_color" />
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line1"
+        android:background="@drawable/clickable_card_content_notice"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TextView02"
+        android:background="@color/line_card_color" />
+
+    <TextView
+        android:id="@+id/TextViewHeader1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextView02"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView02"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="11dp"
+        android:paddingTop="11dp"
+        android:text="G-Cash + Powerpay"
+        android:textColor="#555555"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextViewSubHeader1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextView02"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView02"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="11dp"
+        android:paddingTop="32dp"
+        android:text="Globe Mobile e-Money"
+        android:textColor="#b2b2b2"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TextView03"
+        android:background="@color/line_card_color" />
+
+    <TextView
+        android:id="@+id/TextView03"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line2"
+        android:background="@drawable/clickable_card_content_notice"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/TextViewHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextView03"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView03"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="11dp"
+        android:paddingTop="11dp"
+        android:text="Smart Money"
+        android:textColor="#555555"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextViewSubHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextView03"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView03"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="11dp"
+        android:paddingTop="32dp"
+        android:text="Smart Mobile e-Money"
+        android:textColor="#b2b2b2"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/TextView04"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line3"
+        android:background="@drawable/clickable_card_content_notice"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/TextViewHeader3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextView04"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView04"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="11dp"
+        android:paddingTop="11dp"
+        android:text="Coreon Cash"
+        android:textColor="#555555"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextViewSubHeader3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextView04"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView04"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="11dp"
+        android:paddingTop="32dp"
+        android:text="Coreon Mobile e-Money"
+        android:textColor="#b2b2b2"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TextView04"
+        android:background="@color/line_card_color" />
+
+    <ImageView
+        android:id="@+id/imageViewArrow1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/TextView02"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView02"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/right_arrow" />
+
+    <ImageView
+        android:id="@+id/imageViewArrow2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/TextView03"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView03"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/right_arrow" />
+
+    <ImageView
+        android:id="@+id/imageViewArrow2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/TextView04"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView04"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/right_arrow" />
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView01"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_style"
+        android:ems="10"
+        android:hint="Search Card Name"
+        android:inputType="textNoSuggestions"
+        android:paddingLeft="10dp"
+        android:textColor="#000000"
+        android:textCursorDrawable="@null" >
+    </EditText>
+
+    <ImageView
+        android:id="@+id/imageViewSearch"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView01"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_search" />
+
+    <ImageView
+        android:id="@+id/ImageViewBackButton"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="12dp"
+        android:background="#cacaca"
+        android:paddingTop="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="fitCenter"
+        android:layout_alignBottom="@+id/textViewWhiteHeader"
+        android:src="@drawable/left_arrow" />
+
+</RelativeLayout>
