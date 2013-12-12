@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +27,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import static android.content.Context.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +43,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -55,7 +56,6 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
@@ -963,8 +963,35 @@ class MyPagerAdapter extends PagerAdapter
 										// Toast.makeText(con, "Enroll Card",
 										// Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
-										View viewChild = setPage(R.layout.enroll_card);
+										final View viewChild = setPage(R.layout.enroll_card);
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
+										TextView cashcard = (TextView) viewChild.findViewById(R.id.TextView02);
+										// cashcard.setOnClickListener(new onc);
+
+										cashcard.setOnClickListener(new OnClickListener() {
+											@Override
+											public void onClick(View v)
+											{
+												setPage(R.layout.enroll_card_cash);
+												
+												TelephonyManager tm = (TelephonyManager)con.getSystemService(TELEPHONY_SERVICE); 
+												String number = tm.getLine1Number();
+//												number
+												Toast.makeText(con, number,
+														 Toast.LENGTH_SHORT).show();
+												
+//												ImageView backbutton = (ImageView) viewChild.findViewById(R.id.TextView02);
+//												backbutton.setOnClickListener(new OnClickListener() {
+//													@Override
+//													public void onClick(View v)
+//													{
+//														setPage(R.layout.enroll_card_cash);
+//													}
+//												});
+
+												// ImageViewBackButton
+											}
+										});
 
 										// Spinner spinner = (Spinner)
 										// view.findViewById(R.id.cards_spinner);
