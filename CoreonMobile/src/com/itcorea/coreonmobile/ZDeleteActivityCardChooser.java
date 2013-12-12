@@ -89,6 +89,7 @@ public class ZDeleteActivityCardChooser extends FragmentActivity
 			{
 				getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+				//sayang tong code na mga nagawa ko :(
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);

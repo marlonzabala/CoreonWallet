@@ -17,6 +17,10 @@ public class ZDeleteAccountInfo extends Activity
 		// add animation for startup of activity
 		overridePendingTransition(R.anim.righttomain, R.anim.maintoleft);
 		setContentView(R.layout.activity_account_info);
+		
+		
+		//comment made sa bahay
+		//haha
 	}
 
 	@Override
@@ -33,5 +37,7 @@ public class ZDeleteAccountInfo extends Activity
 		super.onBackPressed();
 		// add animation for back button
 		overridePendingTransition(R.anim.lefttomain, R.anim.maintoright);
+		
+		//bahay
 	}
 }
