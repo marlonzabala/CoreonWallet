@@ -735,6 +735,7 @@ class MyPagerAdapter extends PagerAdapter
 										else if (position == 4)
 										{
 											// clicked coreon points
+											View v = setPage(R.layout.points);
 										}
 										else if (position == 6)
 										{
@@ -882,6 +883,7 @@ class MyPagerAdapter extends PagerAdapter
 									case 1:
 										// Toast.makeText(con, "Points", Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
+										View v2 = setPage(R.layout.points);
 										break;
 									case 2:
 										// Toast.makeText(con, "Change Password",
@@ -1151,7 +1153,7 @@ class MyPagerAdapter extends PagerAdapter
 		listDataHeader.add("Home");
 		listDataHeaderImage.add(String.valueOf(R.drawable.home_icon)); // dummy icon
 		listDataHeader.add("MY ACCOUNT");
-		listDataHeaderImage.add(String.valueOf(R.drawable.btn_dropdown));// dummy icon
+		listDataHeaderImage.add(String.valueOf(R.drawable.edittext_style));// dummy icon
 		listDataHeader.add("ACTIONS");
 		listDataHeaderImage.add(String.valueOf(R.drawable.buttondivider));// dummy icon
 		listDataHeader.add("");
