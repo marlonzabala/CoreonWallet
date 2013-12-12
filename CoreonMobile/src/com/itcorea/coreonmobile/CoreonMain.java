@@ -972,24 +972,26 @@ class MyPagerAdapter extends PagerAdapter
 											@Override
 											public void onClick(View v)
 											{
-												setPage(R.layout.enroll_card_cash);
-												
-												TelephonyManager tm = (TelephonyManager)con.getSystemService(TELEPHONY_SERVICE); 
-												String number = tm.getLine1Number();
-//												number
-												Toast.makeText(con, number,
-														 Toast.LENGTH_SHORT).show();
-												
-//												ImageView backbutton = (ImageView) viewChild.findViewById(R.id.TextView02);
-//												backbutton.setOnClickListener(new OnClickListener() {
-//													@Override
-//													public void onClick(View v)
-//													{
-//														setPage(R.layout.enroll_card_cash);
-//													}
-//												});
+												View view = setPage(R.layout.enroll_card_cash);
 
-												// ImageViewBackButton
+												TextView register = (TextView) view.findViewById(R.id.TextView02);
+
+												// ImageView backbutton = (ImageView)
+												// viewChild.findViewById(R.id.TextView02);
+												register.setOnClickListener(new OnClickListener() {
+													@Override
+													public void onClick(View v)
+													{
+														View view2 = setPage(R.layout.enroll_card_register);
+
+														TelephonyManager tm = (TelephonyManager) con.getSystemService(TELEPHONY_SERVICE);
+														String number = tm.getLine1Number();
+														Toast.makeText(con, number, Toast.LENGTH_SHORT).show();
+
+														TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
+														textNumber.setText(number.toString());
+													}
+												});
 											}
 										});
 
