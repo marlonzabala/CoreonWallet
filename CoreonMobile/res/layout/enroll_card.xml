@@ -20,13 +20,17 @@
     </TextView>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_alignBottom="@+id/textViewWhiteHeader"
+        android:layout_alignTop="@+id/textViewWhiteHeader"
+        android:gravity="center"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
         android:text="CHOOSE SUPPORTED CARDS TO ENROLL"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="14dp"
         android:textColor="#555555" />
 
     <ListView
@@ -47,5 +51,13 @@
         android:layout_height="5dp"
         android:layout_below="@+id/textViewWhiteHeader"
         android:background="@drawable/shadow_menu_info_top" />
+    
+    <ProgressBar
+        android:id="@+id/imgProgress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/textViewWhiteHeader"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -1,19 +1,42 @@
 package com.itcorea.coreonmobile;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.ParseException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -71,6 +94,7 @@ public class CoreonMain extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// slide from right animation
 		overridePendingTransition(R.anim.righttomain, R.anim.maintoleft);
 		setContentView(R.layout.activity_coreon_main);
 
@@ -83,8 +107,6 @@ public class CoreonMain extends FragmentActivity
 		margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics());
 		mPager.setPageMargin(-margin);
 		mPager.setCurrentItem(1);
-
-		// mPager.setOnPageChangeListener((OnPageChangeListener) onPageChange());
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		SharedPreferences.Editor editor = preferences.edit();
@@ -187,7 +209,7 @@ public class CoreonMain extends FragmentActivity
 		startActivity(intent);
 		return;
 	}
-	
+
 	public void test()
 	{
 		int num = 0;
@@ -198,8 +220,8 @@ public class CoreonMain extends FragmentActivity
 		// if (!noticeSelected)
 		// {
 
-		//Calendar c = Calendar.getInstance();
-		//int seconds = c.get(Calendar.SECOND);
+		// Calendar c = Calendar.getInstance();
+		// int seconds = c.get(Calendar.SECOND);
 
 		ImageButton imo = (ImageButton) findViewById(R.id.imageButtonOffers);
 		imo.setBackgroundColor(Color.TRANSPARENT);
@@ -327,7 +349,7 @@ public class CoreonMain extends FragmentActivity
 
 	public void enrollCard(View view)
 	{
-		//Toast.makeText(view.getContext(), "enroll Card", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(view.getContext(), "enroll Card", Toast.LENGTH_SHORT).show();
 		return;
 	}
 
@@ -459,7 +481,6 @@ class MyPagerAdapter extends PagerAdapter
 {
 
 	ExpandableListAdapter			listAdapter;
-
 	ExpandableListView				expListView;
 	List<String>					listDataHeader;
 	HashMap<String, List<String>>	listDataChild;
@@ -486,24 +507,22 @@ class MyPagerAdapter extends PagerAdapter
 	{
 		// remove child views
 		ViewGroup layout = (ViewGroup) view.findViewById(R.id.dynamic_layout_main);
-		
-		
+
 		// get layout to insert
 		LayoutInflater vi = (LayoutInflater) con.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View v1 = vi.inflate(idChange, null);
 
 		// insert into main view
-		
-		
-		 try
-		 {
-			 layout.removeAllViews();
-			 ((ViewGroup) layout).addView(v1, 0);
-		 }
-		 catch (Exception e)
-		 {
-		 Log.i("remove views", e.toString());
-		 }
+
+		try
+		{
+			layout.removeAllViews();
+			((ViewGroup) layout).addView(v1, 0);
+		}
+		catch (Exception e)
+		{
+			Log.i("remove views", e.toString());
+		}
 
 		return v1;
 	}
@@ -518,6 +537,22 @@ class MyPagerAdapter extends PagerAdapter
 		ImageButton imh = (ImageButton) viewParent.findViewById(R.id.imageButtonHelp);
 		imh.setBackgroundColor(Color.TRANSPARENT);
 	}
+
+	// @Override
+	// public float getPageWidth(int position)
+	// {
+	// switch (position)
+	// {
+	// case 0:
+	// return .85f;
+	// case 1:
+	// return 1;
+	// case 2:
+	// return .85f;
+	// default:
+	// return 1;
+	// }
+	// }
 
 	public Object instantiateItem(View collection, int position)
 	{
@@ -546,9 +581,9 @@ class MyPagerAdapter extends PagerAdapter
 
 				mScreenWidth = (mScreenWidth - 150);// convertDpToPixel(R.dimen.main_margin,con));
 
-				//Toast.makeText(con, String.valueOf(mScreenWidth), Toast.LENGTH_SHORT).show();
+				// Toast.makeText(con, String.valueOf(mScreenWidth), Toast.LENGTH_SHORT).show();
 
-				//get width of screen to programmatically adjust the expandable list indicator
+				// get width of screen to programmatically adjust the expandable list indicator
 				if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
 				{
 					// works for 4.3 and lower
@@ -580,15 +615,15 @@ class MyPagerAdapter extends PagerAdapter
 								String fname = prefs.getString("fname", "firstname");
 								String lname = prefs.getString("lname", "lastname");
 								String points = prefs.getString("points", "0");
-								//TextView t = new TextView(con);
-								
+								// TextView t = new TextView(con);
+
 								try
 								{
 									removeHeaderbackColor((View) view6.getParent().getParent());
 								}
-								catch(Exception e)
+								catch (Exception e)
 								{
-									Log.i("exception on remove header back color",e.toString());
+									Log.i("exception on remove header back color", e.toString());
 								}
 
 								// Get ListView object from xml
@@ -692,47 +727,46 @@ class MyPagerAdapter extends PagerAdapter
 									@Override
 									public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 									{
-										if(position==2)
+										if (position == 2)
 										{
-											//clicked my cards
+											// clicked my cards
 											CoreonMain.mPager.setCurrentItem(2);
 										}
-										else if(position==4)
+										else if (position == 4)
 										{
-											//clicked coreon points
+											// clicked coreon points
 										}
-										else if(position==6)
+										else if (position == 6)
 										{
-											//clicked notices
-											
+											// clicked notices
+
 											View v = setPage(R.layout.notices);
 											ListView listViewNotice = (ListView) v.findViewById(R.id.listViewNotices);
-
 
 											removeStringsValues();
 
 											// addStrings("space", "space", "space", 0);
-											addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-													"www.google.com", "textimagenotice");
-											addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
-													"www.google.com", "textimagenotice");
-											addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-													"www.google.com", "textimagenotice");
+											addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card",
+													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+											addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin",
+													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+											addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te",
+													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
 											addStrings(
 													"Dong Won Restaurant",
 													"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-											addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
-													"www.google.com", "textimagenotice");
-											addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-													"www.google.com", "textimagenotice");
-											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.coreonmobile.com", "textimagenotice");
+											addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin",
+													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+											addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te",
+													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.coreonmobile.com",
+													"textimagenotice");
 											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
 											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
 											// addStrings("space", "space", "space", 0);
 											// cannot retrieve correct layout
 
-											
 											final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(con, _title);
 											adapter.setValues(_title, _content, _date, _image, _type, _extra);
 											listViewNotice.setAdapter(adapter);
@@ -763,7 +797,8 @@ class MyPagerAdapter extends PagerAdapter
 
 														removeStringsValues();
 														addStrings("", "", "", 0, "", "space");
-														addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url, "noticecontent");
+														addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt,
+																url, "noticecontent");
 														addStrings("", "", "", 0, "", "space");
 
 														MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(con, _title);
@@ -838,17 +873,19 @@ class MyPagerAdapter extends PagerAdapter
 								switch (childPosition)
 								{
 									case 0:
-										//Toast.makeText(con, "Account info", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "Account info",
+										// Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild = setPage(R.layout.account_info);
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
 										break;
 									case 1:
-										//Toast.makeText(con, "Points", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "Points", Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
 										break;
 									case 2:
-										//Toast.makeText(con, "Change Password", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "Change Password",
+										// Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild1 = setPage(R.layout.change_password);
 										removeHeaderbackColor((View) viewChild1.getParent().getParent());
@@ -856,7 +893,8 @@ class MyPagerAdapter extends PagerAdapter
 										// CoreonMain.setLayout(R.layout.change_password);
 										break;
 									case 3:
-										//Toast.makeText(con, "App Settings", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "App Settings",
+										// Toast.LENGTH_SHORT).show();
 
 										Intent intent = new Intent(con, SettingsActivity.class);
 										// intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -920,7 +958,8 @@ class MyPagerAdapter extends PagerAdapter
 								switch (childPosition)
 								{
 									case 0:
-										//Toast.makeText(con, "Enroll Card", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "Enroll Card",
+										// Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild = setPage(R.layout.enroll_card);
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
@@ -941,14 +980,15 @@ class MyPagerAdapter extends PagerAdapter
 
 										break;
 									case 1:
-										//Toast.makeText(con, "Promos", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "Promos", Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
 
 										View viewChild1 = setPage(R.layout.promos);
 										removeHeaderbackColor((View) viewChild1.getParent().getParent());
 										break;
 									case 2:
-										//Toast.makeText(con, "Notices", Toast.LENGTH_SHORT).show();
+										// Toast.makeText(con, "Notices",
+										// Toast.LENGTH_SHORT).show();
 										CoreonMain.mPager.setCurrentItem(1);
 										setPage(R.layout.notices);
 										break;
@@ -958,8 +998,8 @@ class MyPagerAdapter extends PagerAdapter
 								break;
 
 							case 3:
-								//logo click
-								//add egg
+								// logo click
+								// add egg
 
 								Log.i("info", "Logo click");
 								break;
@@ -1031,14 +1071,14 @@ class MyPagerAdapter extends PagerAdapter
 
 	public void setHome()
 	{
-//		try
-//		{
-			expListView.performItemClick(expListView.getAdapter().getView(1, null, null), 1, expListView.getAdapter().getItemId(1));
-//		}
-//		catch (Exception e)
-//		{
-//			Log.i("setHome", e.toString());
-//		}
+		// try
+		// {
+		expListView.performItemClick(expListView.getAdapter().getView(1, null, null), 1, expListView.getAdapter().getItemId(1));
+		// }
+		// catch (Exception e)
+		// {
+		// Log.i("setHome", e.toString());
+		// }
 	}
 
 	public void removeStringsValues()
@@ -1174,3 +1214,182 @@ class MyPagerAdapter extends PagerAdapter
 	}
 }
 
+class ChangeView extends AsyncTask<String, Integer, Long>
+{
+
+	String				useremail	= "";
+	boolean				network		= true;
+	boolean				timeout		= false;
+	private Context		mContext;
+	private Activity	mActivity;
+	ProgressDialog		mDialog;
+
+	public ChangeView(Context context, Activity activity)
+	{
+		mContext = context;
+		mActivity = activity;
+	}
+
+	private boolean isNetworkAvailable()
+	{
+		ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+	@Override
+	protected Long doInBackground(String... params)
+	{
+
+		timeout = false;
+
+		if (!isNetworkAvailable())
+		{
+			// Log.e("info_tag", "No network Available");
+			network = false;
+			return null;
+		}
+		else
+		{
+			// Log.e("info_tag", "Network Available");
+			network = true;
+		}
+
+		JSONArray jArray = null;
+		String result = null;
+		StringBuilder sb = null;
+		InputStream is = null;
+
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+		try
+		{
+			int timeoutsec = 20000; // 20 second timeout
+			// desktop set to static ip 192.168.123.111
+			String ipAdd = "192.168.123.111";
+			String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'";
+
+			HttpParams httpParameters = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutsec);
+			HttpConnectionParams.setSoTimeout(httpParameters, timeoutsec);
+			HttpClient httpclient = new DefaultHttpClient(httpParameters);
+			HttpPost httppost = new HttpPost(httpAddress);
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+
+			// Log.e("info_tag", "response: " + response.getStatusLine().getStatusCode());
+		}
+		catch (ConnectTimeoutException e)
+		{
+			// Log.e("info_tag", "timeout!!!!!");
+			timeout = true;
+			return null;
+		}
+		catch (Exception e)
+		{
+			// Log.e("log_tag", "Error in http connection " + e.toString());
+		}
+		// convert response to string
+		try
+		{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+			sb = new StringBuilder();
+			sb.append(reader.readLine() + "\n");
+
+			String line = "0";
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line + "\n");
+			}
+			is.close();
+			result = sb.toString();
+		}
+		catch (Exception e)
+		{
+			// Log.e("log_tag", "Error converting result " + e.toString());
+		}
+
+		String name = null;
+		String fname = null;
+		String lname = null;
+		String points = null;
+		try
+		{
+			jArray = new JSONArray(result);
+			JSONObject json_data = null;
+
+			for (int i = 0; i < jArray.length(); i++)
+			{
+				json_data = jArray.getJSONObject(i);
+				name = json_data.getString("mpin");// column name in the database
+				fname = json_data.getString("fname");
+				lname = json_data.getString("lname");
+				points = json_data.getString("points");
+			}
+		}
+		catch (JSONException e1)
+		{
+			useremail = "No data found";
+		}
+		catch (ParseException e1)
+		{
+			// Log.e("info_tag", "parseexcept:" + e1.toString());
+			e1.printStackTrace();
+		}
+
+		useremail = "mpin: " + name;
+
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+		SharedPreferences.Editor editor = preferences.edit();
+		// Boolean tr = true;
+		editor.putString("fname", fname); // value to store
+		editor.putString("lname", lname); // value to store
+		editor.putString("points", points); // value to store
+		editor.commit();
+
+		// Log.e("info_tag", "usermail: " + name.toString());
+		// Toast.makeText(getBaseContext(),name, Toast.LENGTH_SHORT).show();
+
+		return null;
+	}
+
+	protected void onProgressUpdate(Integer... progress)
+	{
+		// setProgressPercent(progress[0]);
+	}
+
+	@Override
+	protected void onPreExecute()
+	{
+		// super.onPreExecute();
+		//
+		// mDialog = new ProgressDialog(mActivity);
+		// mDialog.setMessage("Loggin in..");
+		// mDialog.show();
+	}
+
+	protected void onPostExecute(Long result)
+	{
+
+		mDialog.dismiss();
+
+		if (network)
+		{
+			if (timeout)
+			{
+				Toast.makeText(mContext, "Network time out, server maybe down", Toast.LENGTH_SHORT).show();
+			}
+			else
+			{
+				Toast.makeText(mContext, "Wrong password or username", Toast.LENGTH_SHORT).show();
+			}
+		}
+		else
+		{
+			Toast.makeText(mContext, "No network connection", Toast.LENGTH_SHORT).show();
+		}
+
+	}
+}

@@ -145,7 +145,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
-	
+
 	private String sendPost(String httpAddress)
 	{
 		String result = "";
@@ -218,20 +218,18 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 			// Log.e("info_tag", "Network Available");
 			network = true;
 		}
-		
 
 		// desktop set to static ip 192.168.123.111
 		String ipAdd = "192.168.123.111";
 		String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'";
 		String result = sendPost(httpAddress);
-		
 
 		JSONArray jArray = null;
 		String name = null;
 		String fname = null;
 		String lname = null;
 		String points = null;
-		
+
 		try
 		{
 			jArray = new JSONArray(result);
@@ -253,7 +251,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		}
 		catch (ParseException e1)
 		{
-			// Log.e("info_tag", "parseexcept:" + e1.toString());
+			Log.e("Exception", e1.toString());
 			e1.printStackTrace();
 		}
 
@@ -296,13 +294,14 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 
 	protected void onPostExecute(Long result)
 	{
-		//remove progress dialog
+		// remove progress dialog
 		mDialog.dismiss();
 
 		if (logIn)
 		{
 			Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(mContext, CoreonMain.class);
+			// Intent intent = new Intent(mContext, LogIn.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			mContext.startActivity(intent);
 		}

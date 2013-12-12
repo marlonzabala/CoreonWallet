@@ -113,6 +113,14 @@
         android:layout_height="10dp"
         android:layout_below="@+id/line1"
         android:background="@drawable/main_header_shadow" />
+    
+<!--     <ProgressBar -->
+<!--         android:id="@+id/imgProgress" -->
+<!--         style="?android:attr/progressBarStyleLarge" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_centerInParent="true" -->
+<!--         android:layout_below="@+id/line1" -->
+<!--         android:layout_height="wrap_content" /> -->
 
     <RelativeLayout
         android:id="@+id/dynamic_layout_main"
@@ -129,6 +137,11 @@
         <!-- android:layout_alignParentTop="true" -->
         <!-- android:onClick="test" -->
         <!-- android:text="Button" /> -->
+        
+        
+        
+        
+        
 
         <TextView
             android:id="@+id/shadowTops"
