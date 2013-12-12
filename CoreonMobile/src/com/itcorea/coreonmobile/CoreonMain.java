@@ -973,7 +973,6 @@ class MyPagerAdapter extends PagerAdapter
 											public void onClick(View v)
 											{
 												View view = setPage(R.layout.enroll_card_cash);
-
 												TextView register = (TextView) view.findViewById(R.id.TextView02);
 
 												// ImageView backbutton = (ImageView)
@@ -986,28 +985,44 @@ class MyPagerAdapter extends PagerAdapter
 
 														TelephonyManager tm = (TelephonyManager) con.getSystemService(TELEPHONY_SERVICE);
 														String number = tm.getLine1Number();
-														Toast.makeText(con, number, Toast.LENGTH_SHORT).show();
+														// Toast.makeText(con, number,
+														// Toast.LENGTH_SHORT).show();
 
 														TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
 														textNumber.setText(number.toString());
+
+														ImageView im = (ImageView) view2.findViewById(R.id.imageViewPicture);
+														im.setOnClickListener(new OnClickListener() {
+															@Override
+															public void onClick(View v)
+															{
+
+																// Toast.makeText(con,
+																// "Open Camera",
+																// Toast.LENGTH_SHORT).show();
+
+																// Intent cameraIntent = new
+																// Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+																// con.startActivityForResult(cameraIntent,
+																// 1888);
+															}
+
+															// protected void onActivityResult(int
+															// requestCode, int resultCode, Intent
+															// data) {
+															// if (requestCode == CAMERA_REQUEST &&
+															// resultCode == RESULT_OK) {
+															// Bitmap photo = (Bitmap)
+															// data.getExtras().get("data");
+															// imageView.setImageBitmap(photo);
+															// }
+															// }
+														});
+
 													}
 												});
 											}
 										});
-
-										// Spinner spinner = (Spinner)
-										// view.findViewById(R.id.cards_spinner);
-										// ArrayAdapter<CharSequence> adapter =
-										// ArrayAdapter.createFromResource(con, R.array.Cards,
-										// android.R.layout.simple_spinner_item);
-										// adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-										// spinner.setAdapter(adapter);
-
-										// Spinner customSpinner = (Spinner)
-										// view.findViewById(R.id.cards_spinner);
-										// CustomAdapter adapter = new CustomAdapter((Activity) con,
-										// R.layout.spinner_item, populateReindeer());
-										// customSpinner.setAdapter(adapter);
 
 										break;
 									case 1:
