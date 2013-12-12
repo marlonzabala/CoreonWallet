@@ -56,7 +56,7 @@ public class LogIn extends Activity
 
 		// for dev
 		// test for errors
-		// LoggedIn = true;
+		LoggedIn = true;
 		EditText ep = (EditText) findViewById(R.id.editPassword);
 		EditText eu = (EditText) findViewById(R.id.editUsername);
 		ep.setText("admin");
