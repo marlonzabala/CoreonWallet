@@ -9,9 +9,12 @@
         android:targetSdkVersion="19" />
     <!-- android:minSdkVersion="8" -originally -->
 
+    <uses-feature android:name="android.hardware.camera" >
+    </uses-feature>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
