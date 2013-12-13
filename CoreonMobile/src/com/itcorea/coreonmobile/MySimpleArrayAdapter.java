@@ -19,15 +19,15 @@ import android.widget.TextView;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<String>
 {
-	private final Context		context;
-	Boolean						_notice		= false;
+	private final Context	context;
+	Boolean					_notice		= false;
 
-	ArrayList<String>			_title		= new ArrayList<String>();
-	ArrayList<String>			_content	= new ArrayList<String>();
-	ArrayList<String>			_date		= new ArrayList<String>();
-	ArrayList<String>			_image		= new ArrayList<String>();
-	ArrayList<String>			_type		= new ArrayList<String>();
-	ArrayList<String>			_extra		= new ArrayList<String>();
+	ArrayList<String>		_title		= new ArrayList<String>();
+	ArrayList<String>		_content	= new ArrayList<String>();
+	ArrayList<String>		_date		= new ArrayList<String>();
+	ArrayList<String>		_image		= new ArrayList<String>();
+	ArrayList<String>		_type		= new ArrayList<String>();
+	ArrayList<String>		_extra		= new ArrayList<String>();
 
 	public MySimpleArrayAdapter(Context context, ArrayList<String> values)
 	{
@@ -54,7 +54,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		_image = new ArrayList<String>();
 		_type = new ArrayList<String>();
 		_extra = new ArrayList<String>();
-		
+
 		this.clear();
 	}
 
@@ -66,7 +66,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		_image.add(String.valueOf(image));
 		_type.add(type);
 		_extra.add(extra);
-		
+
 		this.add(title);
 	}
 
@@ -297,6 +297,111 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			});
 
 			rowView.setTag("noticecontent");
+		}
+		else if (type.toString().equals("accountheader"))
+		{
+			String tag = "accountheader";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_header, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("accountemail"))
+		{
+			String tag = "accountemail";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_email, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("accountcontent"))
+		{
+			String tag = "accountcontent";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_info_content, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("accountcontentmobile"))
+		{
+			String tag = "accountcontentmobile";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_info_content_mobile, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("accountcontentaddress"))
+		{
+			String tag = "accountcontentaddress";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_info_content_address, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("accountlinegray"))
+		{
+			String tag = "accountlinegray";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_line_gray, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("accountlineorange"))
+		{
+			String tag = "accountlineorange";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.account_line_orange, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
 		}
 		else
 		{
