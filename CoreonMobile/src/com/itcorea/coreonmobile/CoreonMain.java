@@ -263,8 +263,6 @@ public class CoreonMain extends FragmentActivity
 		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
 		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
 		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
 		// addStrings("space", "space", "space", 0);
 		// cannot retrieve correct layout
 
@@ -488,6 +486,7 @@ class MyPagerAdapter extends PagerAdapter
 	HashMap<String, List<String>>	listDataChildImage;
 	Context							con;
 	View							view;
+	int								dev			= 15;
 
 	ArrayList<String>				_title		= new ArrayList<String>();
 	ArrayList<String>				_content	= new ArrayList<String>();
@@ -606,6 +605,7 @@ class MyPagerAdapter extends PagerAdapter
 						switch (groupPosition)
 						{
 							case 0:
+								// home button click
 								CoreonMain.mPager.setCurrentItem(1);
 
 								View view6 = setPage(R.layout.main_info_home_list);
@@ -669,41 +669,6 @@ class MyPagerAdapter extends PagerAdapter
 								addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0,
 										"text", "text");
 								addStrings("", "", "", 0, "", "bottomshadow");
-								addStrings("", "", "", 0, "", "space");
-
-								addStrings("Exclusive Offers", "", "", 0, "header", "header");
-								addStrings("Dong Won Restaurant",
-										"Get 50% off on your test test test test test test test test payment of Coreon Card",
-										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimage");
-								addStrings(
-										"Dong Won Restaurant",
-										"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-								addStrings(
-										"Dong Won Restaurant",
-										"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-								addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-										"www.yahoo.com", "textimage");
-								addStrings("", "", "", 0, "", "bottomshadow");
-								addStrings("", "", "", 0, "", "space");
-
-								addStrings("Exclusive Offers", "", "", 0, "header", "header");
-								addStrings("Dong Won Restaurant",
-										"Get 50% off on your test test test test test test test test payment of Coreon Card",
-										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimage");
-								addStrings(
-										"Dong Won Restaurant",
-										"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-								addStrings(
-										"Dong Won Restaurant",
-										"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-								addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-										"www.yahoo.com", "textimage");
-								addStrings("", "", "", 0, "", "bottomshadow");
-
 								addStrings("", "", "", 0, "", "space");
 								addStrings("", "", "", 0, "", "space");
 								addStrings("", "", "", 0, "", "space");
@@ -874,46 +839,32 @@ class MyPagerAdapter extends PagerAdapter
 								switch (childPosition)
 								{
 									case 0:
-										// Toast.makeText(con, "Account info",
-										// Toast.LENGTH_SHORT).show();
+										// open account information
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild = setPage(R.layout.account_info);
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
 										break;
 									case 1:
-										// Toast.makeText(con, "Points", Toast.LENGTH_SHORT).show();
+										// open points
 										CoreonMain.mPager.setCurrentItem(1);
 										View v2 = setPage(R.layout.points);
 										break;
 									case 2:
-										// Toast.makeText(con, "Change Password",
-										// Toast.LENGTH_SHORT).show();
+										// open change password
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild1 = setPage(R.layout.change_password);
 										removeHeaderbackColor((View) viewChild1.getParent().getParent());
-
-										// CoreonMain.setLayout(R.layout.change_password);
 										break;
 									case 3:
-										// Toast.makeText(con, "App Settings",
-										// Toast.LENGTH_SHORT).show();
-
+										// open settings
 										Intent intent = new Intent(con, SettingsActivity.class);
-										// intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-										// overridePendingTransition(R.anim.righttoleft,R.anim.lefttoright);
 										con.startActivity(intent);
 
 										break;
 									case 4:
 
-										// ////////Logout button
-
-										// 1. Instantiate an AlertDialog.Builder with its
-										// constructor
+										// Logout button
 										AlertDialog.Builder builder = new AlertDialog.Builder(con);
-
-										// 2. Chain together various setter methods to set the
-										// dialog characteristics
 										builder.setMessage("Logout your account?").setTitle("Coreon Mobile");
 
 										builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -926,29 +877,25 @@ class MyPagerAdapter extends PagerAdapter
 												Boolean fl = false;
 												editor.putBoolean("LoggedIn", fl);
 												// set value of Logged In to false to invoke log in
-												// screen on startup
+												// on screen on startup
 												editor.commit();
 
 												Toast.makeText(con, "Logging Out..", Toast.LENGTH_SHORT).show();
 
-												// ////
+												// finish this activity
 												((Activity) con).finish();
 											}
 										});
 										builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 											public void onClick(DialogInterface dialog, int id)
 											{
-												// User cancelled the dialog
+												// User cancelled the dialog do nothing
 											}
 										});
 
-										// 3. Get the AlertDialog from create()
+										// build the dialog then show
 										AlertDialog dialog = builder.create();
-
 										dialog.show();
-
-										// ((Activity)con).finish();
-										// CoreonMain.finishActivity();
 
 										break;
 									default:
@@ -960,13 +907,11 @@ class MyPagerAdapter extends PagerAdapter
 								switch (childPosition)
 								{
 									case 0:
-										// Toast.makeText(con, "Enroll Card",
-										// Toast.LENGTH_SHORT).show();
+										// show enroll card
 										CoreonMain.mPager.setCurrentItem(1);
 										final View viewChild = setPage(R.layout.enroll_card);
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
 										TextView cashcard = (TextView) viewChild.findViewById(R.id.TextView02);
-										// cashcard.setOnClickListener(new onc);
 
 										cashcard.setOnClickListener(new OnClickListener() {
 											@Override
@@ -975,8 +920,7 @@ class MyPagerAdapter extends PagerAdapter
 												View view = setPage(R.layout.enroll_card_cash);
 												TextView register = (TextView) view.findViewById(R.id.TextView02);
 
-												// ImageView backbutton = (ImageView)
-												// viewChild.findViewById(R.id.TextView02);
+												// onclick of first selection
 												register.setOnClickListener(new OnClickListener() {
 													@Override
 													public void onClick(View v)
@@ -985,40 +929,23 @@ class MyPagerAdapter extends PagerAdapter
 
 														TelephonyManager tm = (TelephonyManager) con.getSystemService(TELEPHONY_SERVICE);
 														String number = tm.getLine1Number();
-														// Toast.makeText(con, number,
-														// Toast.LENGTH_SHORT).show();
 
 														TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
 														textNumber.setText(number.toString());
 
 														ImageView im = (ImageView) view2.findViewById(R.id.imageViewPicture);
+
+														// on click on capture image
 														im.setOnClickListener(new OnClickListener() {
 															@Override
 															public void onClick(View v)
 															{
-
-																// Toast.makeText(con,
-																// "Open Camera",
-																// Toast.LENGTH_SHORT).show();
-
 																// Intent cameraIntent = new
 																// Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 																// con.startActivityForResult(cameraIntent,
 																// 1888);
 															}
-
-															// protected void onActivityResult(int
-															// requestCode, int resultCode, Intent
-															// data) {
-															// if (requestCode == CAMERA_REQUEST &&
-															// resultCode == RESULT_OK) {
-															// Bitmap photo = (Bitmap)
-															// data.getExtras().get("data");
-															// imageView.setImageBitmap(photo);
-															// }
-															// }
 														});
-
 													}
 												});
 											}
@@ -1026,15 +953,14 @@ class MyPagerAdapter extends PagerAdapter
 
 										break;
 									case 1:
-										// Toast.makeText(con, "Promos", Toast.LENGTH_SHORT).show();
+										// show promos
 										CoreonMain.mPager.setCurrentItem(1);
 
 										View viewChild1 = setPage(R.layout.promos);
 										removeHeaderbackColor((View) viewChild1.getParent().getParent());
 										break;
 									case 2:
-										// Toast.makeText(con, "Notices",
-										// Toast.LENGTH_SHORT).show();
+										// show notices
 										CoreonMain.mPager.setCurrentItem(1);
 										setPage(R.layout.notices);
 										break;
@@ -1047,6 +973,13 @@ class MyPagerAdapter extends PagerAdapter
 								// logo click
 								// add egg
 
+								dev--;
+								if (dev >= 10);
+								else if (dev < 10 && dev >=0)
+									Toast.makeText(con, "You are " + String.valueOf(dev) + " clicks away to becoming a developer", Toast.LENGTH_SHORT)
+											.show();
+								else
+									Toast.makeText(con, "Congratulations you are now a developer", Toast.LENGTH_SHORT).show();
 								Log.i("info", "Logo click");
 								break;
 							default:
