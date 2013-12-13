@@ -44,6 +44,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -56,6 +57,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
@@ -486,14 +488,15 @@ class MyPagerAdapter extends PagerAdapter
 	HashMap<String, List<String>>	listDataChildImage;
 	Context							con;
 	View							view;
-	int								dev			= 15;
+	int								dev		= 15;
 
-	ArrayList<String>				_title		= new ArrayList<String>();
-	ArrayList<String>				_content	= new ArrayList<String>();
-	ArrayList<String>				_date		= new ArrayList<String>();
-	ArrayList<String>				_image		= new ArrayList<String>();
-	ArrayList<String>				_type		= new ArrayList<String>();
-	ArrayList<String>				_extra		= new ArrayList<String>();
+	ArrayList<String>				_title	= new ArrayList<String>();
+
+	// ArrayList<String> _content = new ArrayList<String>();
+	// ArrayList<String> _date = new ArrayList<String>();
+	// ArrayList<String> _image = new ArrayList<String>();
+	// ArrayList<String> _type = new ArrayList<String>();
+	// ArrayList<String> _extra = new ArrayList<String>();
 
 	public int getCount()
 	{
@@ -615,7 +618,6 @@ class MyPagerAdapter extends PagerAdapter
 								String fname = prefs.getString("fname", "firstname");
 								String lname = prefs.getString("lname", "lastname");
 								String points = prefs.getString("points", "0");
-								// TextView t = new TextView(con);
 
 								try
 								{
@@ -629,57 +631,57 @@ class MyPagerAdapter extends PagerAdapter
 								// Get ListView object from xml
 								ListView listView = (ListView) view6.findViewById(R.id.listView1);
 
-								removeStringsValues();
+								final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(con, _title);
+								adapter.initiatizeStringsValues();
 
-								addStrings("space", "space", "space", 0, "space", "space");
+								adapter.addStrings("space", "space", "space", 0, "space", "space");
 
-								addStrings("userinfo", fname, "userinfo", 0, "userinfo", "userinfo");
-								addStrings("My Cards", "0 Cards", "userinfo", 0, "userinfo", "usercontent");
-								addStrings("", "", "", 0, "", "userline");
-								addStrings("Coreon Points", points + " Points", "userinfo", 0, "userinfo", "usercontent");
-								addStrings("", "", "", 0, "", "userline");
-								addStrings("Notice", "12", "userinfo", 0, "userinfo", "usercontent");
-								addStrings("userinfo", "userinfo", "userinfo", 0, "userinfo", "userbottom");
+								adapter.addStrings("userinfo", fname, "userinfo", 0, "userinfo", "userinfo");
+								adapter.addStrings("My Cards", "0 Cards", "userinfo", 0, "userinfo", "usercontent");
+								adapter.addStrings("", "", "", 0, "", "userline");
+								adapter.addStrings("Coreon Points", points + " Points", "userinfo", 0, "userinfo", "usercontent");
+								adapter.addStrings("", "", "", 0, "", "userline");
+								adapter.addStrings("Notice", "12", "userinfo", 0, "userinfo", "usercontent");
+								adapter.addStrings("userinfo", "userinfo", "userinfo", 0, "userinfo", "userbottom");
 
-								addStrings("space", "space", "space", 0, "space", "space");
+								adapter.addStrings("space", "space", "space", 0, "space", "space");
 
-								addStrings("Exclusive Offers", "", "", 0, "header", "header");
-								addStrings("Dong Won Restaurant",
+								adapter.addStrings("Exclusive Offers", "", "", 0, "header", "header");
+								adapter.addStrings("Dong Won Restaurant",
 										"Get 50% off on your test test test test test test test test payment of Coreon Card",
 										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimage");
-								addStrings(
+								adapter.addStrings(
 										"Dong Won Restaurant",
 										"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
 										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-								addStrings(
+								adapter.addStrings(
 										"Dong Won Restaurant",
 										"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
 										"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-								addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-										"www.yahoo.com", "textimage");
-								addStrings("", "", "", 0, "", "bottomshadow");
-								addStrings("space", "space", "space", 0, "space", "space");
-								addStrings("Notice", "", "", 0, "header", "header");
-								addStrings(
+								adapter.addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM",
+										R.drawable.offer_image_1, "www.yahoo.com", "textimage");
+								adapter.addStrings("", "", "", 0, "", "bottomshadow");
+								adapter.addStrings("space", "space", "space", 0, "space", "space");
+								adapter.addStrings("Notice", "", "", 0, "header", "header");
+								adapter.addStrings(
 										"Dong Won Restaurant",
 										"Get 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon Card",
 										"August 25, 2013 at 11:30 PM", 0, "text", "text");
-								addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0,
-										"text", "text");
-								addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0,
-										"text", "text");
-								addStrings("", "", "", 0, "", "bottomshadow");
-								addStrings("", "", "", 0, "", "space");
-								addStrings("", "", "", 0, "", "space");
-								addStrings("", "", "", 0, "", "space");
-								addStrings("", "", "", 0, "", "space");
-								addStrings("", "", "", 0, "", "space");
-								addStrings("", "", "", 0, "", "space");
-								addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card",
+										"August 25, 2013 at 11:30 PM", 0, "text", "text");
+								adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card",
+										"August 25, 2013 at 11:30 PM", 0, "text", "text");
+								adapter.addStrings("", "", "", 0, "", "bottomshadow");
+								adapter.addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("", "", "", 0, "", "space");
+								adapter.addStrings("", "", "", 0, "", "space");
 
-								MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(con, _title);
-
-								adapter.setValues(_title, _content, _date, _image, _type, _extra);
+								// adapter.setValues(_title, _content, _date, _image, _type,
+								// _extra);
 
 								// Assign adapter to ListView
 								listView.setAdapter(adapter);
@@ -709,32 +711,30 @@ class MyPagerAdapter extends PagerAdapter
 											View v = setPage(R.layout.notices);
 											ListView listViewNotice = (ListView) v.findViewById(R.id.listViewNotices);
 
-											removeStringsValues();
+											final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(con, _title);
 
-											// addStrings("space", "space", "space", 0);
-											addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card",
+											adapter.initiatizeStringsValues();
+											adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-											addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin",
+											adapter.addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-											addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te",
+											adapter.addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-											addStrings(
+											adapter.addStrings(
 													"Dong Won Restaurant",
 													"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-											addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin",
+											adapter.addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-											addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te",
+											adapter.addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te",
 													"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.coreonmobile.com",
+											adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.coreonmobile.com",
 													"textimagenotice");
-											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-											addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-											// addStrings("space", "space", "space", 0);
-											// cannot retrieve correct layout
+											adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com",
+													"textimagenotice");
+											adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com",
+													"textimagenotice");
 
-											final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(con, _title);
-											adapter.setValues(_title, _content, _date, _image, _type, _extra);
 											listViewNotice.setAdapter(adapter);
 											listViewNotice.setDividerHeight(0);
 
@@ -747,7 +747,6 @@ class MyPagerAdapter extends PagerAdapter
 													if (view.getTag().equals("textimagenotice"))
 													{
 														// open notice content full
-														adapter.setNotice(false);
 
 														View noticeView = setPage(R.layout.notice_content);
 														ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
@@ -755,20 +754,20 @@ class MyPagerAdapter extends PagerAdapter
 														TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
 														TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
 
-														String image = _image.get(position).toString();
-														String url = _extra.get(position).toString();
-														String content = _content.get(position).toString();
+														String image = adapter._image.get(position).toString();
+														String url = adapter._extra.get(position).toString();
+														String content = adapter._content.get(position).toString();
 
 														int imageInt = Integer.parseInt(image);
 
-														removeStringsValues();
-														addStrings("", "", "", 0, "", "space");
-														addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt,
-																url, "noticecontent");
-														addStrings("", "", "", 0, "", "space");
-
 														MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(con, _title);
-														noticeContentAdapter.setValues(_title, _content, _date, _image, _type, _extra);
+														noticeContentAdapter.initiatizeStringsValues();
+
+														noticeContentAdapter.addStrings("", "", "", 0, "", "space");
+														noticeContentAdapter.addStrings(textTitle.getText().toString(), content, textDate.getText()
+																.toString(), imageInt, url, "noticecontent");
+														noticeContentAdapter.addStrings("", "", "", 0, "", "space");
+
 														listView.setAdapter(noticeContentAdapter);
 														listView.setDividerHeight(0);
 													}
@@ -785,20 +784,19 @@ class MyPagerAdapter extends PagerAdapter
 											TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
 											TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
 
-											String image = _image.get(position).toString();
-											String url = _extra.get(position).toString();
-											String content = _content.get(position).toString();
+											String image = adapter._image.get(position).toString();
+											String url = adapter._extra.get(position).toString();
+											String content = adapter._content.get(position).toString();
 
 											int imageInt = Integer.parseInt(image);
-											removeStringsValues();
-
-											addStrings("space", "space", "space", 0, "space", "space");
-											addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url,
-													"noticecontent");
-											addStrings("space", "space", "space", 0, "space", "space");
-
 											MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(con, _title);
-											noticeContentAdapter.setValues(_title, _content, _date, _image, _type, _extra);
+
+											noticeContentAdapter.initiatizeStringsValues();
+											noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
+											noticeContentAdapter.addStrings(textTitle.getText().toString(), content, textDate.getText().toString(),
+													imageInt, url, "noticecontent");
+											noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
+
 											listView.setAdapter(noticeContentAdapter);
 											listView.setDividerHeight(0);
 										}
@@ -842,6 +840,11 @@ class MyPagerAdapter extends PagerAdapter
 										// open account information
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild = setPage(R.layout.account_info);
+
+										// ////////////////
+										// ////////////////
+										// ////////////////
+
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
 										break;
 									case 1:
@@ -934,12 +937,13 @@ class MyPagerAdapter extends PagerAdapter
 														textNumber.setText(number.toString());
 
 														ImageView im = (ImageView) view2.findViewById(R.id.imageViewPicture);
-
 														// on click on capture image
 														im.setOnClickListener(new OnClickListener() {
+															@SuppressLint("ShowToast")
 															@Override
 															public void onClick(View v)
 															{
+																Toast.makeText(con, "Open Camera", Toast.LENGTH_LONG);
 																// Intent cameraIntent = new
 																// Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 																// con.startActivityForResult(cameraIntent,
@@ -974,8 +978,9 @@ class MyPagerAdapter extends PagerAdapter
 								// add egg
 
 								dev--;
-								if (dev >= 10);
-								else if (dev < 10 && dev >=0)
+								if (dev >= 10)
+									;
+								else if (dev < 10 && dev >= 0)
 									Toast.makeText(con, "You are " + String.valueOf(dev) + " clicks away to becoming a developer", Toast.LENGTH_SHORT)
 											.show();
 								else
@@ -1060,43 +1065,26 @@ class MyPagerAdapter extends PagerAdapter
 		// }
 	}
 
-	public void removeStringsValues()
-	{
-		_title = new ArrayList<String>();
-		_content = new ArrayList<String>();
-		_date = new ArrayList<String>();
-		_image = new ArrayList<String>();
-		_type = new ArrayList<String>();
-		_extra = new ArrayList<String>();
-	}
-
-	public void addStrings(String title, String content, String date, int image, String extra, String type)
-	{
-		_title.add(title);
-		_content.add(content);
-		_date.add(date);
-		_image.add(String.valueOf(image));
-		_type.add(type);
-		_extra.add(extra);
-	}
-
-	public static float convertDpToPixel(float dp, Context context)
-	{
-		Resources resources = context.getResources();
-		DisplayMetrics metrics = resources.getDisplayMetrics();
-		float px = dp * (metrics.densityDpi / 160f);
-		return px;
-	}
-
-	public static int dpToPx(int dp)
-	{
-		return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-	}
-
-	public static int pxToDp(int px)
-	{
-		return (int) (px / Resources.getSystem().getDisplayMetrics().density);
-	}
+	// public void removeStringsValues()
+	// {
+	// _title = new ArrayList<String>();
+	// _content = new ArrayList<String>();
+	// _date = new ArrayList<String>();
+	// _image = new ArrayList<String>();
+	// _type = new ArrayList<String>();
+	// _extra = new ArrayList<String>();
+	// }
+	//
+	// public void addStrings(String title, String content, String date, int image, String extra,
+	// String type)
+	// {
+	// _title.add(title);
+	// _content.add(content);
+	// _date.add(date);
+	// _image.add(String.valueOf(image));
+	// _type.add(type);
+	// _extra.add(extra);
+	// }
 
 	@Override
 	public void destroyItem(View arg0, int arg1, Object arg2)
