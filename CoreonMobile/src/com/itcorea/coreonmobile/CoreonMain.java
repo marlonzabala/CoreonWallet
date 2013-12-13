@@ -779,7 +779,6 @@ class MyPagerAdapter extends PagerAdapter
 											// open notice content full
 
 											View noticeView = setPage(R.layout.notice_content);
-											ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
 
 											TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
 											TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
@@ -797,6 +796,7 @@ class MyPagerAdapter extends PagerAdapter
 													imageInt, url, "noticecontent");
 											noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
 
+											ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
 											listView.setAdapter(noticeContentAdapter);
 											listView.setDividerHeight(0);
 										}
@@ -844,6 +844,38 @@ class MyPagerAdapter extends PagerAdapter
 										// ////////////////
 										// ////////////////
 										// ////////////////
+										
+//										List
+										
+										MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(con, _title);
+
+										noticeContentAdapter.initiatizeStringsValues();
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountheader");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountemail");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlineorange");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountheader");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontentmobile");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontentaddress");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlineorange");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountheader");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+										noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+
+										ListView listView2 = (ListView) viewChild.findViewById(R.id.listViewAccount);
+										listView2.setAdapter(noticeContentAdapter);
+										listView2.setDividerHeight(0);
+										
 
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
 										break;

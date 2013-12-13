@@ -45,7 +45,7 @@
         android:fontFamily="sans-serif"
         android:paddingLeft="11dp"
         android:paddingTop="32dp"
-        android:text="Thiw will serve as your account login"
+        android:text="This will serve as your account login"
         android:textColor="#b2b2b2"
         android:textSize="12sp" />
 

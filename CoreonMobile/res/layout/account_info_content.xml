@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/clickable_card_content" >
+    android:background="@drawable/clickable_card_content_notice" >
 
     <TextView
         android:id="@+id/textContent"
@@ -11,13 +11,13 @@
 
     <TextView
         android:id="@+id/textLabel"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:fontFamily="sans-serif"
         android:gravity="left|center_vertical"
-        android:paddingLeft="8dp"
+        android:paddingLeft="15dp"
         android:text="First Name"
         android:textColor="@color/card_font_color_text"
         android:textSize="15sp" />
@@ -28,6 +28,7 @@
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
+        android:layout_toRightOf="@+id/textLabel"
         android:fontFamily="sans-serif"
         android:gravity="left|center_vertical"
         android:paddingLeft="10dp"
