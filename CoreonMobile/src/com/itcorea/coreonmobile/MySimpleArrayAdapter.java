@@ -19,23 +19,20 @@ import android.widget.TextView;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<String>
 {
-	private final Context			context;
-	private final ArrayList<String>	values;
+	private final Context		context;
+	Boolean						_notice		= false;
 
-	Boolean							_notice		= false;
-
-	ArrayList<String>				_title		= new ArrayList<String>();
-	ArrayList<String>				_content	= new ArrayList<String>();
-	ArrayList<String>				_date		= new ArrayList<String>();
-	ArrayList<String>				_image		= new ArrayList<String>();
-	ArrayList<String>				_type		= new ArrayList<String>();
-	ArrayList<String>				_extra		= new ArrayList<String>();
+	ArrayList<String>			_title		= new ArrayList<String>();
+	ArrayList<String>			_content	= new ArrayList<String>();
+	ArrayList<String>			_date		= new ArrayList<String>();
+	ArrayList<String>			_image		= new ArrayList<String>();
+	ArrayList<String>			_type		= new ArrayList<String>();
+	ArrayList<String>			_extra		= new ArrayList<String>();
 
 	public MySimpleArrayAdapter(Context context, ArrayList<String> values)
 	{
 		super(context, R.layout.card_text_image_notice_content, values);
 		this.context = context;
-		this.values = values;
 	}
 
 	public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String> date, ArrayList<String> image,
@@ -49,6 +46,42 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		this._extra = extra;
 	}
 
+	public void initiatizeStringsValues()
+	{
+		_title = new ArrayList<String>();
+		_content = new ArrayList<String>();
+		_date = new ArrayList<String>();
+		_image = new ArrayList<String>();
+		_type = new ArrayList<String>();
+		_extra = new ArrayList<String>();
+		
+		this.clear();
+	}
+
+	public void addStrings(String title, String content, String date, int image, String extra, String type)
+	{
+		_title.add(title);
+		_content.add(content);
+		_date.add(date);
+		_image.add(String.valueOf(image));
+		_type.add(type);
+		_extra.add(extra);
+		
+		this.add(title);
+	}
+
+	// public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String>
+	// date, ArrayList<String> image,
+	// ArrayList<String> type, ArrayList<String> extra)
+	// {
+	// this._title = title;
+	// this._content = content;
+	// this._date = date;
+	// this._image = image;
+	// this._type = type;
+	// this._extra = extra;
+	// }
+
 	public void setNotice(Boolean notice)
 	{
 		this._notice = notice;
@@ -59,21 +92,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
 		View rowView;
-
-		// text
-		// textimage
-		// textimagenotice
-		// header
-		// space
-		// userinfo
-		// userinfosub
-
-		// _content.get(position).toString().equals("userinfo") &&
-		// _date.get(position).toString().equals("userinfo")
-		// _content.get(position).toString().equals("") && _date.get(position).toString().equals("")
-		// else if (_content.get(position).toString().equals("space") &&
-		// _date.get(position).toString().equals("space"))
-		// (_image.get(position).toString().equals("0"))
 
 		String type = _type.get(position).toString();
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -110,13 +128,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.card_user_content, parent, false);
 			}
-			
+
 			TextView textContent = (TextView) rowView.findViewById(R.id.textContent);
 			TextView textContentNumber = (TextView) rowView.findViewById(R.id.textContentNumber);
 
 			textContent.setText(_title.get(position).toString());
 			textContentNumber.setText(_content.get(position).toString());
-			
+
 			rowView.setTag("usercontent");
 		}
 		else if (type.equals("userline"))
@@ -282,7 +300,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else
 		{
-
 			rowView = inflater.inflate(R.layout.card_text_image, parent, false);
 			TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
 			TextView textContent = (TextView) rowView.findViewById(R.id.lblContentText);
