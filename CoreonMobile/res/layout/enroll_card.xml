@@ -89,7 +89,7 @@
         android:background="@color/line_card_color" />
 
     <TextView
-        android:id="@+id/TextViewHeader1"
+        android:id="@+id/TextViewEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/TextView02"
