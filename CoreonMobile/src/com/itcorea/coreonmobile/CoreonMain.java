@@ -105,7 +105,7 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		menu.setSecondaryMenu(R.layout.coreon_main_card_chooser);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		menu.setFadeDegree(0.35f);
-		menu.setBehindScrollScale(0.0f);
+		menu.setBehindScrollScale(0.25f);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 
 		// setContentView(R.layout.activity_coreon_main);
@@ -897,23 +897,23 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	@Override
-	public void onBackPressed()
-	{
-		if (mPager.getCurrentItem() == 1)
-		{
-			adapter.setHome();
-
-			// super.onBackPressed();
-			// System.exit(0);
-			// overridePendingTransition(R.anim.lefttomain, R.anim.maintoright);
-		}
-		else
-		{
-			// Otherwise, select main info.
-			mPager.setCurrentItem(1);
-		}
-	}
+//	@Override
+//	public void onBackPressed()
+//	{
+//		if (mPager.getCurrentItem() == 1)
+//		{
+//			adapter.setHome();
+//
+//			// super.onBackPressed();
+//			// System.exit(0);
+//			// overridePendingTransition(R.anim.lefttomain, R.anim.maintoright);
+//		}
+//		else
+//		{
+//			// Otherwise, select main info.
+//			mPager.setCurrentItem(1);
+//		}
+//	}
 
 	public void openAccountInfo(View view)
 	{
