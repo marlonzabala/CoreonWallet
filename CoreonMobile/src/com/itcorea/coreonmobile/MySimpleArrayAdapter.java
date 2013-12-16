@@ -95,7 +95,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 
 		String type = _type.get(position).toString();
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		Log.i("type", type.toString());
+		//Log.i("type", type.toString());
 
 		if (type.equals("userinfo"))
 		{

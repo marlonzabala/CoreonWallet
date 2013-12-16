@@ -41,6 +41,15 @@
         android:listSelector="@android:color/transparent" >
     </ListView>
     
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/textViewWhiteHeader"
+        android:layout_centerHorizontal="true" >
+    </ProgressBar>
+    
     <TextView
             android:id="@+id/shadowTops"
             android:layout_width="match_parent"

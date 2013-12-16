@@ -1,50 +1,34 @@
 package com.itcorea.coreonmobile;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import static android.content.Context.TELEPHONY_SERVICE;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import static android.content.Context.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.ParseException;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -57,12 +41,13 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -116,7 +101,145 @@ public class CoreonMain extends FragmentActivity
 		editor.putBoolean("LoggedIn", tr); // value to store
 		editor.commit();
 
+		//GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
+		//n.execute("test", "test", "offer");
+
 		// Toast.makeText(getApplicationContext(), " Expanded", Toast.LENGTH_SHORT).show();
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		final Button GetServerData = (Button) findViewById(R.id.button);
+
+		// On button click call this listener
+		GetServerData.setOnClickListener(new OnClickListener() {
+			public void onClick(View v)
+			{
+
+				//Toast.makeText(getBaseContext(), "Please wait, connecting to server.", Toast.LENGTH_SHORT).show();
+				
+				// remove child views
+				ViewGroup layout = (ViewGroup) findViewById(R.id.dynamic_layout_main);
+				layout.removeAllViews();
+
+				// get layout to insert
+				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View v1 = vi.inflate(R.layout.progress, null);
+
+				// insert into main view
+				View insertPoint = findViewById(R.id.dynamic_layout_main);
+				((ViewGroup) insertPoint).addView(v1, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+				
+				
+				
+				
+				
+				
+				
+				
+				
+
+				// Create Inner Thread Class
+				Thread background = new Thread(new Runnable() {
+
+					private final HttpClient	Client	= new DefaultHttpClient();
+					private String				URL		= "http://androidexample.com/media/webservice/getPage.php";
+
+					// After call for background.start this run method call
+					public void run()
+					{
+						try
+						{
+							//Thread.sleep(5000);
+
+							String SetServerString = "";
+							HttpGet httpget = new HttpGet(URL);
+							ResponseHandler<String> responseHandler = new BasicResponseHandler();
+							SetServerString = Client.execute(httpget, responseHandler);
+							threadMsg(SetServerString);
+
+						}
+						catch (Throwable t)
+						{
+							// just end the background thread
+							Log.i("Animation", "Thread  exception " + t);
+						}
+					}
+
+					private void threadMsg(String msg)
+					{
+						if (!msg.equals(null) && !msg.equals(""))
+						{
+							Message msgObj = handler.obtainMessage();
+							Bundle b = new Bundle();
+							b.putString("message", msg);
+							msgObj.setData(b);
+							handler.sendMessage(msgObj);
+						}
+					}
+
+					// Define the Handler that receives messages from the thread and update the
+					// progress
+					private final Handler	handler	= new Handler() {
+
+						public void handleMessage(Message msg)
+						{
+							String aResponse = msg.getData().getString("message");
+			
+							if ((null != aResponse))
+							{
+								
+								// ALERT MESSAGE
+								Toast.makeText(getBaseContext(), "Server Response: " + aResponse, Toast.LENGTH_SHORT)
+										.show();
+								
+								
+								
+								
+								
+								
+								// remove child views
+								ViewGroup layout = (ViewGroup) findViewById(R.id.dynamic_layout_main);
+								layout.removeAllViews();
+
+								// get layout to insert
+								LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+								View v = vi.inflate(R.layout.change_password, null);
+
+								// insert into main view
+								View insertPoint = findViewById(R.id.dynamic_layout_main);
+								((ViewGroup) insertPoint).addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+								
+								
+							}
+							else
+							{
+								// ALERT MESSAGE
+								Toast.makeText(getBaseContext(), "Not Got Response From Server.", Toast.LENGTH_SHORT)
+										.show();
+							}
+			
+						}
+					};
+
+				});
+				// Start Thread
+				background.start(); // After call start method thread called run Method
+			}
+		});
+
 	}
 
 	public void openCards(View view)
@@ -212,10 +335,10 @@ public class CoreonMain extends FragmentActivity
 		return;
 	}
 
-	public void test()
-	{
-		int num = 0;
-	}
+	// public void test()
+	// {
+	// int num = 0;
+	// }
 
 	public void openNotice(View view)
 	{
@@ -240,82 +363,182 @@ public class CoreonMain extends FragmentActivity
 		// helpSelected = false;
 
 		View v = setLayout(R.layout.notices);
-		ListView listViewNotice = (ListView) v.findViewById(R.id.listViewNotices);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
-		final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 
-		removeStringsValues();
+		// Create Inner Thread Class
+		Thread background = new Thread(new Runnable() {
 
-		// addStrings("space", "space", "space", 0);
-		addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-				"www.google.com", "textimagenotice");
-		addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
-				"www.google.com", "textimagenotice");
-		addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-				"www.google.com", "textimagenotice");
-		addStrings(
-				"Dong Won Restaurant",
-				"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-				"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
-				"www.google.com", "textimagenotice");
-		addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-				"www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.coreonmobile.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-		// addStrings("space", "space", "space", 0);
-		// cannot retrieve correct layout
+			private final HttpClient	Client	= new DefaultHttpClient();
+			private String				URL		= "http://androidexample.com/media/webservice/getPage.php";
 
-		adapter.setValues(_title, _content, _date, _image, _type, _extra);
-		// adapter.setNotice(true);
-		listViewNotice.setAdapter(adapter);
-		listViewNotice.setDividerHeight(0);
-
-		listViewNotice.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			// After call for background.start this run method call
+			public void run()
 			{
-
-				if (view.getTag().equals("textimagenotice"))
+				try
 				{
-					// open notice content full
-					adapter.setNotice(false);
+					//Thread.sleep(5000);
 
-					View noticeView = setLayout(R.layout.notice_content);
-					ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
+					String SetServerString = "";
+					HttpGet httpget = new HttpGet(URL);
+					ResponseHandler<String> responseHandler = new BasicResponseHandler();
+					SetServerString = Client.execute(httpget, responseHandler);
+					threadMsg(SetServerString);
 
-					TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
-					TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
-
-					String image = _image.get(position).toString();
-					String url = _extra.get(position).toString();
-					String content = _content.get(position).toString();
-
-					int imageInt = Integer.parseInt(image);
-
-					removeStringsValues();
-					addStrings("", "", "", 0, "", "space");
-					addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url, "noticecontent");
-					addStrings("", "", "", 0, "", "space");
-
-					MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
-					noticeContentAdapter.setValues(_title, _content, _date, _image, _type, _extra);
-					listView.setAdapter(noticeContentAdapter);
-					listView.setDividerHeight(0);
+				}
+				catch (Throwable t)
+				{
+					// just end the background thread
+					Log.i("Animation", "Thread  exception " + t);
 				}
 			}
+
+			private void threadMsg(String msg)
+			{
+				if (!msg.equals(null) && !msg.equals(""))
+				{
+					Message msgObj = handler.obtainMessage();
+					Bundle b = new Bundle();
+					b.putString("message", msg);
+					msgObj.setData(b);
+					handler.sendMessage(msgObj);
+				}
+			}
+
+			// Define the Handler that receives messages from the thread and update the
+			// progress
+			private final Handler	handler	= new Handler() {
+
+				public void handleMessage(Message msg)
+				{
+					String aResponse = msg.getData().getString("message");
+	
+					if ((null != aResponse))
+					{
+						
+						// ALERT MESSAGE
+						Toast.makeText(getBaseContext(), "Server Response: " + aResponse, Toast.LENGTH_SHORT)
+								.show();
+						
+						try{
+						
+						//hide progress bar
+						final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+						progressBar.setVisibility(View.GONE);
+						
+						
+						
+						ListView listViewNotice = (ListView) findViewById(R.id.listViewNotices);
+
+						final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+						
+						adapter.initiatizeStringsValues();
+						
+						adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings(
+								"Dong Won Restaurant",
+								"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
+								"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+						adapter.addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.coreonmobile.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+
+						
+						
+						listViewNotice.setAdapter(adapter);
+						
+						listViewNotice.setDividerHeight(0);
+
+						listViewNotice.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+							{
+
+								if (view.getTag().equals("textimagenotice"))
+								{
+									// open notice content full
+									adapter.setNotice(false);
+
+									View noticeView = setLayout(R.layout.notice_content);
+									ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
+
+									TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
+									TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
+
+									String image = adapter._image.get(position).toString();
+									String url = adapter._extra.get(position).toString();
+									String content = adapter._content.get(position).toString();
+
+									int imageInt = Integer.parseInt(image);
+
+									removeStringsValues();
+									addStrings("", "", "", 0, "", "space");
+									addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url, "noticecontent");
+									addStrings("", "", "", 0, "", "space");
+
+									MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+									noticeContentAdapter.setValues(_title, _content, _date, _image, _type, _extra);
+									listView.setAdapter(noticeContentAdapter);
+									listView.setDividerHeight(0);
+								}
+							}
+						});
+						
+						}
+						catch(Exception e)
+						{
+							Log.i("Ex", e.toString());
+						}
+					}
+					else
+					{
+						// ALERT MESSAGE
+						Toast.makeText(getBaseContext(), "Not Got Response From Server.", Toast.LENGTH_SHORT)
+								.show();
+					}
+	
+				}
+			};
+
 		});
-		// }
-		// else
-		// {
-		// ImageButton im = (ImageButton) findViewById(R.id.imageButtonNotice);
-		// im.setBackgroundColor(Color.TRANSPARENT);
-		// setLayout(R.layout.account_info);
-		// noticeSelected = false;
-		// }
+		// Start Thread
+		background.start(); // After call start method thread called run Method
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		return;
 	}
@@ -374,63 +597,144 @@ public class CoreonMain extends FragmentActivity
 		offerSelected = true;
 		noticeSelected = false;
 		helpSelected = false;
+		
+		
+		
+		
+		
+		
+		
+		// Create Inner Thread Class
+		Thread background = new Thread(new Runnable() {
 
-		ListView listViewNotice = (ListView) findViewById(R.id.listViewOffers);
+			private final HttpClient	Client	= new DefaultHttpClient();
+			private String				URL		= "http://androidexample.com/media/webservice/getPage.php";
 
-		MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
-
-		removeStringsValues();
-
-		addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-				"www.google.com", "textimagenotice");
-		addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
-				"www.google.com", "textimagenotice");
-		addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-				"www.google.com", "textimagenotice");
-		addStrings(
-				"Dong Won Restaurant",
-				"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-				"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
-				"www.google.com", "textimagenotice");
-		addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
-				"www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
-		addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
-
-		adapter.setValues(_title, _content, _date, _image, _type, _extra);
-		adapter.setNotice(true);
-		listViewNotice.setAdapter(adapter);
-		listViewNotice.setDividerHeight(0);
-
-		listViewNotice.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			// After call for background.start this run method call
+			public void run()
 			{
-				Log.i("test", "tester");
-				// Toast.makeText(getApplicationContext(), "Position :" + position ,
-				// Toast.LENGTH_LONG).show();
+				try
+				{
+					Thread.sleep(1000);
 
+					String SetServerString = "";
+					HttpGet httpget = new HttpGet(URL);
+					ResponseHandler<String> responseHandler = new BasicResponseHandler();
+					SetServerString = Client.execute(httpget, responseHandler);
+					threadMsg(SetServerString);
+
+				}
+				catch (Throwable t)
+				{
+					// just end the background thread
+					Log.i("Animation", "Thread  exception " + t);
+				}
 			}
+
+			private void threadMsg(String msg)
+			{
+				if (!msg.equals(null) && !msg.equals(""))
+				{
+					Message msgObj = handler.obtainMessage();
+					Bundle b = new Bundle();
+					b.putString("message", msg);
+					msgObj.setData(b);
+					handler.sendMessage(msgObj);
+				}
+			}
+
+			// Define the Handler that receives messages from the thread and update the
+			// progress
+			private final Handler	handler	= new Handler() {
+
+				public void handleMessage(Message msg)
+				{
+					String aResponse = msg.getData().getString("message");
+	
+					if ((null != aResponse))
+					{
+						// ALERT MESSAGE
+//						Toast.makeText(getBaseContext(), "Server Response: " + aResponse, Toast.LENGTH_SHORT)
+//								.show();
+						
+						try{
+						
+						//hide progress bar
+						final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+						progressBar.setVisibility(View.GONE);
+						
+						
+						ListView listViewNotice = (ListView) findViewById(R.id.listViewOffers);
+
+						MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+
+						//removeStringsValues();
+						
+						//adapter.setValues(_title, _content, _date, _image, _type, _extra);
+						
+						//adapter.setNotice(true);
+						
+						adapter.initiatizeStringsValues();
+
+						adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings(
+								"Dong Won Restaurant",
+								"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
+								"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+						adapter.addStrings("Globe G-Cash", "Lorem ipsum dolor sit amet, consectetur  adipiscin", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_2,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Coreon Mobile", "Discount Curabitur et justo egestas, tristique te", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+								"www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_1, "www.google.com", "textimagenotice");
+						adapter.addStrings("Offers", "Tester", "Date", R.drawable.offer_image_2, "www.google.com", "textimagenotice");
+
+						
+						
+						
+						listViewNotice.setAdapter(adapter);
+						listViewNotice.setDividerHeight(0);
+						
+						listViewNotice.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+							{
+								Log.i("test", "tester");
+							}
+						});
+						
+						}
+						catch(Exception e)
+						{
+							Log.i("Ex", e.toString());
+						}
+						
+						
+					}
+					else
+					{
+						// ALERT MESSAGE
+						Toast.makeText(getBaseContext(), "Not Got Response From Server.", Toast.LENGTH_SHORT)
+								.show();
+					}
+	
+				}
+			};
+
 		});
-
-		// }
-		// else
-		// {
-		// // ImageView imdl = (ImageView) findViewById(R.id.imageDivRight);
-		// // imdl.setVisibility(View.VISIBLE);
-		//
-		// ImageButton im = (ImageButton) findViewById(R.id.imageButtonOffers);
-		// im.setBackgroundColor(Color.TRANSPARENT);
-		// setLayout(R.layout.account_info);
-		// offerSelected = false;
-		// }
-
+		// Start Thread
+		background.start(); // After call start method thread called run Method
+		
+		
 		return;
 	}
 
@@ -743,7 +1047,6 @@ class MyPagerAdapter extends PagerAdapter
 												@Override
 												public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 												{
-
 													if (view.getTag().equals("textimagenotice"))
 													{
 														// open notice content full
@@ -841,12 +1144,8 @@ class MyPagerAdapter extends PagerAdapter
 										CoreonMain.mPager.setCurrentItem(1);
 										View viewChild = setPage(R.layout.account_info);
 
-										// ////////////////
-										// ////////////////
-										// ////////////////
-										
-//										List
-										
+										// List
+
 										MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(con, _title);
 
 										noticeContentAdapter.initiatizeStringsValues();
@@ -875,7 +1174,6 @@ class MyPagerAdapter extends PagerAdapter
 										ListView listView2 = (ListView) viewChild.findViewById(R.id.listViewAccount);
 										listView2.setAdapter(noticeContentAdapter);
 										listView2.setDividerHeight(0);
-										
 
 										removeHeaderbackColor((View) viewChild.getParent().getParent());
 										break;
@@ -1013,11 +1311,14 @@ class MyPagerAdapter extends PagerAdapter
 								if (dev >= 10)
 									;
 								else if (dev < 10 && dev >= 0)
+								{
 									Toast.makeText(con, "You are " + String.valueOf(dev) + " clicks away to becoming a developer", Toast.LENGTH_SHORT)
 											.show();
+								}
 								else
 									Toast.makeText(con, "Congratulations you are now a developer", Toast.LENGTH_SHORT).show();
 								Log.i("info", "Logo click");
+
 								break;
 							default:
 								break;
@@ -1054,23 +1355,6 @@ class MyPagerAdapter extends PagerAdapter
 				String lname = prefs.getString("lname", null);
 				String points = prefs.getString("points", null);
 
-				// TextView t = new TextView(con);
-
-				// ImageView iv = (ImageView) view1.findViewById(R.id.imageViewMyCards);
-				// iv.setOnClickListener(new OnClickListener() {
-				// @Override
-				// public void onClick(View v)
-				// {
-				// CoreonMain.mPager.setCurrentItem(2);
-				// }
-				// });
-
-				// t = (TextView) view1.findViewById(R.id.textViewName);
-				// t.setText(fname);
-				//
-				// t = (TextView) view1.findViewById(R.id.textCoreonPointsNumber);
-				// t.setText(points + " Points");
-
 				return view1;
 
 			case 2:
@@ -1097,27 +1381,6 @@ class MyPagerAdapter extends PagerAdapter
 		// }
 	}
 
-	// public void removeStringsValues()
-	// {
-	// _title = new ArrayList<String>();
-	// _content = new ArrayList<String>();
-	// _date = new ArrayList<String>();
-	// _image = new ArrayList<String>();
-	// _type = new ArrayList<String>();
-	// _extra = new ArrayList<String>();
-	// }
-	//
-	// public void addStrings(String title, String content, String date, int image, String extra,
-	// String type)
-	// {
-	// _title.add(title);
-	// _content.add(content);
-	// _date.add(date);
-	// _image.add(String.valueOf(image));
-	// _type.add(type);
-	// _extra.add(extra);
-	// }
-
 	@Override
 	public void destroyItem(View arg0, int arg1, Object arg2)
 	{
@@ -1138,7 +1401,7 @@ class MyPagerAdapter extends PagerAdapter
 
 	private void prepareListData()
 	{
-		// Prepare menu list drawer
+		// Prepare expandable menu list drawer data
 
 		listDataHeader = new ArrayList<String>();
 		listDataChild = new HashMap<String, List<String>>();
@@ -1209,186 +1472,5 @@ class MyPagerAdapter extends PagerAdapter
 		listDataChildImage.put(listDataHeaderImage.get(1), myaccountImage);
 		listDataChildImage.put(listDataHeaderImage.get(2), actionsImage);
 		listDataChildImage.put(listDataHeaderImage.get(3), logoImage);
-
-	}
-}
-
-class ChangeView extends AsyncTask<String, Integer, Long>
-{
-
-	String				useremail	= "";
-	boolean				network		= true;
-	boolean				timeout		= false;
-	private Context		mContext;
-	private Activity	mActivity;
-	ProgressDialog		mDialog;
-
-	public ChangeView(Context context, Activity activity)
-	{
-		mContext = context;
-		mActivity = activity;
-	}
-
-	private boolean isNetworkAvailable()
-	{
-		ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-
-	@Override
-	protected Long doInBackground(String... params)
-	{
-
-		timeout = false;
-
-		if (!isNetworkAvailable())
-		{
-			// Log.e("info_tag", "No network Available");
-			network = false;
-			return null;
-		}
-		else
-		{
-			// Log.e("info_tag", "Network Available");
-			network = true;
-		}
-
-		JSONArray jArray = null;
-		String result = null;
-		StringBuilder sb = null;
-		InputStream is = null;
-
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-		try
-		{
-			int timeoutsec = 20000; // 20 second timeout
-			// desktop set to static ip 192.168.123.111
-			String ipAdd = "192.168.123.111";
-			String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'";
-
-			HttpParams httpParameters = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutsec);
-			HttpConnectionParams.setSoTimeout(httpParameters, timeoutsec);
-			HttpClient httpclient = new DefaultHttpClient(httpParameters);
-			HttpPost httppost = new HttpPost(httpAddress);
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-
-			// Log.e("info_tag", "response: " + response.getStatusLine().getStatusCode());
-		}
-		catch (ConnectTimeoutException e)
-		{
-			// Log.e("info_tag", "timeout!!!!!");
-			timeout = true;
-			return null;
-		}
-		catch (Exception e)
-		{
-			// Log.e("log_tag", "Error in http connection " + e.toString());
-		}
-		// convert response to string
-		try
-		{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-			sb = new StringBuilder();
-			sb.append(reader.readLine() + "\n");
-
-			String line = "0";
-			while ((line = reader.readLine()) != null)
-			{
-				sb.append(line + "\n");
-			}
-			is.close();
-			result = sb.toString();
-		}
-		catch (Exception e)
-		{
-			// Log.e("log_tag", "Error converting result " + e.toString());
-		}
-
-		String name = null;
-		String fname = null;
-		String lname = null;
-		String points = null;
-		try
-		{
-			jArray = new JSONArray(result);
-			JSONObject json_data = null;
-
-			for (int i = 0; i < jArray.length(); i++)
-			{
-				json_data = jArray.getJSONObject(i);
-				name = json_data.getString("mpin");// column name in the database
-				fname = json_data.getString("fname");
-				lname = json_data.getString("lname");
-				points = json_data.getString("points");
-			}
-		}
-		catch (JSONException e1)
-		{
-			useremail = "No data found";
-		}
-		catch (ParseException e1)
-		{
-			// Log.e("info_tag", "parseexcept:" + e1.toString());
-			e1.printStackTrace();
-		}
-
-		useremail = "mpin: " + name;
-
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-		SharedPreferences.Editor editor = preferences.edit();
-		// Boolean tr = true;
-		editor.putString("fname", fname); // value to store
-		editor.putString("lname", lname); // value to store
-		editor.putString("points", points); // value to store
-		editor.commit();
-
-		// Log.e("info_tag", "usermail: " + name.toString());
-		// Toast.makeText(getBaseContext(),name, Toast.LENGTH_SHORT).show();
-
-		return null;
-	}
-
-	protected void onProgressUpdate(Integer... progress)
-	{
-		// setProgressPercent(progress[0]);
-	}
-
-	@Override
-	protected void onPreExecute()
-	{
-		// super.onPreExecute();
-		//
-		// mDialog = new ProgressDialog(mActivity);
-		// mDialog.setMessage("Loggin in..");
-		// mDialog.show();
-	}
-
-	protected void onPostExecute(Long result)
-	{
-
-		mDialog.dismiss();
-
-		if (network)
-		{
-			if (timeout)
-			{
-				Toast.makeText(mContext, "Network time out, server maybe down", Toast.LENGTH_SHORT).show();
-			}
-			else
-			{
-				Toast.makeText(mContext, "Wrong password or username", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			Toast.makeText(mContext, "No network connection", Toast.LENGTH_SHORT).show();
-		}
-
 	}
 }

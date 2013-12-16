@@ -31,7 +31,6 @@
         android:textColor="#555555"
         android:textSize="14dp"
         android:textStyle="bold" />
-<!--     android:layout_alignParentLeft="true" -->
 
     <ImageView
         android:id="@+id/imageViewArrow"
