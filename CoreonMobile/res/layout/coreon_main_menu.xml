@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingRight="@dimen/main_margin" >
+    android:orientation="vertical" >
+
+    <!-- android:paddingRight="@dimen/main_margin" -->
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -34,8 +35,8 @@
             android:text="@string/cws"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textStyle="normal"
-            android:textSize="27sp" />
+            android:textSize="27sp"
+            android:textStyle="normal" />
 
         <!-- <TextView -->
         <!-- android:id="@+id/textViewHome" -->
@@ -72,6 +73,7 @@
         <!-- android:paddingRight="@dimen/image_menu_margin" -->
         <!-- android:paddingTop="@dimen/image_menu_margin" -->
         <!-- android:src="@drawable/home_icon" /> -->
+
 
         <!-- <View -->
         <!-- android:id="@+id/line1" -->

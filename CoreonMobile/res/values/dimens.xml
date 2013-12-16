@@ -12,8 +12,7 @@
     <dimen name="card_text_date_size">12sp</dimen>
     <dimen name="image_menu_margin">9dp</dimen>
     <dimen name="home_image_padding">9dp</dimen>
-    
+    <dimen name="shadow_margin">12dp</dimen>
     <dimen name="card_inner_padding">7dp</dimen>
-    
 
 </resources>

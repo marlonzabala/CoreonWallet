@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/main_margin"
     tools:context=".MainInformation" >
+<!--     android:paddingLeft="@dimen/main_margin" -->
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
