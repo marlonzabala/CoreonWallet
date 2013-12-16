@@ -51,6 +51,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 @SuppressLint("CutPasteId")
 public class CoreonMain extends FragmentActivity
 {
@@ -105,141 +107,6 @@ public class CoreonMain extends FragmentActivity
 		//n.execute("test", "test", "offer");
 
 		// Toast.makeText(getApplicationContext(), " Expanded", Toast.LENGTH_SHORT).show();
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		final Button GetServerData = (Button) findViewById(R.id.button);
-
-		// On button click call this listener
-		GetServerData.setOnClickListener(new OnClickListener() {
-			public void onClick(View v)
-			{
-
-				//Toast.makeText(getBaseContext(), "Please wait, connecting to server.", Toast.LENGTH_SHORT).show();
-				
-				// remove child views
-				ViewGroup layout = (ViewGroup) findViewById(R.id.dynamic_layout_main);
-				layout.removeAllViews();
-
-				// get layout to insert
-				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View v1 = vi.inflate(R.layout.progress, null);
-
-				// insert into main view
-				View insertPoint = findViewById(R.id.dynamic_layout_main);
-				((ViewGroup) insertPoint).addView(v1, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-				
-				
-				
-				
-				
-				
-				
-				
-				
-
-				// Create Inner Thread Class
-				Thread background = new Thread(new Runnable() {
-
-					private final HttpClient	Client	= new DefaultHttpClient();
-					private String				URL		= "http://androidexample.com/media/webservice/getPage.php";
-
-					// After call for background.start this run method call
-					public void run()
-					{
-						try
-						{
-							//Thread.sleep(5000);
-
-							String SetServerString = "";
-							HttpGet httpget = new HttpGet(URL);
-							ResponseHandler<String> responseHandler = new BasicResponseHandler();
-							SetServerString = Client.execute(httpget, responseHandler);
-							threadMsg(SetServerString);
-
-						}
-						catch (Throwable t)
-						{
-							// just end the background thread
-							Log.i("Animation", "Thread  exception " + t);
-						}
-					}
-
-					private void threadMsg(String msg)
-					{
-						if (!msg.equals(null) && !msg.equals(""))
-						{
-							Message msgObj = handler.obtainMessage();
-							Bundle b = new Bundle();
-							b.putString("message", msg);
-							msgObj.setData(b);
-							handler.sendMessage(msgObj);
-						}
-					}
-
-					// Define the Handler that receives messages from the thread and update the
-					// progress
-					private final Handler	handler	= new Handler() {
-
-						public void handleMessage(Message msg)
-						{
-							String aResponse = msg.getData().getString("message");
-			
-							if ((null != aResponse))
-							{
-								
-								// ALERT MESSAGE
-								Toast.makeText(getBaseContext(), "Server Response: " + aResponse, Toast.LENGTH_SHORT)
-										.show();
-								
-								
-								
-								
-								
-								
-								// remove child views
-								ViewGroup layout = (ViewGroup) findViewById(R.id.dynamic_layout_main);
-								layout.removeAllViews();
-
-								// get layout to insert
-								LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-								View v = vi.inflate(R.layout.change_password, null);
-
-								// insert into main view
-								View insertPoint = findViewById(R.id.dynamic_layout_main);
-								((ViewGroup) insertPoint).addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-								
-								
-							}
-							else
-							{
-								// ALERT MESSAGE
-								Toast.makeText(getBaseContext(), "Not Got Response From Server.", Toast.LENGTH_SHORT)
-										.show();
-							}
-			
-						}
-					};
-
-				});
-				// Start Thread
-				background.start(); // After call start method thread called run Method
-			}
-		});
-
 	}
 
 	public void openCards(View view)
@@ -414,12 +281,12 @@ public class CoreonMain extends FragmentActivity
 					b.putString("message", msg);
 					msgObj.setData(b);
 					handler.sendMessage(msgObj);
-				}
+				} 
 			}
 
 			// Define the Handler that receives messages from the thread and update the
 			// progress
-			private final Handler	handler	= new Handler() {
+			private final Handler	handler	= new Handler(getApplicationContext().getMainLooper()) {
 
 				public void handleMessage(Message msg)
 				{
@@ -432,8 +299,10 @@ public class CoreonMain extends FragmentActivity
 						Toast.makeText(getBaseContext(), "Server Response: " + aResponse, Toast.LENGTH_SHORT)
 								.show();
 						
-						try{
 						
+						
+						try{
+							
 						//hide progress bar
 						final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 						progressBar.setVisibility(View.GONE);
@@ -494,13 +363,16 @@ public class CoreonMain extends FragmentActivity
 
 									int imageInt = Integer.parseInt(image);
 
-									removeStringsValues();
-									addStrings("", "", "", 0, "", "space");
-									addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url, "noticecontent");
-									addStrings("", "", "", 0, "", "space");
-
+//									removeStringsValues();
 									MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
-									noticeContentAdapter.setValues(_title, _content, _date, _image, _type, _extra);
+									
+									noticeContentAdapter.initiatizeStringsValues();
+									
+									noticeContentAdapter.addStrings("", "", "", 0, "", "space");
+									noticeContentAdapter.addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url, "noticecontent");
+									noticeContentAdapter.addStrings("", "", "", 0, "", "space");
+
+									//noticeContentAdapter.setValues(_title, _content, _date, _image, _type, _extra);
 									listView.setAdapter(noticeContentAdapter);
 									listView.setDividerHeight(0);
 								}
@@ -843,22 +715,6 @@ class MyPagerAdapter extends PagerAdapter
 		ImageButton imh = (ImageButton) viewParent.findViewById(R.id.imageButtonHelp);
 		imh.setBackgroundColor(Color.TRANSPARENT);
 	}
-
-	// @Override
-	// public float getPageWidth(int position)
-	// {
-	// switch (position)
-	// {
-	// case 0:
-	// return .85f;
-	// case 1:
-	// return 1;
-	// case 2:
-	// return .85f;
-	// default:
-	// return 1;
-	// }
-	// }
 
 	public Object instantiateItem(View collection, int position)
 	{
