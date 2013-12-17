@@ -132,6 +132,7 @@ public class CustomViewBehind extends ViewGroup {
 		if (mSecondaryContent != null)
 			mSecondaryContent.layout(0, 0, width-mWidthOffset, height);
 	}
+	
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

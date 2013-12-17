@@ -91,6 +91,17 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
+		if (this.getCount() <= position)
+		{
+			View v = new View(context);
+			return v;
+		}
+		if (_type.size() <= position)
+		{
+			View v = new View(context);
+			return v;
+		}
+
 		View rowView;
 
 		String type = _type.get(position).toString();
@@ -178,19 +189,28 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("space"))
 		{
-			if (convertView != null && convertView.getTag().equals("space"))
+			try
 			{
-				rowView = convertView;
-			}
-			else
-			{
-				rowView = inflater.inflate(R.layout.blank_layout_card, parent, false);
-			}
-			TextView textTitle = (TextView) rowView.findViewById(R.id.textViewblank);
-			textTitle.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 25));
+				if (convertView != null && convertView.getTag().equals("space"))
+				{
+					rowView = convertView;
+				}
+				else
+				{
+					rowView = inflater.inflate(R.layout.blank_layout_card, parent, false);
+				}
+				TextView textTitle = (TextView) rowView.findViewById(R.id.textViewblank);
+				textTitle.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 25));
 
-			rowView.setEnabled(false);
-			rowView.setOnClickListener(null);
+				rowView.setEnabled(false);
+				rowView.setOnClickListener(null);
+
+			}
+			catch (Exception e)
+			{
+				View v = new View(context);
+				rowView = v;
+			}
 
 			rowView.setTag("space");
 		}
@@ -404,6 +424,34 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			else
 			{
 				rowView = inflater.inflate(R.layout.account_line_orange, parent, false);
+			}
+			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
+			// textTitle.setText(_title.get(position).toString());
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("card"))
+		{
+			String tag = "card";
+			try
+			{
+
+				if (convertView != null && convertView.getTag().equals(tag))
+				{
+					rowView = convertView;
+				}
+				else
+				{
+					rowView = inflater.inflate(R.layout.card_chooser_fragment, parent, false);
+				}
+
+				ImageView image = (ImageView) rowView.findViewById(R.id.imageViewCard);
+				image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+
+			}
+			catch (Exception e)
+			{
+				View v = new View(context);
+				rowView = v;
 			}
 			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
 			// textTitle.setText(_title.get(position).toString());

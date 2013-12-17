@@ -1,10 +1,6 @@
 package com.itcorea.coreonmobile;
 
-import static android.content.Context.TELEPHONY_SERVICE;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,13 +22,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
-import android.text.format.DateFormat;
+import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +39,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageButton;
@@ -67,17 +63,14 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 	boolean							helpSelected	= false;
 
 	ExpandableListAdapter			listAdapter;
+	ListView						listViewCard;
+	CardArrayAdapter				cardlistAdapter;
 	ExpandableListView				expListView;
 	MyPagerAdapter					adapter;
 	List<String>					listDataHeader;
 	HashMap<String, List<String>>	listDataChild;
 
 	ArrayList<String>				_title			= new ArrayList<String>();
-	ArrayList<String>				_content		= new ArrayList<String>();
-	ArrayList<String>				_date			= new ArrayList<String>();
-	ArrayList<String>				_image			= new ArrayList<String>();
-	ArrayList<String>				_type			= new ArrayList<String>();
-	ArrayList<String>				_extra			= new ArrayList<String>();
 
 	List<String>					listDataHeaderImage;
 	HashMap<String, List<String>>	listDataChildImage;
@@ -112,6 +105,29 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		menu.setBehindScrollScale(0.25f);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 
+		listViewCard = (ListView) findViewById(R.id.listViewCards);
+//		cardlistAdapter = new CardArrayAdapter(getApplicationContext(), _title);
+//		cardlistAdapter.initiatizeStringsValues();
+//		cardlistAdapter.addStrings(R.drawable.card1);
+//		cardlistAdapter.addStrings(R.drawable.card2);
+//		cardlistAdapter.addStrings(R.drawable.card3);
+		
+		MySimpleArrayAdapter cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+		
+		
+		cardAdapter.initiatizeStringsValues();
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		listViewCard.setAdapter(cardAdapter);
+
 		// set preferences as logged in
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		SharedPreferences.Editor editor = preferences.edit();
@@ -122,11 +138,13 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
 
+		// create expandable list
 		expListView = (ExpandableListView) findViewById(R.id.lvExp);
 		prepareListData();
 		listAdapter = new ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild, listDataHeaderImage, listDataChildImage);
 		expListView.setAdapter(listAdapter);
 
+		// align expandable list indicator
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
 		int mScreenWidth = displayMetrics.widthPixels;
@@ -239,15 +257,8 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		expListView.expandGroup(2);// actions
 		expListView.expandGroup(3);// logo
 
-		// for dev
-
-		//set home page as starting page
-		SetHomepage();
-
-		// int item = 3;
-		// expListView.performItemClick(expListView.getAdapter().getView(item, null, null), item,
-		// expListView.getAdapter().getItemId(item));
-
+		// set home page as starting page
+		 SetHomepage();
 	}
 
 	public void LogoClick()
@@ -324,10 +335,6 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 							public void onClick(View v)
 							{
 								Toast.makeText(getApplicationContext(), "Open Camera", Toast.LENGTH_LONG);
-								// Intent cameraIntent = new
-								// Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-								// con.startActivityForResult(cameraIntent,
-								// 1888);
 							}
 						});
 					}
@@ -357,7 +364,7 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 
 			noticeContentAdapter.initiatizeStringsValues();
 			noticeContentAdapter.addStrings("EMAIL ACCOUNT", "", "", 0, "", "accountheader");
-			noticeContentAdapter.addStrings("", "email@yahoo.com", "", 0, "", "accountemail");
+			noticeContentAdapter.addStrings("", "emails@yahoo.com", "", 0, "", "accountemail");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlineorange");
 			noticeContentAdapter.addStrings("ACCOUNT INFORMATION", "", "", 0, "", "accountheader");
 			noticeContentAdapter.addStrings("First Name", "Ariel", "", 0, "", "accountcontent");
@@ -370,7 +377,8 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
 			noticeContentAdapter.addStrings("Mobile Number", "09177896541", "", 0, "", "accountcontentmobile");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("Address", "29 Sitio Upper Manalite II Brgy. Sta. Cruz Antipolo City Rizal 12700", "", 0, "", "accountcontentaddress");
+			noticeContentAdapter.addStrings("Address", "29 Sitio Upper Manalite II Brgy. Sta. Cruz Antipolo City Rizal 12700", "", 0, "",
+					"accountcontentaddress");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlineorange");
 			noticeContentAdapter.addStrings("WALLET INFORMATION", "", "", 0, "", "accountheader");
 			noticeContentAdapter.addStrings("My Cards", "7 Cards", "", 0, "", "accountcontent");
@@ -392,6 +400,182 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 			listView2 = (ListView) viewChild.findViewById(R.id.listViewAccount);
 			listView2.setAdapter(noticeContentAdapter);
 			listView2.setDividerHeight(0);
+
+			listView2.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
+				{
+
+					if (position == 4)
+					{
+						// first name
+
+						final EditText input = new EditText(CoreonMain.this);
+						input.setText(noticeContentAdapter._content.get(position).toString());
+						// input.selectAll();
+
+						new AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
+								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										Editable value = input.getText();
+									}
+								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										// Do nothing.
+									}
+								}).show();
+
+						input.requestFocus();
+						input.postDelayed(new Runnable() {
+							@Override
+							public void run()
+							{
+								InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								keyboard.showSoftInput(input, 0);
+							}
+						}, 200);
+
+					}
+					else if (position == 6)
+					{
+						// middle name
+
+						final EditText input = new EditText(CoreonMain.this);
+						input.setText(noticeContentAdapter._content.get(position).toString());
+						// input.selectAll();
+
+						new AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
+								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										Editable value = input.getText();
+									}
+								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										// Do nothing.
+									}
+								}).show();
+
+						input.requestFocus();
+						input.postDelayed(new Runnable() {
+							@Override
+							public void run()
+							{
+								InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								keyboard.showSoftInput(input, 0);
+							}
+						}, 200);
+					}
+					else if (position == 8)
+					{
+						// last name
+						final EditText input = new EditText(CoreonMain.this);
+						input.setText(noticeContentAdapter._content.get(position).toString());
+						// input.selectAll();
+
+						new AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
+								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										Editable value = input.getText();
+									}
+								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										// Do nothing.
+									}
+								}).show();
+
+						input.requestFocus();
+						input.postDelayed(new Runnable() {
+							@Override
+							public void run()
+							{
+								InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								keyboard.showSoftInput(input, 0);
+							}
+						}, 200);
+					}
+					else if (position == 10)
+					{
+						// birth day
+
+						final EditText input = new EditText(CoreonMain.this);
+						input.setText(noticeContentAdapter._content.get(position).toString());
+						// input.selectAll();
+
+						new AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
+								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										Editable value = input.getText();
+									}
+								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										// Do nothing.
+									}
+								}).show();
+
+						input.requestFocus();
+						input.postDelayed(new Runnable() {
+							@Override
+							public void run()
+							{
+								InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								keyboard.showSoftInput(input, 0);
+							}
+						}, 200);
+					}
+					else if (position == 12)
+					{
+						// mobile number
+					}
+					else if (position == 14)
+					{
+						// address
+						final EditText input = new EditText(CoreonMain.this);
+						input.setText(noticeContentAdapter._content.get(position).toString());
+						// input.selectAll();
+
+						new AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
+								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										Editable value = input.getText();
+									}
+								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton)
+									{
+										// Do nothing.
+									}
+								}).show();
+
+						input.requestFocus();
+						input.postDelayed(new Runnable() {
+							@Override
+							public void run()
+							{
+								InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								keyboard.showSoftInput(input, 0);
+							}
+						}, 200);
+					}
+					else if (position == 17)
+					{
+						// mycards
+					}
+					else if (position == 19)
+					{
+						// points
+					}
+				}
+			});
+
 		}
 
 		@Override
@@ -493,7 +677,7 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 					"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
 					"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
 			adapter.addStrings(
-					"Dong Won Restaurant",
+					"Won Dong Restaurant",
 					"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
 					"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
 			adapter.addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
@@ -552,27 +736,29 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 					{
 						// open notice content full
 
-						View noticeView = setPage(R.layout.notice_content);
+						stack = 1;
 
-						TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
-						TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
+						String title = adapter._title.get(position).toString();
+						String date = adapter._date.get(position).toString();
 
 						String image = adapter._image.get(position).toString();
 						String url = adapter._extra.get(position).toString();
 						String content = adapter._content.get(position).toString();
+
+						View noticeView = setPage(R.layout.notice_content);
 
 						int imageInt = Integer.parseInt(image);
 						MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 
 						noticeContentAdapter.initiatizeStringsValues();
 						noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
-						noticeContentAdapter.addStrings(textTitle.getText().toString(), content, textDate.getText().toString(), imageInt, url,
-								"noticecontent");
+						noticeContentAdapter.addStrings(title, content, date, imageInt, url, "noticecontent");
 						noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
 
 						ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
 						listView.setAdapter(noticeContentAdapter);
 						listView.setDividerHeight(0);
+
 					}
 					else if (view.getTag().equals("header"))
 					{
@@ -761,7 +947,8 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 	{
 		return super.onPrepareOptionsMenu(menu);
 	}
-	int stack = 1;
+
+	int	stack	= 1;
 
 	@Override
 	public void onBackPressed()
@@ -772,14 +959,12 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 			menu.showContent(true);
 			return;
 		}
-		else if(stack == 1)
+		else if (stack == 1)
 		{
 			SetHomepage();
 			stack = 0;
 			return;
 		}
-	
-		
 
 		super.onBackPressed();
 	}
@@ -801,9 +986,9 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		ImageButton im = (ImageButton) findViewById(R.id.imageButtonNotice);
 		im.setBackgroundColor(Color.WHITE);
 
-		// noticeSelected = true;
-		// offerSelected = false;
-		// helpSelected = false;
+		noticeSelected = true;
+		offerSelected = false;
+		helpSelected = false;
 
 		View v = setLayout(R.layout.notices);
 
@@ -1159,7 +1344,6 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 	@Override
 	public void onClick(View v)
 	{
-		// TODO Auto-generated method stub
 
 	}
 }
@@ -1197,11 +1381,6 @@ class MyPagerAdapter extends PagerAdapter
 
 	}
 
-	public void setHome()
-	{
-		expListView.performItemClick(expListView.getAdapter().getView(1, null, null), 1, expListView.getAdapter().getItemId(1));
-	}
-
 	@Override
 	public void destroyItem(View arg0, int arg1, Object arg2)
 	{
@@ -1217,7 +1396,6 @@ class MyPagerAdapter extends PagerAdapter
 	@Override
 	public int getCount()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }
