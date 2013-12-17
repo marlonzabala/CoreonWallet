@@ -95,7 +95,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 
 		String type = _type.get(position).toString();
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		//Log.i("type", type.toString());
+		// Log.i("type", type.toString());
 
 		if (type.equals("userinfo"))
 		{
@@ -309,8 +309,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.account_header, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
+			TextView textTitle = (TextView) rowView.findViewById(R.id.textViewHeader);
+			textTitle.setText(_title.get(position).toString());
 			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("accountemail"))
@@ -324,8 +324,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.account_email, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
+			TextView textEmail = (TextView) rowView.findViewById(R.id.textViewEmail);
+			textEmail.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("accountcontent"))
@@ -339,8 +339,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.account_info_content, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
+			TextView textDescription = (TextView) rowView.findViewById(R.id.textLabel);
+			TextView textContent = (TextView) rowView.findViewById(R.id.textContent);
+			textDescription.setText(_title.get(position).toString());
+			textContent.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("accountcontentmobile"))
@@ -354,8 +356,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.account_info_content_mobile, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
+			TextView textDescription = (TextView) rowView.findViewById(R.id.textLabel);
+			TextView textContent = (TextView) rowView.findViewById(R.id.textContentMobile);
+			textDescription.setText(_title.get(position).toString());
+			textContent.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("accountcontentaddress"))
@@ -369,8 +373,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.account_info_content_address, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
+			TextView textDescription = (TextView) rowView.findViewById(R.id.textLabel);
+			TextView textContent = (TextView) rowView.findViewById(R.id.textContentAddress);
+			textDescription.setText(_title.get(position).toString());
+			textContent.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("accountlinegray"))

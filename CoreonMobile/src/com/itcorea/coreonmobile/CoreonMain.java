@@ -356,27 +356,26 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 			noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 
 			noticeContentAdapter.initiatizeStringsValues();
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountheader");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountemail");
+			noticeContentAdapter.addStrings("EMAIL ACCOUNT", "", "", 0, "", "accountheader");
+			noticeContentAdapter.addStrings("", "email@yahoo.com", "", 0, "", "accountemail");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlineorange");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountheader");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+			noticeContentAdapter.addStrings("ACCOUNT INFORMATION", "", "", 0, "", "accountheader");
+			noticeContentAdapter.addStrings("First Name", "Ariel", "", 0, "", "accountcontent");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+			noticeContentAdapter.addStrings("Middle Name", "Belo", "", 0, "", "accountcontent");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+			noticeContentAdapter.addStrings("Last Name", "Surca", "", 0, "", "accountcontent");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+			noticeContentAdapter.addStrings("Birthday", "June 19 1979", "", 0, "", "accountcontent");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontentmobile");
+			noticeContentAdapter.addStrings("Mobile Number", "09177896541", "", 0, "", "accountcontentmobile");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontentaddress");
+			noticeContentAdapter.addStrings("Address", "29 Sitio Upper Manalite II Brgy. Sta. Cruz Antipolo City Rizal 12700", "", 0, "", "accountcontentaddress");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlineorange");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountheader");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
+			noticeContentAdapter.addStrings("WALLET INFORMATION", "", "", 0, "", "accountheader");
+			noticeContentAdapter.addStrings("My Cards", "7 Cards", "", 0, "", "accountcontent");
 			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountcontent");
-			noticeContentAdapter.addStrings("", "", "", 0, "", "accountlinegray");
+			noticeContentAdapter.addStrings("Coreon Points", "Points", "", 0, "", "accountcontent");
 
 			return "";
 		}
@@ -824,7 +823,6 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 					ResponseHandler<String> responseHandler = new BasicResponseHandler();
 					SetServerString = Client.execute(httpget, responseHandler);
 					threadMsg(SetServerString);
-
 				}
 				catch (Throwable t)
 				{
