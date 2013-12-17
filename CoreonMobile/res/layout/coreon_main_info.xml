@@ -58,8 +58,8 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/selector"
         android:contentDescription="notice"
-        android:onClick="openNotice"
         android:scaleType="fitCenter"
+        android:onClick="openNotice"
         android:src="@drawable/noticebutton" />
 
     <ImageView
