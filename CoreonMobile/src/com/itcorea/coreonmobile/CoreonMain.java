@@ -121,9 +121,11 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
 		cardAdapter.addStrings("", "", "", 0, "", "space");
 		cardAdapter.addStrings("", "", "", 0, "", "space");
 		listViewCard.setAdapter(cardAdapter);
