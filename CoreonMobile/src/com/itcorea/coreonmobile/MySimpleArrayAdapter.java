@@ -20,7 +20,6 @@ import android.widget.TextView;
 public class MySimpleArrayAdapter extends ArrayAdapter<String>
 {
 	private final Context	context;
-	Boolean					_notice		= false;
 
 	ArrayList<String>		_title		= new ArrayList<String>();
 	ArrayList<String>		_content	= new ArrayList<String>();
@@ -70,47 +69,38 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		this.add(title);
 	}
 
-	// public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String>
-	// date, ArrayList<String> image,
-	// ArrayList<String> type, ArrayList<String> extra)
-	// {
-	// this._title = title;
-	// this._content = content;
-	// this._date = date;
-	// this._image = image;
-	// this._type = type;
-	// this._extra = extra;
-	// }
-
-	public void setNotice(Boolean notice)
+	@Override
+	public int getCount()
 	{
-		this._notice = notice;
+		return this._title.size();
 	}
 
-	@SuppressLint("InlinedApi")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
-		if (this.getCount() <= position)
-		{
-			View v = new View(context);
-			return v;
-		}
-		if (_type.size() <= position)
-		{
-			View v = new View(context);
-			return v;
-		}
+
+		// for development
+		// if (_type.size() <= position || this.getCount() <= position)
+		// {
+		//
+		// Log.i("small size", String.valueOf(this.getItem(position - 1)) + " " +
+		// String.valueOf(position));
+		// View v = new View(context);
+		// v.setTag("null");
+		// return v;
+		// }
 
 		View rowView;
 
 		String type = _type.get(position).toString();
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		String tag = "null";
 		// Log.i("type", type.toString());
 
 		if (type.equals("userinfo"))
 		{
-			if (convertView != null && convertView.getTag().equals("userinfo"))
+			tag = "userinfo";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -127,11 +117,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textHi.setTypeface(typeFace);
 			textName.setText(_content.get(position).toString());
 
-			rowView.setTag("userinfo");
+			rowView.setTag(tag);
 		}
 		else if (type.equals("usercontent"))
 		{
-			if (convertView != null && convertView.getTag().equals("usercontent"))
+			tag = "usercontent";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -146,11 +137,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textContent.setText(_title.get(position).toString());
 			textContentNumber.setText(_content.get(position).toString());
 
-			rowView.setTag("usercontent");
+			rowView.setTag(tag);
 		}
 		else if (type.equals("userline"))
 		{
-			if (convertView != null && convertView.getTag().equals("userline"))
+			tag = "userline";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -158,11 +150,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.card_user_line, parent, false);
 			}
-			rowView.setTag("userline");
+			rowView.setTag(tag);
 		}
 		else if (type.equals("userbottom"))
 		{
-			if (convertView != null && convertView.getTag().equals("userbottom"))
+			tag = "userbottom";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -170,11 +163,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			{
 				rowView = inflater.inflate(R.layout.card_user_bottom, parent, false);
 			}
-			rowView.setTag("userbottom");
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("header"))
 		{
-			if (convertView != null && convertView.getTag().equals("header"))
+			tag = "header";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -185,47 +179,66 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			TextView textTitle = (TextView) rowView.findViewById(R.id.lblHeaderTitleText);
 			textTitle.setText(_title.get(position).toString());
 
-			rowView.setTag("header");
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("space"))
 		{
-			try
+			// try
+			// {
+			tag = "space";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
-				if (convertView != null && convertView.getTag().equals("space"))
-				{
-					rowView = convertView;
-				}
-				else
-				{
-					rowView = inflater.inflate(R.layout.blank_layout_card, parent, false);
-				}
-				TextView textTitle = (TextView) rowView.findViewById(R.id.textViewblank);
-				textTitle.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 25));
-
-				rowView.setEnabled(false);
-				rowView.setOnClickListener(null);
-
+				rowView = convertView;
 			}
-			catch (Exception e)
+			else
 			{
-				View v = new View(context);
-				rowView = v;
+				rowView = inflater.inflate(R.layout.blank_layout_card, parent, false);
 			}
-
-			rowView.setTag("space");
-		}
-		else if (type.toString().equals("bottomshadow"))
-		{
-			rowView = inflater.inflate(R.layout.card_bottom_shadow, parent, false);
+			TextView textTitle = (TextView) rowView.findViewById(R.id.textViewblank);
+			textTitle.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 25));
 
 			rowView.setEnabled(false);
 			rowView.setOnClickListener(null);
 
-			rowView.setTag("bottomshadow");
+			// }
+			// catch (Exception e)
+			// {
+			// View v = new View(context);
+			// rowView = v;
+			// }
+
+			rowView.setTag(tag);
+		}
+		else if (type.toString().equals("bottomshadow"))
+		{
+			tag = "bottomshadow";
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.card_bottom_shadow, parent, false);
+			}
+
+			rowView.setEnabled(false);
+			rowView.setOnClickListener(null);
+
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("text"))
 		{
-			rowView = inflater.inflate(R.layout.card_text, parent, false);
+			tag = "text";
+
+			if (convertView != null && convertView.getTag().equals(tag))
+			{
+				rowView = convertView;
+			}
+			else
+			{
+				rowView = inflater.inflate(R.layout.card_text, parent, false);
+			}
+
 			TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
 			TextView textContent = (TextView) rowView.findViewById(R.id.lblContentText);
 			TextView textDate = (TextView) rowView.findViewById(R.id.lblDateText);
@@ -233,11 +246,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textDate.setText(_date.get(position).toString());
 			textContent.setText(_content.get(position).toString());
 
-			rowView.setTag("text");
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("textimagenotice"))
 		{
-			if (convertView != null && convertView.getTag().equals("textimagenotice"))
+			tag = "textimagenotice";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -254,11 +268,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textDate.setText(_date.get(position).toString());
 			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
-			rowView.setTag("textimagenotice");
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("textimage"))
 		{
-			if (convertView != null && convertView.getTag().equals("textimage"))
+			tag = "textimage";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -276,11 +291,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textDate.setText(_date.get(position).toString());
 			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
-			rowView.setTag("textimage");
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("noticecontent"))
 		{
-			if (convertView != null && convertView.getTag().equals("noticecontent"))
+			tag = "noticecontent";
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
 			}
@@ -316,11 +332,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 				}
 			});
 
-			rowView.setTag("noticecontent");
+			rowView.setTag(tag);
 		}
 		else if (type.toString().equals("accountheader"))
 		{
-			String tag = "accountheader";
+			tag = "accountheader";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -335,7 +351,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("accountemail"))
 		{
-			String tag = "accountemail";
+			tag = "accountemail";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -350,7 +366,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("accountcontent"))
 		{
-			String tag = "accountcontent";
+			tag = "accountcontent";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -367,7 +383,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("accountcontentmobile"))
 		{
-			String tag = "accountcontentmobile";
+			tag = "accountcontentmobile";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -384,7 +400,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("accountcontentaddress"))
 		{
-			String tag = "accountcontentaddress";
+			tag = "accountcontentaddress";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -401,7 +417,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("accountlinegray"))
 		{
-			String tag = "accountlinegray";
+			tag = "accountlinegray";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -416,7 +432,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("accountlineorange"))
 		{
-			String tag = "accountlineorange";
+			tag = "accountlineorange";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -431,43 +447,37 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		}
 		else if (type.toString().equals("card"))
 		{
-			String tag = "card";
-			try
+			tag = "card";
+			// try
+			// {
+
+			if (convertView != null && convertView.getTag().equals(tag))
 			{
-
-				if (convertView != null && convertView.getTag().equals(tag))
-				{
-					rowView = convertView;
-				}
-				else
-				{
-					rowView = inflater.inflate(R.layout.card_chooser_fragment, parent, false);
-				}
-
-				ImageView image = (ImageView) rowView.findViewById(R.id.imageViewCard);
-				image.setImageResource(Integer.parseInt(_image.get(position).toString()));
-
+				rowView = convertView;
 			}
-			catch (Exception e)
+			else
 			{
-				View v = new View(context);
-				rowView = v;
+				rowView = inflater.inflate(R.layout.card_chooser_fragment, parent, false);
 			}
+
+			ImageView image = (ImageView) rowView.findViewById(R.id.imageViewCard);
+			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+
+			// }
+			// catch (Exception e)
+			// {
+			// View v = new View(context);
+			// rowView = v;
+			// }
 			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
 			// textTitle.setText(_title.get(position).toString());
 			rowView.setTag(tag);
 		}
 		else
 		{
-			rowView = inflater.inflate(R.layout.card_text_image, parent, false);
-			TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			TextView textContent = (TextView) rowView.findViewById(R.id.lblContentText);
-			TextView textDate = (TextView) rowView.findViewById(R.id.lblDateText);
-			ImageView image = (ImageView) rowView.findViewById(R.id.imageViewContentImage);
-			textTitle.setText("Test");
-			textContent.setText(_content.get(position).toString());
-			textDate.setText(_date.get(position).toString());
-			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+			View v = new View(context);
+			v.setTag("error");
+			return v;
 		}
 
 		return rowView;
