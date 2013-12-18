@@ -11,21 +11,33 @@
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:paddingBottom="4dp"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="4dp" >
+        android:paddingRight="20dp" >
+<!--         android:paddingBottom="4dp" -->
+<!--         android:paddingTop="4dp" -->
 
         <!-- android:background="@drawable/clickable_card_content" -->
 
         <ImageView
-            android:id="@+id/imageViewCard"
+            android:id="@+id/imageViewCardShadow"
             android:layout_width="300dp"
-            android:layout_height="150dp"
+            android:layout_height="170dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter"
+            android:src="@drawable/cardshadow" />
+<!--             android:paddingBottom="20dp" -->
+<!--             android:paddingTop="20dp" -->
+
+        <ImageView
+            android:id="@+id/imageViewCard"
+            android:layout_width="300dp"
+            android:layout_height="170dp"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/card1" />
+
     </RelativeLayout>
 
 </RelativeLayout>
