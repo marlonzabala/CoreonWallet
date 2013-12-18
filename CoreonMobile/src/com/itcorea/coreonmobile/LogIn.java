@@ -57,7 +57,7 @@ public class LogIn extends Activity
 
 		// for dev
 		// test for errors
-		// LoggedIn = true;
+		LoggedIn = true;
 
 		// for dev
 		EditText ep = (EditText) findViewById(R.id.editPassword);
