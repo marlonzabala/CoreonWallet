@@ -52,7 +52,7 @@ import android.widget.Toast;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 @SuppressLint("CutPasteId")
-public class CoreonMain extends FragmentActivity implements OnClickListener
+public class CoreonMain extends FragmentActivity
 {
 	public static ViewPager			mPager;
 	public static int				history;
@@ -64,11 +64,11 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 
 	ExpandableListAdapter			listAdapter;
 	ListView						listViewCard;
-	CardArrayAdapter				cardlistAdapter;
+	MySimpleArrayAdapter			cardAdapter;
 	ExpandableListView				expListView;
-	MyPagerAdapter					adapter;
 	List<String>					listDataHeader;
 	HashMap<String, List<String>>	listDataChild;
+	MySimpleArrayAdapter			adapterHome;
 
 	ArrayList<String>				_title			= new ArrayList<String>();
 
@@ -91,6 +91,27 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 
 		setContentView(R.layout.coreon_main_info);
 
+		InitializeSlidingMenu();
+
+		// set preferences as logged in
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = preferences.edit();
+		Boolean tr = true;
+		editor.putBoolean("LoggedIn", tr); // value to store
+		editor.commit();
+
+		InitializeMenu();
+		InitializeCardList();
+
+		// home page as starting page
+		SetHomepage();
+
+		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
+		// n.execute("test", "test", "offer");
+	}
+
+	public void InitializeSlidingMenu()
+	{
 		menu = new SlidingMenu(this);
 		menu.setSlidingEnabled(true);
 		menu.setMode(SlidingMenu.LEFT_RIGHT);
@@ -104,42 +125,11 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		menu.setFadeDegree(0.45f);
 		menu.setBehindScrollScale(0.25f);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+	}
 
-		listViewCard = (ListView) findViewById(R.id.listViewCards);
-//		cardlistAdapter = new CardArrayAdapter(getApplicationContext(), _title);
-//		cardlistAdapter.initiatizeStringsValues();
-//		cardlistAdapter.addStrings(R.drawable.card1);
-//		cardlistAdapter.addStrings(R.drawable.card2);
-//		cardlistAdapter.addStrings(R.drawable.card3);
-		
-		MySimpleArrayAdapter cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
-		
-		
-		cardAdapter.initiatizeStringsValues();
-		cardAdapter.addStrings("", "", "", 0, "", "space");
-		cardAdapter.addStrings("", "", "", 0, "", "space");
-		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
-		cardAdapter.addStrings("", "", "", 0, "", "space");
-		cardAdapter.addStrings("", "", "", 0, "", "space");
-		listViewCard.setAdapter(cardAdapter);
-
-		// set preferences as logged in
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		SharedPreferences.Editor editor = preferences.edit();
-		Boolean tr = true;
-		editor.putBoolean("LoggedIn", tr); // value to store
-		editor.commit();
-
-		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
-		// n.execute("test", "test", "offer");
-
+	@SuppressLint("NewApi")
+	public void InitializeMenu()
+	{
 		// create expandable list
 		expListView = (ExpandableListView) findViewById(R.id.lvExp);
 		prepareListData();
@@ -258,9 +248,27 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 		expListView.expandGroup(1);// my account
 		expListView.expandGroup(2);// actions
 		expListView.expandGroup(3);// logo
+	}
 
-		// set home page as starting page
-		 SetHomepage();
+	public void InitializeCardList()
+	{
+		cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+		cardAdapter.initiatizeStringsValues();
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
+		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "", "", 0, "", "space");
+
+		listViewCard = (ListView) findViewById(R.id.listViewCards);
+		listViewCard.setAdapter(cardAdapter);
 	}
 
 	public void LogoClick()
@@ -636,7 +644,6 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 
 	private class ShowHomePage extends AsyncTask<String, Void, String>
 	{
-		MySimpleArrayAdapter	adapter;
 
 		@Override
 		protected String doInBackground(String... params)
@@ -650,54 +657,58 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 				e.printStackTrace();
 			}
 
-			adapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+			adapterHome = new MySimpleArrayAdapter(getApplicationContext(), _title);
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 			String fname = prefs.getString("fname", "firstname");
 			String lname = prefs.getString("lname", "lastname");
 			String points = prefs.getString("points", "0");
 
-			adapter.initiatizeStringsValues();
+			adapterHome.initiatizeStringsValues();
 
-			adapter.addStrings("space", "space", "space", 0, "space", "space");
+			adapterHome.addStrings("space", "space", "space", 0, "space", "space");
 
-			adapter.addStrings("userinfo", fname, "userinfo", 0, "userinfo", "userinfo");
-			adapter.addStrings("My Cards", "0 Cards", "userinfo", 0, "userinfo", "usercontent");
-			adapter.addStrings("", "", "", 0, "", "userline");
-			adapter.addStrings("Coreon Points", points + " Points", "userinfo", 0, "userinfo", "usercontent");
-			adapter.addStrings("", "", "", 0, "", "userline");
-			adapter.addStrings("Notice", "12", "userinfo", 0, "userinfo", "usercontent");
-			adapter.addStrings("userinfo", "userinfo", "userinfo", 0, "userinfo", "userbottom");
+			adapterHome.addStrings("userinfo", fname, "userinfo", 0, "userinfo", "userinfo");
+			adapterHome.addStrings("My Cards", "0 Cards", "userinfo", 0, "userinfo", "usercontent");
+			adapterHome.addStrings("", "", "", 0, "", "userline");
+			adapterHome.addStrings("Coreon Points", points + " Points", "userinfo", 0, "userinfo", "usercontent");
+			adapterHome.addStrings("", "", "", 0, "", "userline");
+			adapterHome.addStrings("Notice", "12", "userinfo", 0, "userinfo", "usercontent");
+			adapterHome.addStrings("userinfo", "userinfo", "userinfo", 0, "userinfo", "userbottom");
 
-			adapter.addStrings("space", "space", "space", 0, "space", "space");
+			adapterHome.addStrings("space", "space", "space", 0, "space", "space");
 
-			adapter.addStrings("Exclusive Offers", "", "", 0, "header", "header");
-			adapter.addStrings("Dong Won Restaurant", "Get 50% off on your test test test test test test test test payment of Coreon Card",
+			adapterHome.addStrings("Exclusive Offers", "", "", 0, "header", "header");
+			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your test test test test test test test test payment of Coreon Card",
 					"August 25, 2013 at 11:30 PM", R.drawable.offer_image_1, "www.google.com", "textimage");
-			adapter.addStrings(
-					"Dong Won Restaurant",
-					"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-					"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-			adapter.addStrings(
-					"Won Dong Restaurant",
-					"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-					"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
-			adapter.addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
+			adapterHome
+					.addStrings(
+							"Dong Won Restaurant",
+							"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
+							"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
+			adapterHome
+					.addStrings(
+							"Won Dong Restaurant",
+							"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
+							"August 25, 2013 at 11:30 PM", R.drawable.offer_image_2, "http://www.coreonmobile.com/", "textimage");
+			adapterHome.addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
 					"www.yahoo.com", "textimage");
-			adapter.addStrings("", "", "", 0, "", "bottomshadow");
-			adapter.addStrings("space", "space", "space", 0, "space", "space");
-			adapter.addStrings("Notice", "", "", 0, "header", "header");
-			adapter.addStrings("Dong Won Restaurant",
+			adapterHome.addStrings("", "", "", 0, "", "bottomshadow");
+			adapterHome.addStrings("space", "space", "space", 0, "space", "space");
+			adapterHome.addStrings("Notice", "", "", 0, "header", "header");
+			adapterHome.addStrings("Dong Won Restaurant",
 					"Get 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon Card",
 					"August 25, 2013 at 11:30 PM", 0, "text", "text");
-			adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0, "text", "text");
-			adapter.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0, "text", "text");
-			adapter.addStrings("", "", "", 0, "", "bottomshadow");
+			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0, "text",
+					"text");
+			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", 0, "text",
+					"text");
+			adapterHome.addStrings("", "", "", 0, "", "bottomshadow");
 
 			// show seven spaces
 			for (int i = 0; i < 6; i++)
 			{
-				adapter.addStrings("", "", "", 0, "", "space");
+				adapterHome.addStrings("", "", "", 0, "", "space");
 			}
 
 			return "";
@@ -710,7 +721,7 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 
 			ListView listView = (ListView) view6.findViewById(R.id.listView1);
 
-			listView.setAdapter(adapter);
+			listView.setAdapter(adapterHome);
 			listView.setDividerHeight(0);
 			listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -740,12 +751,11 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 
 						stack = 1;
 
-						String title = adapter._title.get(position).toString();
-						String date = adapter._date.get(position).toString();
-
-						String image = adapter._image.get(position).toString();
-						String url = adapter._extra.get(position).toString();
-						String content = adapter._content.get(position).toString();
+						String title = adapterHome._title.get(position).toString();
+						String date = adapterHome._date.get(position).toString();
+						String image = adapterHome._image.get(position).toString();
+						String url = adapterHome._extra.get(position).toString();
+						String content = adapterHome._content.get(position).toString();
 
 						View noticeView = setPage(R.layout.notice_content);
 
@@ -764,7 +774,7 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 					}
 					else if (view.getTag().equals("header"))
 					{
-						String title = _title.get(position).toString();
+						String title = adapterHome._title.get(position).toString();
 						if (title.equals("Notice"))
 						{
 							// Notice
@@ -1100,7 +1110,6 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 																	if (view.getTag().equals("textimagenotice"))
 																	{
 																		// open notice content full
-																		adapter.setNotice(false);
 
 																		View noticeView = setLayout(R.layout.notice_content);
 																		ListView listView = (ListView) noticeView
@@ -1341,63 +1350,5 @@ public class CoreonMain extends FragmentActivity implements OnClickListener
 	{
 		InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-	}
-
-	@Override
-	public void onClick(View v)
-	{
-
-	}
-}
-
-// old code
-// to be deleted
-class MyPagerAdapter extends PagerAdapter
-{
-
-	ExpandableListAdapter			listAdapter;
-	ExpandableListView				expListView;
-	List<String>					listDataHeader;
-	HashMap<String, List<String>>	listDataChild;
-	List<String>					listDataHeaderImage;
-	HashMap<String, List<String>>	listDataChildImage;
-	Context							con;
-	View							view;
-	int								dev		= 15;
-
-	ArrayList<String>				_title	= new ArrayList<String>();
-
-	public Object instantiateItem(View collection, int position)
-	{
-		LayoutInflater inflater = (LayoutInflater) collection.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		con = collection.getContext();
-		view = collection;
-
-		int resId = 0;
-		switch (position)
-		{
-
-		}
-
-		return resId;
-
-	}
-
-	@Override
-	public void destroyItem(View arg0, int arg1, Object arg2)
-	{
-		((ViewPager) arg0).removeView((View) arg2);
-	}
-
-	@Override
-	public boolean isViewFromObject(View arg0, Object arg1)
-	{
-		return arg0 == ((View) arg1);
-	}
-
-	@Override
-	public int getCount()
-	{
-		return 0;
 	}
 }
