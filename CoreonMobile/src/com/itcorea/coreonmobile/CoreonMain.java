@@ -17,14 +17,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -54,13 +55,14 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 @SuppressLint("CutPasteId")
 public class CoreonMain extends FragmentActivity
 {
+	final static int				CAMERA_PIC_REQUEST	= 1;
 	public static ViewPager			mPager;
 	public static int				history;
 	int								margin;
 
-	boolean							noticeSelected	= false;
-	boolean							offerSelected	= false;
-	boolean							helpSelected	= false;
+	boolean							noticeSelected		= false;
+	boolean							offerSelected		= false;
+	boolean							helpSelected		= false;
 
 	ExpandableListAdapter			listAdapter;
 	ListView						listViewCard;
@@ -70,12 +72,12 @@ public class CoreonMain extends FragmentActivity
 	HashMap<String, List<String>>	listDataChild;
 	MySimpleArrayAdapter			adapterHome;
 
-	ArrayList<String>				_title			= new ArrayList<String>();
+	ArrayList<String>				_title				= new ArrayList<String>();
 
 	List<String>					listDataHeaderImage;
 	HashMap<String, List<String>>	listDataChildImage;
 	View							view;
-	int								dev				= 15;
+	int								dev					= 15;
 
 	SlidingMenu						menu;
 
@@ -260,10 +262,6 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
-		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
 		cardAdapter.addStrings("", "", "", 0, "", "space");
 		cardAdapter.addStrings("", "", "", 0, "", "space");
 
@@ -343,7 +341,7 @@ public class CoreonMain extends FragmentActivity
 						showEnrollCardRegister(1);
 					}
 				});
-				
+
 				ImageView back = (ImageView) view.findViewById(R.id.ImageViewBackButton);
 				back.setOnClickListener(new OnClickListener() {
 					@Override
@@ -369,6 +367,37 @@ public class CoreonMain extends FragmentActivity
 		}
 	}
 
+	private void dispatchTakePictureIntent(int actionCode)
+	{
+		Intent mCameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		mCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+		startActivityForResult(mCameraIntent, CAMERA_PIC_REQUEST);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+
+		if (resultCode == RESULT_OK)
+		{
+			switch (requestCode)
+			{
+				case CAMERA_PIC_REQUEST:
+
+					Toast.makeText(getApplicationContext(), "camera", Toast.LENGTH_SHORT).show();
+
+					Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+					// your ImageView
+					// ImageView photoImage = (ImageView) findViewById(R.id.imageViewCamera);
+					// photoImage.setImageBitmap(thumbnail);
+					// photoImage.setBackgroundResource(R.drawable.card_content_notice);
+					// photoImage.setImageResource(R.drawable.card_choose_logo);
+
+					break;
+			}
+		}
+	}
+
 	public void showEnrollCardRegister(int category)
 	{
 
@@ -376,11 +405,11 @@ public class CoreonMain extends FragmentActivity
 		String number = tm.getLine1Number();
 
 		View view2 = setPage(R.layout.enroll_card_register);
-		
-		//set phone number on text
+
+		// set phone number on text
 		TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
 		textNumber.setText(number.toString());
-		
+
 		ImageView im = (ImageView) view2.findViewById(R.id.imageViewPicture2);
 		// on click on capture image
 		im.setOnClickListener(new OnClickListener() {
@@ -388,18 +417,19 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				Toast.makeText(getApplicationContext(), "Open Camera", Toast.LENGTH_LONG);
+				// Toast.makeText(getApplicationContext(), "Open Camera", Toast.LENGTH_LONG);
+				// ShowEnrollCard();
+				dispatchTakePictureIntent(1);
 			}
 		});
-		
-		
+
 		ImageView back = (ImageView) view2.findViewById(R.id.ImageViewBackButton2);
 		back.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v)
 			{
-				//
-				showEnrollCardCategory(1);
+				// ShowEnrollCard();
+				showEnrollCardCategory(0);
 			}
 		});
 	}
