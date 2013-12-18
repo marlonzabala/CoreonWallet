@@ -33,13 +33,20 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
-    <!-- <ProgressBar -->
-    <!-- android:id="@+id/imgProgress" -->
-    <!-- style="?android:attr/progressBarStyleLarge" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_centerInParent="true" -->
-    <!-- android:layout_below="@+id/textViewWhiteHeader" -->
-    <!-- android:layout_height="wrap_content" /> -->
+    <ImageView
+        android:id="@+id/ImageViewBackButton2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/textViewWhiteHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/button_back_clickable"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/left_arrow" />
 
     <TextView
         android:id="@+id/shadowTops"
@@ -47,21 +54,6 @@
         android:layout_height="5dp"
         android:layout_below="@+id/textViewWhiteHeader"
         android:background="@drawable/shadow_menu_info_top" />
-
-    <ImageView
-        android:id="@+id/ImageViewBackButton"
-        android:layout_width="50dp"
-        android:layout_height="60dp"
-        android:layout_alignBottom="@+id/textViewWhiteHeader"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="#cacaca"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/left_arrow" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -94,45 +86,21 @@
                 android:src="@drawable/card_selection_card" />
             <!-- android:layout_below="@+id/textViewWhiteHeader" -->
 
-            <ImageView
-                android:id="@+id/imageViewPicture"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:clickable="true"
-                android:paddingBottom="70dp"
-                android:paddingLeft="50dp"
-                android:paddingRight="30dp"
-                android:paddingTop="70dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/clickable_camera" />
+
             <!-- android:layout_alignTop="@+id/shadowTops" -->
 
-            <ImageView
-                android:id="@+id/imageViewDefaultPicture"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:clickable="true"
-                android:paddingBottom="70dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="50dp"
-                android:paddingTop="70dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/clickable_default_picture" />
+
             <!-- android:layout_alignTop="@+id/shadowTops" -->
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="130dp"
                 android:layout_height="50dp"
-                android:layout_alignBottom="@+id/imageViewPicture"
-                android:layout_alignRight="@+id/imageViewPicture"
+                android:layout_alignBottom="@+id/imageViewPicture2"
+                android:layout_alignRight="@+id/imageViewPicture2"
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/imageViewDefaultPicture"
+                android:layout_toLeftOf="@+id/imageViewDefaultPicture2"
                 android:gravity="center"
                 android:text="Card Picture Will Display your Actual Card Image" />
 
@@ -235,7 +203,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/editTextMPin"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
@@ -252,7 +220,49 @@
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/imageButtonEnroll" />
+
+            <ImageView
+                android:id="@+id/imageViewPicture2"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingBottom="70dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="30dp"
+                android:paddingTop="70dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/clickable_camera" />
+
+            <ImageView
+                android:id="@+id/imageViewDefaultPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:paddingBottom="70dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="50dp"
+                android:paddingTop="70dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/clickable_default_picture" />
         </RelativeLayout>
     </ScrollView>
+
+    <View
+        android:id="@+id/line5"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/ImageViewBackButton2"
+        android:background="@color/line_card_color" />
 
 </RelativeLayout>

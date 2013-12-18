@@ -321,6 +321,17 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+				showEnrollCardCategory(0);
+			}
+		});
+	}
+
+	public void showEnrollCardCategory(int category)
+	{
+		switch (category)
+		{
+			case 0:
+				// cash card
 				View view = setPage(R.layout.enroll_card_cash);
 				TextView register = (TextView) view.findViewById(R.id.TextView02);
 
@@ -329,26 +340,66 @@ public class CoreonMain extends FragmentActivity
 					@Override
 					public void onClick(View v)
 					{
-						View view2 = setPage(R.layout.enroll_card_register);
-
-						TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(TELEPHONY_SERVICE);
-						String number = tm.getLine1Number();
-
-						TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
-						textNumber.setText(number.toString());
-
-						ImageView im = (ImageView) view2.findViewById(R.id.imageViewPicture);
-						// on click on capture image
-						im.setOnClickListener(new OnClickListener() {
-							@SuppressLint("ShowToast")
-							@Override
-							public void onClick(View v)
-							{
-								Toast.makeText(getApplicationContext(), "Open Camera", Toast.LENGTH_LONG);
-							}
-						});
+						showEnrollCardRegister(1);
 					}
 				});
+				
+				ImageView back = (ImageView) view.findViewById(R.id.ImageViewBackButton);
+				back.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v)
+					{
+						//
+						ShowEnrollCard();
+					}
+				});
+
+				break;
+			case 1:
+				// credit card
+
+				break;
+			case 2:
+				// membership card
+
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	public void showEnrollCardRegister(int category)
+	{
+
+		TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+		String number = tm.getLine1Number();
+
+		View view2 = setPage(R.layout.enroll_card_register);
+		
+		//set phone number on text
+		TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
+		textNumber.setText(number.toString());
+		
+		ImageView im = (ImageView) view2.findViewById(R.id.imageViewPicture2);
+		// on click on capture image
+		im.setOnClickListener(new OnClickListener() {
+			@SuppressLint("ShowToast")
+			@Override
+			public void onClick(View v)
+			{
+				Toast.makeText(getApplicationContext(), "Open Camera", Toast.LENGTH_LONG);
+			}
+		});
+		
+		
+		ImageView back = (ImageView) view2.findViewById(R.id.ImageViewBackButton2);
+		back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				//
+				showEnrollCardCategory(1);
 			}
 		});
 	}
@@ -363,7 +414,7 @@ public class CoreonMain extends FragmentActivity
 		{
 			try
 			{
-				Thread.sleep(500);
+				Thread.sleep(400);
 			}
 			catch (InterruptedException e)
 			{
