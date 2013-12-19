@@ -256,14 +256,14 @@ public class CoreonMain extends FragmentActivity
 	{
 		cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 		cardAdapter.initiatizeStringsValues();
-		cardAdapter.addStrings("", "", "", 0, "", "space");
-		cardAdapter.addStrings("", "", "", 0, "", "space");
+		// cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "35", "", 0, "", "space");
 		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
-		cardAdapter.addStrings("", "", "", 0, "", "space");
-		cardAdapter.addStrings("", "", "", 0, "", "space");
+		cardAdapter.addStrings("", "35", "", 0, "", "space");
+		// cardAdapter.addStrings("", "", "", 0, "", "space");
 
 		listViewCard = (ListView) findViewById(R.id.listViewCards);
 		listViewCard.setAdapter(cardAdapter);
@@ -372,6 +372,8 @@ public class CoreonMain extends FragmentActivity
 		Intent mCameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		mCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
 		startActivityForResult(mCameraIntent, CAMERA_PIC_REQUEST);
+
+		// //picture
 	}
 
 	@Override
@@ -747,7 +749,7 @@ public class CoreonMain extends FragmentActivity
 
 			adapterHome.initiatizeStringsValues();
 
-			adapterHome.addStrings("space", "space", "space", 0, "space", "space");
+			adapterHome.addStrings("", "", "", 0, "", "space");
 
 			adapterHome.addStrings("userinfo", fname, "userinfo", 0, "userinfo", "userinfo");
 			adapterHome.addStrings("My Cards", "0 Cards", "userinfo", 0, "userinfo", "usercontent");
@@ -757,7 +759,7 @@ public class CoreonMain extends FragmentActivity
 			adapterHome.addStrings("Notice", "12", "userinfo", 0, "userinfo", "usercontent");
 			adapterHome.addStrings("userinfo", "userinfo", "userinfo", 0, "userinfo", "userbottom");
 
-			adapterHome.addStrings("space", "space", "space", 0, "space", "space");
+			adapterHome.addStrings("", "", "", 0, "", "space");
 
 			adapterHome.addStrings("Exclusive Offers", "", "", 0, "header", "header");
 			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your test test test test test test test test payment of Coreon Card",
@@ -775,7 +777,7 @@ public class CoreonMain extends FragmentActivity
 			adapterHome.addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", R.drawable.offer_image_1,
 					"www.yahoo.com", "textimage");
 			adapterHome.addStrings("", "", "", 0, "", "bottomshadow");
-			adapterHome.addStrings("space", "space", "space", 0, "space", "space");
+			adapterHome.addStrings("", "", "", 0, "", "space");
 			adapterHome.addStrings("Notice", "", "", 0, "header", "header");
 			adapterHome.addStrings("Dong Won Restaurant",
 					"Get 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon Card",
@@ -786,11 +788,7 @@ public class CoreonMain extends FragmentActivity
 					"text");
 			adapterHome.addStrings("", "", "", 0, "", "bottomshadow");
 
-			// show seven spaces
-			for (int i = 0; i < 6; i++)
-			{
-				adapterHome.addStrings("", "", "", 0, "", "space");
-			}
+			adapterHome.addStrings("", "180", "", 0, "", "space");
 
 			return "";
 		}

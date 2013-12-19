@@ -195,7 +195,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 				rowView = inflater.inflate(R.layout.blank_layout_card, parent, false);
 			}
 			TextView textTitle = (TextView) rowView.findViewById(R.id.textViewblank);
-			textTitle.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 25));
+
+			int spaceHeight = 25;
+			if (!_content.get(position).toString().equals("") && !_content.get(position).toString().equals("space"))
+			{
+				spaceHeight = Integer.parseInt(_content.get(position).toString());
+			}
+
+			textTitle.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, spaceHeight));
 
 			rowView.setEnabled(false);
 			rowView.setOnClickListener(null);
