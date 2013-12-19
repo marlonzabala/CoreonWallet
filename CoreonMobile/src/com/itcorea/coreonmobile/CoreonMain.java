@@ -120,9 +120,9 @@ public class CoreonMain extends FragmentActivity
 		InitializeCardList();
 
 		// dev set to capture image
-		showEnrollCardRegister(1);
+		//showEnrollCardRegister(1);
 		// home page as starting page
-		// SetHomepage();
+		 SetHomepage();
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
@@ -272,12 +272,12 @@ public class CoreonMain extends FragmentActivity
 	{
 		cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 		cardAdapter.initiatizeStringsValues();
-		cardAdapter.addStrings("", "35", "", 0, "", "space");
+		cardAdapter.addStrings("", "30", "", 0, "", "space");
 		cardAdapter.addStrings("", "", "", R.drawable.card1, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card2, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card3, "", "card");
 		cardAdapter.addStrings("", "", "", R.drawable.card4, "", "card");
-		cardAdapter.addStrings("", "35", "", 0, "", "space");
+		cardAdapter.addStrings("", "30", "", 0, "", "space");
 
 		listViewCard = (ListView) findViewById(R.id.listViewCards);
 		listViewCard.setAdapter(cardAdapter);
@@ -424,6 +424,8 @@ public class CoreonMain extends FragmentActivity
 			// mCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
 
 			Uri _fileUri;
+			
+			
 			String filename = "testimage001";
 
 			String TAG = "capture image";
@@ -432,32 +434,32 @@ public class CoreonMain extends FragmentActivity
 			String storageState = Environment.getExternalStorageState();
 			if (storageState.equals(Environment.MEDIA_MOUNTED))
 			{
-				// context.getFilesDir()
-				String path = getApplicationContext().getFilesDir().toString() + File.separatorChar + "Android/data/"
-						+ CoreonMain.this.getPackageName() + "/files/" + filename + ".jpg";
-				// String path = Environment.getExternalStorageDirectory().getName() +
-				// File.separatorChar + "Android/data/"
-				// + CoreonMain.this.getPackageName() + "/files/" + filename + ".jpg";
-				_photoFile = new File(path);
-				try
-				{
-					if (_photoFile.exists() == false)
-					{
-						_photoFile.getParentFile().mkdirs();
-						_photoFile.createNewFile();
-						Log.e("Success!", "created file!.");
-					}
-				}
-				catch (IOException e)
-				{
-					Log.e("errorrrr", "Could not create file.");
-				}
-				// Log.i(TAG, path);
-
-				// _fileUri = Uri.fromFile(_photoFile);
-				// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				// intent.putExtra(MediaStore.EXTRA_OUTPUT, _fileUri);
-				// startActivityForResult(intent, CAMERA_PIC_REQUEST);
+//				// context.getFilesDir()
+//				String path = getApplicationContext().getFilesDir().toString() + File.separatorChar + "Android/data/"
+//						+ CoreonMain.this.getPackageName() + "/files/" + filename + ".jpg";
+//				// String path = Environment.getExternalStorageDirectory().getName() +
+//				// File.separatorChar + "Android/data/"
+//				// + CoreonMain.this.getPackageName() + "/files/" + filename + ".jpg";
+//				_photoFile = new File(path);
+//				try
+//				{
+//					if (_photoFile.exists() == false)
+//					{
+//						_photoFile.getParentFile().mkdirs();
+//						_photoFile.createNewFile();
+//						Log.e("Success!", "created file!.");
+//					}
+//				}
+//				catch (IOException e)
+//				{
+//					Log.e("errorrrr", "Could not create file.");
+//				}
+//				// Log.i(TAG, path);
+//
+//				// _fileUri = Uri.fromFile(_photoFile);
+//				// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//				// intent.putExtra(MediaStore.EXTRA_OUTPUT, _fileUri);
+//				// startActivityForResult(intent, CAMERA_PIC_REQUEST);
 
 				picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -546,8 +548,8 @@ public class CoreonMain extends FragmentActivity
 			cropIntent.putExtra("aspectX", 3);
 			cropIntent.putExtra("aspectY", 2);
 			// indicate output X and Y
-			cropIntent.putExtra("outputX", 256);
-			cropIntent.putExtra("outputY", 256);
+			cropIntent.putExtra("outputX", 435);
+			cropIntent.putExtra("outputY", 290);
 			// retrieve data on return
 			cropIntent.putExtra("return-data", true);
 			// start the activity - we handle returning in onActivityResult
