@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -83,6 +84,7 @@ public class CoreonMain extends FragmentActivity
 	List<String>					listDataHeader;
 	HashMap<String, List<String>>	listDataChild;
 	MySimpleArrayAdapter			adapterHome;
+	Uri								mPhotoUri;
 
 	ArrayList<String>				_title				= new ArrayList<String>();
 
@@ -118,7 +120,7 @@ public class CoreonMain extends FragmentActivity
 		InitializeCardList();
 
 		// dev set to capture image
-		//showEnrollCardRegister(1);
+		showEnrollCardRegister(1);
 		// home page as starting page
 		// SetHomepage();
 
@@ -285,7 +287,7 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 			{
-				//show card when clicked
+				// show card when clicked
 				showPhoto(Integer.parseInt(cardAdapter._image.get(position)));
 			};
 		});
@@ -293,17 +295,17 @@ public class CoreonMain extends FragmentActivity
 
 	private void showPhoto(int drawable)
 	{
-		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);		
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.card_chooser_fragment, (ViewGroup) findViewById(R.id.root), false);
 		ImageView imageCard = (ImageView) rowView.findViewById(R.id.imageViewCard);
 		imageCard.setImageResource(drawable);
 		final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(rowView);
-        dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setGravity(Gravity.CENTER);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(rowView);
+		dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		dialog.getWindow().setGravity(Gravity.CENTER);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		dialog.show();
 	}
 
 	public void LogoClick()
@@ -406,7 +408,6 @@ public class CoreonMain extends FragmentActivity
 
 	private void dispatchTakePictureIntent(int actionCode)
 	{
-
 		try
 		{
 			// Intent mCameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -444,17 +445,23 @@ public class CoreonMain extends FragmentActivity
 					{
 						_photoFile.getParentFile().mkdirs();
 						_photoFile.createNewFile();
+						Log.e("Success!", "created file!.");
 					}
 				}
 				catch (IOException e)
 				{
-					Log.e(TAG, "Could not create file.", e);
+					Log.e("errorrrr", "Could not create file.");
 				}
-				Log.i(TAG, path);
+				// Log.i(TAG, path);
 
-				_fileUri = Uri.fromFile(_photoFile);
+				// _fileUri = Uri.fromFile(_photoFile);
+				// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				// intent.putExtra(MediaStore.EXTRA_OUTPUT, _fileUri);
+				// startActivityForResult(intent, CAMERA_PIC_REQUEST);
+
+				picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, _fileUri);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
 				startActivityForResult(intent, CAMERA_PIC_REQUEST);
 			}
 			else
@@ -462,7 +469,6 @@ public class CoreonMain extends FragmentActivity
 				new AlertDialog.Builder(CoreonMain.this).setMessage("External Storeage (SD Card) is required.\n\nCurrent state: " + storageState)
 						.setCancelable(true).create().show();
 			}
-
 		}
 		catch (ActivityNotFoundException anfe)
 		{
@@ -474,36 +480,6 @@ public class CoreonMain extends FragmentActivity
 
 		// //picture
 	}
-
-	// Uri saveMediaEntry(String imagePath, String title, String description, long dateTaken, int
-	// orientation, Location loc)
-	// {
-	// ContentValues v = new ContentValues();
-	// v.put(Images.Media.TITLE, title);
-	// v.put(Images.Media.DISPLAY_NAME, displayName);
-	// v.put(Images.Media.DESCRIPTION, description);
-	// v.put(Images.Media.DATE_ADDED, dateTaken);
-	// v.put(Images.Media.DATE_TAKEN, dateTaken);
-	// v.put(Images.Media.DATE_MODIFIED, dateTaken);
-	// v.put(Images.Media.MIME_TYPE, "image/jpeg");
-	// v.put(Images.Media.ORIENTATION, orientation);
-	// File f = new File(imagePath);
-	// File parent = f.getParentFile();
-	// String path = parent.toString().toLowerCase();
-	// String name = parent.getName().toLowerCase();
-	// v.put(Images.ImageColumns.BUCKET_ID, path.hashCode());
-	// v.put(Images.ImageColumns.BUCKET_DISPLAY_NAME, name);
-	// v.put(Images.Media.SIZE, f.length());
-	// f = null;
-	// if (targ_loc != null)
-	// {
-	// v.put(Images.Media.LATITUDE, loc.getLatitude());
-	// v.put(Images.Media.LONGITUDE, loc.getLongitude());
-	// }
-	// v.put("_data", imagePath);
-	// ContentResolver c = getContentResolver();
-	// return c.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
-	// }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -519,77 +495,17 @@ public class CoreonMain extends FragmentActivity
 
 					// Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
 
-					// //////////////////////
-
-					String[] projection = { MediaStore.Images.Thumbnails._ID, // The columns we want
-							MediaStore.Images.Thumbnails.IMAGE_ID, MediaStore.Images.Thumbnails.KIND, MediaStore.Images.Thumbnails.DATA };
-					String selection = MediaStore.Images.Thumbnails.KIND + "=" + // Select only
-																					// mini's
-							MediaStore.Images.Thumbnails.MINI_KIND;
-
-					String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-
-					Cursor myCursor = this.managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, selection, null, sort);
-
-					long imageId = 0l;
-					long thumbnailImageId = 0l;
-					String thumbnailPath = "";
-
-					try
-					{
-						myCursor.moveToFirst();
-						imageId = myCursor.getLong(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.IMAGE_ID));
-						thumbnailImageId = myCursor.getLong(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID));
-						thumbnailPath = myCursor.getString(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA));
-					}
-					finally
-					{
-						myCursor.close();
-					}
-
-					String[] largeFileProjection = { MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATA };
-
-					String largeFileSort = MediaStore.Images.ImageColumns._ID + " DESC";
-					myCursor = this.managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, largeFileProjection, null, null, largeFileSort);
-					String largeImagePath = "";
-
-					try
-					{
-						myCursor.moveToFirst();
-
-						// This will actually give yo uthe file path location of the image.
-						largeImagePath = myCursor.getString(myCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA));
-					}
-					finally
-					{
-						myCursor.close();
-					}
-					// These are the two URI's you'll be interested in. They give you a handle to
-					// the actual images
-					Uri uriLargeImage = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(imageId));
-					Uri uriThumbnailImage = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, String.valueOf(thumbnailImageId));
-
-					// picUri = data.getData();
-					picUri = uriLargeImage;
+//					picUri = mPhotoUri;
 					if (picUri == null)
 					{
-
+						Toast.makeText(getApplicationContext(), "Cannot retrieve picture", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
 						performCrop();
 					}
 
-					// I've left out the remaining code, as all I do is assign the URI's to my own
-					// objects anyways...
-
-					// //////////////////////////////////
-
-					// your ImageView
-					// ImageView photoImage = (ImageView) findViewById(R.id.imageViewCamera);
-					// photoImage.setImageBitmap(thumbnail);
-					// photoImage.setBackgroundResource(R.drawable.card_content_notice);
-					// photoImage.setImageResource(R.drawable.card_choose_logo);
+					
 
 					break;
 				case PIC_CROP:
@@ -602,6 +518,12 @@ public class CoreonMain extends FragmentActivity
 					// ImageView picView = (ImageView)findViewById(R.id.picture);
 					// display the returned cropped image
 					// picView.setImageBitmap(thePic);
+					
+					// your ImageView
+					// ImageView photoImage = (ImageView) findViewById(R.id.imageViewCamera);
+					// photoImage.setImageBitmap(thumbnail);
+					// photoImage.setBackgroundResource(R.drawable.card_content_notice);
+					// photoImage.setImageResource(R.drawable.card_choose_logo);
 
 					break;
 			}
@@ -621,8 +543,8 @@ public class CoreonMain extends FragmentActivity
 			// set crop properties
 			cropIntent.putExtra("crop", "true");
 			// indicate aspect of desired crop
-			cropIntent.putExtra("aspectX", 1);
-			cropIntent.putExtra("aspectY", 1);
+			cropIntent.putExtra("aspectX", 3);
+			cropIntent.putExtra("aspectY", 2);
 			// indicate output X and Y
 			cropIntent.putExtra("outputX", 256);
 			cropIntent.putExtra("outputY", 256);
