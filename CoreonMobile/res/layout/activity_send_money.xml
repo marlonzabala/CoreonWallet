@@ -19,7 +19,7 @@
         android:text="@string/am" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView2Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewHeader"
@@ -31,8 +31,8 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2Description"
+        android:layout_below="@+id/textView2Description"
         android:layout_marginTop="15dp"
         android:text="@string/re" />
 
@@ -53,7 +53,7 @@
         android:layout_alignBottom="@+id/textViewHeader"
         android:layout_alignParentRight="true"
         android:layout_marginRight="14dp"
-        android:layout_toRightOf="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2Description"
         android:ems="10"
         android:hint="@string/ea"
         android:inputType="phone" >
@@ -65,8 +65,8 @@
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignBaseline="@+id/textView2Description"
+        android:layout_alignBottom="@+id/textView2Description"
         android:layout_alignLeft="@+id/editText1"
         android:layout_alignRight="@+id/editText1"
         android:ems="10" />

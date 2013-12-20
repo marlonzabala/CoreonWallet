@@ -1,7 +1,5 @@
 package com.itcorea.coreonmobile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +21,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -68,7 +71,7 @@ public class CoreonMain extends FragmentActivity
 {
 	final static int				CAMERA_PIC_REQUEST	= 1;
 	final static int				PIC_CROP			= 2;
-	private Uri						picUri;
+	public Uri						picUri;
 	public static ViewPager			mPager;
 	public static int				history;
 	int								margin;
@@ -128,19 +131,16 @@ public class CoreonMain extends FragmentActivity
 		// _stack = null;
 		boolean secondMenu = false;
 		boolean firstMenu = false;
-		
+
 		if (savedInstanceState != null)
 		{
 			_stack = savedInstanceState.getStringArrayList("stack");
 			firstMenu = savedInstanceState.getBoolean("firstMenu", false);
 			secondMenu = savedInstanceState.getBoolean("secondMenu", false);
 		}
-		
-		
-		
-		Log.e("second",String.valueOf(secondMenu));
-		Log.e("first",String.valueOf(firstMenu));
-		
+
+		Log.e("second", String.valueOf(secondMenu));
+		Log.e("first", String.valueOf(firstMenu));
 
 		if (_stack != null && (_stack.size() != 0))
 		{
@@ -149,10 +149,11 @@ public class CoreonMain extends FragmentActivity
 		}
 		else
 		{
-			SetHomepage();
+			 SetHomepage();
+			//showEnrollCardRegister(1);
 		}
-		
-		if(secondMenu)
+
+		if (secondMenu)
 		{
 			menu.showSecondaryMenu(true);
 		}
@@ -160,7 +161,6 @@ public class CoreonMain extends FragmentActivity
 		{
 			menu.showMenu();
 		}
-		
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
@@ -193,7 +193,7 @@ public class CoreonMain extends FragmentActivity
 	}
 
 	int	exit	= 1;
-	
+
 	public void viewPage(String view)
 	{
 		if (view.equals("home"))
@@ -213,7 +213,7 @@ public class CoreonMain extends FragmentActivity
 		else if (view.equals("changepassword"))
 			ShowChangePassword();
 		else if (view.equals("shownotice"))
-			;//ShowAccountInformation();
+			;// ShowAccountInformation();
 	}
 
 	public void historyStackShowLast()
@@ -226,7 +226,7 @@ public class CoreonMain extends FragmentActivity
 				String view = _stack.get(_stack.size() - 1).toString();
 
 				viewPage(view);
-				
+
 				// String stacks = "";
 				// for (int i = 0; i < _stack.size(); i++) stacks = stacks +"/"+ _stack.get(i);
 				// Log.e("stack",stacks);
@@ -244,20 +244,19 @@ public class CoreonMain extends FragmentActivity
 		// _stack.add("home");
 		// savedInstanceState.putString("start", "start");
 		savedInstanceState.putStringArrayList("stack", _stack);
-		
+
 		savedInstanceState.putBoolean("secondMenu", false);
 		savedInstanceState.putBoolean("firstMenu", false);
-		
-		if(menu.isSecondaryMenuShowing())
+
+		if (menu.isSecondaryMenuShowing())
 		{
 			savedInstanceState.putBoolean("secondMenu", true);
 		}
-		else if(menu.isMenuShowing())
+		else if (menu.isMenuShowing())
 		{
 			savedInstanceState.putBoolean("firstMenu", true);
 		}
-		
-		
+
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -548,6 +547,31 @@ public class CoreonMain extends FragmentActivity
 				break;
 		}
 	}
+	
+	final int CAMERA_CAPTURE = 1;
+	//keep track of cropping intent
+	
+	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+	    Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+	        bitmap.getHeight(), Config.ARGB_8888);
+	    Canvas canvas = new Canvas(output);
+	 
+	    final int color = 0xff424242;
+	    final Paint paint = new Paint();
+	    final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+	    final RectF rectF = new RectF(rect);
+	    final float roundPx = 12;
+	 
+	    paint.setAntiAlias(true);
+	    canvas.drawARGB(0, 0, 0, 0);
+	    paint.setColor(color);
+	    canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+	 
+	    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+	    canvas.drawBitmap(bitmap, rect, rect, paint);
+	 
+	    return output;
+	  }
 
 	private void dispatchTakePictureIntent(int actionCode)
 	{
@@ -556,108 +580,162 @@ public class CoreonMain extends FragmentActivity
 			Log.e("conract", "actionCode is 0");
 		}
 
-		try
-		{
-			String storageState = Environment.getExternalStorageState();
-			if (storageState.equals(Environment.MEDIA_MOUNTED))
-			{
-				picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
-				startActivityForResult(intent, CAMERA_PIC_REQUEST);
-			}
-			else
-			{
-				new AlertDialog.Builder(CoreonMain.this).setMessage("External Storeage (SD Card) is required.\n\nCurrent state: " + storageState)
-						.setCancelable(true).create().show();
-			}
-		}
-		catch (ActivityNotFoundException anfe)
-		{
-			// display an error message
-			String errorMessage = "Whoops - your device doesn't support capturing images!";
-			Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-			toast.show();
-		}
+//		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+//		{
+//			startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
+//		}
+//		
+		Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+    	//we will handle the returned data in onActivityResult
+        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+		
+//		picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+//
+//		//Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//    	//we will handle the returned data in onActivityResult
+//		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+//        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+		
+		
+		
+		
+		
+		
+		
+		
+
+//		try
+//		{
+//			String storageState = Environment.getExternalStorageState();
+//			if (storageState.equals(Environment.MEDIA_MOUNTED))
+//			{
+//				picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+//
+//				picUri.getPath();
+//				// picUri.getPath()
+//
+//				File folder = new File(picUri.getPath());
+//				boolean success = false;
+//				if (!folder.exists())
+//				{
+//					success = folder.mkdirs();
+//				}
+//				if (!success)
+//				{
+//					Log.d("test", "Folder not created.");
+//				}
+//				else
+//				{
+//					Log.d("test", "Folder created!");
+//				}
+//
+//				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//				intent.putExtra(MediaStore.EXTRA_OUTPUT, picUri.getPath());
+//				startActivityForResult(intent, CAMERA_PIC_REQUEST);
+//			}
+//			else
+//			{
+//				new AlertDialog.Builder(CoreonMain.this).setMessage("External Storeage (SD Card) is required.\n\nCurrent state: " + storageState)
+//						.setCancelable(true).create().show();
+//			}
+//		}
+//		catch (ActivityNotFoundException anfe)
+//		{
+//			// display an error message
+//			String errorMessage = "Whoops - your device doesn't support capturing images!";
+//			Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+//			toast.show();
+//		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		if (resultCode == RESULT_OK)
-		{
-			switch (requestCode)
-			{
-				case CAMERA_PIC_REQUEST:
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (resultCode == RESULT_OK) {
+    		//user is returning from capturing an image using the camera
+    		if(requestCode == CAMERA_CAPTURE){
+    			//get the Uri for the captured image
+    			//picUri = data.getData();
+    			//carry out the crop operation
+    			//performCrop();
+    			
+    			
+    			
+    			//call the standard crop action intent (the user device may not support it)
+    	    	Intent cropIntent = new Intent("com.android.camera.action.CROP"); 
+    	    	//indicate image type and Uri
+    	    	cropIntent.setDataAndType(picUri, "image/*");
+    	    	//set crop properties
+    	    	cropIntent.putExtra("crop", "true");
+    	    	//indicate aspect of desired crop
+    	    	cropIntent.putExtra("aspectX", 1);
+    	    	cropIntent.putExtra("aspectY", 1);
+    	    	//indicate output X and Y
+    	    	cropIntent.putExtra("outputX", 256);
+    	    	cropIntent.putExtra("outputY", 256);
+    	    	//retrieve data on return
+    	    	cropIntent.putExtra("return-data", true);
+    	    	//start the activity - we handle returning in onActivityResult
+    	        startActivityForResult(cropIntent, PIC_CROP);  
+    			
+    			
+    		}
+    		//user is returning from cropping the image
+    		else if(requestCode == PIC_CROP){
+    			//get the returned data
+    			Bundle extras = data.getExtras();
+    			//get the cropped bitmap
+    			Bitmap thePic = extras.getParcelable("data");
+    			//retrieve a reference to the ImageView
+    			ImageView picView = (ImageView)findViewById(R.id.imageViewPic);
+    			//display the returned cropped image
+    			picView.setImageBitmap(getRoundedCornerBitmap(thePic));
+    			
+    			
+    			ImageView pic1 = (ImageView)findViewById(R.id.imageViewDefaultPicture);
+    			ImageView pic2 = (ImageView)findViewById(R.id.imageViewPicture2);
+    			pic1.setVisibility(View.GONE);
+    			pic2.setVisibility(View.GONE);
+    			
+    			TextView text1 = (TextView)findViewById(R.id.textView1Description);
+    			text1.setVisibility(View.GONE);
+    			
+    			TextView text2 = (TextView)findViewById(R.id.textView2Description);
+    			text2.setVisibility(View.GONE);
+    		}
+    	}
+    }
 
-					Toast.makeText(getApplicationContext(), "camera", Toast.LENGTH_SHORT).show();
+	private void performCrop(){
+    	//take care of exceptions
+    	try {
+    		//call the standard crop action intent (the user device may not support it)
+	    	Intent cropIntent = new Intent("com.android.camera.action.CROP"); 
+	    	//indicate image type and Uri
+	    	cropIntent.setDataAndType(picUri, "image/*");
+	    	//set crop properties
+	    	cropIntent.putExtra("crop", "true");
+	    	//indicate aspect of desired crop
+	    	cropIntent.putExtra("aspectX", 3);
+	    	cropIntent.putExtra("aspectY", 2);
+	    	//indicate output X and Y
+	    	cropIntent.putExtra("outputX", 435);
+	    	cropIntent.putExtra("outputY", 290);
+	    	//retrieve data on return
+	    	cropIntent.putExtra("return-data", true);
+	    	//start the activity - we handle returning in onActivityResult
+	        startActivityForResult(cropIntent, PIC_CROP);  
+    	}
+    	//respond to users whose devices do not support the crop action
+    	catch(ActivityNotFoundException anfe){
+    		//display an error message
+    		String errorMessage = "Whoops - your device doesn't support the crop action!";
+    		Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+    		toast.show();
+    	}
+    }
 
-					// Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-
-					// picUri = mPhotoUri;
-					if (picUri == null)
-					{
-						Toast.makeText(getApplicationContext(), "Cannot retrieve picture", Toast.LENGTH_SHORT).show();
-					}
-					else
-					{
-						performCrop();
-					}
-
-					break;
-				case PIC_CROP:
-
-					Bundle extras = data.getExtras();
-					// get the cropped bitmap
-					Bitmap thePic = extras.getParcelable("data");
-
-					// retrieve a reference to the ImageView
-					// ImageView picView = (ImageView)findViewById(R.id.picture);
-					// display the returned cropped image
-					// picView.setImageBitmap(thePic);
-
-					// your ImageView
-					// ImageView photoImage = (ImageView) findViewById(R.id.imageViewCamera);
-					// photoImage.setImageBitmap(thumbnail);
-					// photoImage.setBackgroundResource(R.drawable.card_content_notice);
-					// photoImage.setImageResource(R.drawable.card_choose_logo);
-
-					break;
-			}
-		}
-	}
-
-	private void performCrop()
-	{
-		try
-		{
-			// call the standard crop action intent (the user device may not support it)
-			Intent cropIntent = new Intent("com.android.camera.action.CROP");
-			// indicate image type and Uri
-			cropIntent.setDataAndType(picUri, "image/*");
-			// set crop properties
-			cropIntent.putExtra("crop", "true");
-			// indicate aspect of desired crop
-			cropIntent.putExtra("aspectX", 3);
-			cropIntent.putExtra("aspectY", 2);
-			// indicate output X and Y
-			cropIntent.putExtra("outputX", 435);
-			cropIntent.putExtra("outputY", 290);
-			// retrieve data on return
-			cropIntent.putExtra("return-data", true);
-			// start the activity - we handle returning in onActivityResult
-			startActivityForResult(cropIntent, PIC_CROP);
-
-		}
-		catch (ActivityNotFoundException anfe)
-		{
-			// display an error message
-			String errorMessage = "Your device doesn't support the crop action!";
-			Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-			toast.show();
-		}
-
-	}
 
 	public void showEnrollCardRegister(int category)
 	{
@@ -682,7 +760,13 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				dispatchTakePictureIntent(1);
+//				dispatchTakePictureIntent(1);
+				
+				picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+				Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+		        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+				
 			}
 		});
 
@@ -987,6 +1071,29 @@ public class CoreonMain extends FragmentActivity
 		dialog.show();
 	}
 
+	public void showNoticeContent(MySimpleArrayAdapter adapter, int position)
+	{
+		String title = adapter._title.get(position).toString();
+		String date = adapter._date.get(position).toString();
+		String image = adapter._image.get(position).toString();
+		String url = adapter._extra.get(position).toString();
+		String content = adapter._content.get(position).toString();
+
+		View noticeView = setPage(R.layout.notice_content);
+
+		int imageInt = Integer.parseInt(image);
+		MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+
+		noticeContentAdapter.initiatizeStringsValues();
+		noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
+		noticeContentAdapter.addStrings(title, content, date, imageInt, url, "noticecontent");
+		noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
+
+		ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
+		listView.setAdapter(noticeContentAdapter);
+		listView.setDividerHeight(0);
+	}
+
 	private class ShowHomePage extends AsyncTask<String, Void, String>
 	{
 		@Override
@@ -1091,29 +1198,7 @@ public class CoreonMain extends FragmentActivity
 					else if (view.getTag().equals("textimage"))
 					{
 						// open notice content full
-
-//						stack = 1;
-
-						String title = adapterHome._title.get(position).toString();
-						String date = adapterHome._date.get(position).toString();
-						String image = adapterHome._image.get(position).toString();
-						String url = adapterHome._extra.get(position).toString();
-						String content = adapterHome._content.get(position).toString();
-
-						View noticeView = setPage(R.layout.notice_content);
-
-						int imageInt = Integer.parseInt(image);
-						MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
-
-						noticeContentAdapter.initiatizeStringsValues();
-						noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
-						noticeContentAdapter.addStrings(title, content, date, imageInt, url, "noticecontent");
-						noticeContentAdapter.addStrings("space", "space", "space", 0, "space", "space");
-
-						ListView listView = (ListView) noticeView.findViewById(R.id.listViewNoticeContent);
-						listView.setAdapter(noticeContentAdapter);
-						listView.setDividerHeight(0);
-
+						showNoticeContent(adapterHome, position);
 					}
 					else if (view.getTag().equals("header"))
 					{
@@ -1316,6 +1401,8 @@ public class CoreonMain extends FragmentActivity
 	@Override
 	public void onBackPressed()
 	{
+		Log.e("error!", "backpressed");
+		//Toast.makeText(getApplicationContext(), "tester", Toast.LENGTH_SHORT).show();
 		if (menu.isMenuShowing())
 		{
 			menu.showContent(true);
@@ -1354,7 +1441,7 @@ public class CoreonMain extends FragmentActivity
 		// _stack.add("notice");
 		historyStackAdd("notice");
 
-//		stack = 1;
+		// stack = 1;
 		removeHeaderbackColor();
 
 		ImageButton im = (ImageButton) findViewById(R.id.imageButtonNotice);
@@ -1412,9 +1499,10 @@ public class CoreonMain extends FragmentActivity
 
 													if ((null != aResponse))
 													{
-
 														// ALERT MESSAGE
-														Toast.makeText(getBaseContext(), "Server Response: " + aResponse, Toast.LENGTH_SHORT).show();
+														// Toast.makeText(getBaseContext(),
+														// "Server Response: " + aResponse,
+														// Toast.LENGTH_SHORT).show();
 
 														try
 														{
@@ -1468,40 +1556,9 @@ public class CoreonMain extends FragmentActivity
 																@Override
 																public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 																{
-
 																	if (view.getTag().equals("textimagenotice"))
 																	{
-																		// open notice content full
-
-																		View noticeView = setLayout(R.layout.notice_content);
-																		ListView listView = (ListView) noticeView
-																				.findViewById(R.id.listViewNoticeContent);
-
-																		TextView textTitle = (TextView) view.findViewById(R.id.lblSubTitleText);
-																		TextView textDate = (TextView) view.findViewById(R.id.lblDateText);
-
-																		String image = adapter._image.get(position).toString();
-																		String url = adapter._extra.get(position).toString();
-																		String content = adapter._content.get(position).toString();
-
-																		int imageInt = Integer.parseInt(image);
-
-																		// removeStringsValues();
-																		MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(
-																				getApplicationContext(), _title);
-
-																		noticeContentAdapter.initiatizeStringsValues();
-
-																		noticeContentAdapter.addStrings("", "", "", 0, "", "space");
-																		noticeContentAdapter.addStrings(textTitle.getText().toString(), content,
-																				textDate.getText().toString(), imageInt, url, "noticecontent");
-																		noticeContentAdapter.addStrings("", "", "", 0, "", "space");
-
-																		// noticeContentAdapter.setValues(_title,
-																		// _content, _date, _image,
-																		// _type, _extra);
-																		listView.setAdapter(noticeContentAdapter);
-																		listView.setDividerHeight(0);
+																		showNoticeContent(adapter, position);
 																	}
 																}
 															});
@@ -1538,7 +1595,7 @@ public class CoreonMain extends FragmentActivity
 		// _stack.add("offer");
 		historyStackAdd("offer");
 
-//		stack = 1;
+		// stack = 1;
 		removeHeaderbackColor();
 
 		ImageButton im = (ImageButton) findViewById(R.id.imageButtonOffers);

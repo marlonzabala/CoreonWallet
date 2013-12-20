@@ -9,7 +9,9 @@
         android:targetSdkVersion="19" />
     <!-- android:minSdkVersion="8" -originally -->
 
-    <uses-feature android:name="android.hardware.camera" >
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" >
     </uses-feature>
 
     <uses-permission android:name="android.permission.INTERNET" />
