@@ -126,10 +126,21 @@ public class CoreonMain extends FragmentActivity
 
 		// return state
 		// _stack = null;
+		boolean secondMenu = false;
+		boolean firstMenu = false;
+		
 		if (savedInstanceState != null)
 		{
 			_stack = savedInstanceState.getStringArrayList("stack");
+			firstMenu = savedInstanceState.getBoolean("firstMenu", false);
+			secondMenu = savedInstanceState.getBoolean("secondMenu", false);
 		}
+		
+		
+		
+		Log.e("second",String.valueOf(secondMenu));
+		Log.e("first",String.valueOf(firstMenu));
+		
 
 		if (_stack != null && (_stack.size() != 0))
 		{
@@ -140,6 +151,16 @@ public class CoreonMain extends FragmentActivity
 		{
 			SetHomepage();
 		}
+		
+		if(secondMenu)
+		{
+			menu.showSecondaryMenu(true);
+		}
+		else if (firstMenu)
+		{
+			menu.showMenu();
+		}
+		
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
@@ -223,6 +244,20 @@ public class CoreonMain extends FragmentActivity
 		// _stack.add("home");
 		// savedInstanceState.putString("start", "start");
 		savedInstanceState.putStringArrayList("stack", _stack);
+		
+		savedInstanceState.putBoolean("secondMenu", false);
+		savedInstanceState.putBoolean("firstMenu", false);
+		
+		if(menu.isSecondaryMenuShowing())
+		{
+			savedInstanceState.putBoolean("secondMenu", true);
+		}
+		else if(menu.isMenuShowing())
+		{
+			savedInstanceState.putBoolean("firstMenu", true);
+		}
+		
+		
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -1057,7 +1092,7 @@ public class CoreonMain extends FragmentActivity
 					{
 						// open notice content full
 
-						stack = 1;
+//						stack = 1;
 
 						String title = adapterHome._title.get(position).toString();
 						String date = adapterHome._date.get(position).toString();
@@ -1278,23 +1313,14 @@ public class CoreonMain extends FragmentActivity
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	int	stack	= 1;
-
 	@Override
 	public void onBackPressed()
 	{
 		if (menu.isMenuShowing())
 		{
-			stack = 1;
 			menu.showContent(true);
 			return;
 		}
-		// else if (stack == 1)
-		// {
-		// SetHomepage();
-		// stack = 0;
-		// return;
-		// }
 		else
 		{
 			historyStackShowLast();
@@ -1328,7 +1354,7 @@ public class CoreonMain extends FragmentActivity
 		// _stack.add("notice");
 		historyStackAdd("notice");
 
-		stack = 1;
+//		stack = 1;
 		removeHeaderbackColor();
 
 		ImageButton im = (ImageButton) findViewById(R.id.imageButtonNotice);
@@ -1512,7 +1538,7 @@ public class CoreonMain extends FragmentActivity
 		// _stack.add("offer");
 		historyStackAdd("offer");
 
-		stack = 1;
+//		stack = 1;
 		removeHeaderbackColor();
 
 		ImageButton im = (ImageButton) findViewById(R.id.imageButtonOffers);
