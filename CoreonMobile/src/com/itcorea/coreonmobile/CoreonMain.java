@@ -87,6 +87,7 @@ public class CoreonMain extends FragmentActivity
 	Uri								mPhotoUri;
 
 	ArrayList<String>				_title				= new ArrayList<String>();
+	ArrayList<String>				_stack				= new ArrayList<String>();
 
 	List<String>					listDataHeaderImage;
 	HashMap<String, List<String>>	listDataChildImage;
@@ -120,12 +121,109 @@ public class CoreonMain extends FragmentActivity
 		InitializeCardList();
 
 		// dev set to capture image
-		//showEnrollCardRegister(1);
+		// showEnrollCardRegister(1);
 		// home page as starting page
-		 SetHomepage();
+
+		// return state
+		// _stack = null;
+		if (savedInstanceState != null)
+		{
+			_stack = savedInstanceState.getStringArrayList("stack");
+		}
+
+		if (_stack != null && (_stack.size() != 0))
+		{
+			String initView = _stack.get(_stack.size() - 1).toString();
+			viewPage(initView);
+		}
+		else
+		{
+			SetHomepage();
+		}
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
+	}
+
+	public void historyStackAdd(String view)
+	{
+		if (_stack != null && (_stack.size() != 0))
+		{
+			// if duplicate do not add to stack
+			String lastView = _stack.get(_stack.size() - 1).toString();
+			if (!lastView.equals(view))
+			{
+				_stack.add(view);
+			}
+		}
+		else
+		{
+			_stack.add(view);
+		}
+	}
+
+	public void historyStackRemoveLast()
+	{
+		if (_stack != null && (_stack.size() != 0))
+		{
+			// _stack.remove(_stack.size() - 1);
+			Log.e("removed", String.valueOf(_stack.remove(_stack.size() - 1)));
+		}
+	}
+
+	int	exit	= 1;
+	
+	public void viewPage(String view)
+	{
+		if (view.equals("home"))
+			SetHomepage();
+		else if (view.equals("offer"))
+			openOffers(null);
+		else if (view.equals("notice"))
+			openNotice(null);
+		else if (view.equals("help"))
+			openHelp(null);
+		else if (view.equals("accountinformation"))
+			ShowAccountInformation();
+		else if (view.equals("points"))
+			ShowPoints();
+		else if (view.equals("enrollcard"))
+			ShowEnrollCard();
+		else if (view.equals("changepassword"))
+			ShowChangePassword();
+		else if (view.equals("shownotice"))
+			;//ShowAccountInformation();
+	}
+
+	public void historyStackShowLast()
+	{
+		if (_stack != null)
+		{
+			if (_stack.size() >= 2)
+			{
+				historyStackRemoveLast();
+				String view = _stack.get(_stack.size() - 1).toString();
+
+				viewPage(view);
+				
+				// String stacks = "";
+				// for (int i = 0; i < _stack.size(); i++) stacks = stacks +"/"+ _stack.get(i);
+				// Log.e("stack",stacks);
+				exit = 1;
+			}
+			else if (_stack.size() >= 1)
+			{
+				this.finish();
+			}
+		}
+	}
+
+	protected void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		// _stack.add("home");
+		// savedInstanceState.putString("start", "start");
+		savedInstanceState.putStringArrayList("stack", _stack);
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	public void InitializeSlidingMenu()
@@ -295,6 +393,11 @@ public class CoreonMain extends FragmentActivity
 
 	private void showPhoto(int drawable)
 	{
+		if (drawable == 0)
+		{
+			Log.e("conract", "drawable is 0");
+		}
+
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.card_chooser_fragment, (ViewGroup) findViewById(R.id.root), false);
 		ImageView imageCard = (ImageView) rowView.findViewById(R.id.imageViewCard);
@@ -332,12 +435,14 @@ public class CoreonMain extends FragmentActivity
 
 	public void ShowChangePassword()
 	{
+		historyStackAdd("changepassword");
 		View viewChild1 = setPage(R.layout.change_password);
 		removeHeaderbackColor();// ((View) viewChild1.getParent().getParent());
 	}
 
 	public void ShowPoints()
 	{
+		historyStackAdd("points");
 		setPage(R.layout.points);
 	}
 
@@ -350,6 +455,7 @@ public class CoreonMain extends FragmentActivity
 
 	public void ShowEnrollCard()
 	{
+		historyStackAdd("enrollcard");
 		final View viewChild = setPage(R.layout.enroll_card);
 		removeHeaderbackColor();// ((View) viewChild.getParent().getParent());
 		TextView cashcard = (TextView) viewChild.findViewById(R.id.TextView02);
@@ -365,33 +471,13 @@ public class CoreonMain extends FragmentActivity
 
 	public void showEnrollCardCategory(int category)
 	{
+		if (category == 0)
+		{
+			Log.e("conract", "category is 0");
+		}
+
 		switch (category)
 		{
-			case 0:
-				// cash card
-				View view = setPage(R.layout.enroll_card_cash);
-				TextView register = (TextView) view.findViewById(R.id.TextView02);
-
-				// onclick of first selection
-				register.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v)
-					{
-						showEnrollCardRegister(1);
-					}
-				});
-
-				ImageView back = (ImageView) view.findViewById(R.id.ImageViewBackButton);
-				back.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v)
-					{
-						//
-						ShowEnrollCard();
-					}
-				});
-
-				break;
 			case 1:
 				// credit card
 
@@ -402,65 +488,44 @@ public class CoreonMain extends FragmentActivity
 				break;
 
 			default:
+				// cash card
+				View view = setPage(R.layout.enroll_card_cash);
+				TextView register = (TextView) view.findViewById(R.id.TextView02);
+
+				// onclick of first selection
+				register.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v)
+					{
+						showEnrollCardRegister(0);
+					}
+				});
+
+				ImageView back = (ImageView) view.findViewById(R.id.ImageViewBackButton);
+				back.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v)
+					{
+						ShowEnrollCard();
+					}
+				});
+
 				break;
 		}
 	}
 
 	private void dispatchTakePictureIntent(int actionCode)
 	{
+		if (actionCode == 0)
+		{
+			Log.e("conract", "actionCode is 0");
+		}
+
 		try
 		{
-			// Intent mCameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			// startActivityForResult(mCameraIntent, CAMERA_PIC_REQUEST);
-			// mCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-			// MediaStore.Images.Media.INTERNAL_CONTENT_URI.toString());
-
-			// Log.i("image", MediaStore.Images.Media.INTERNAL_CONTENT_URI.toString());
-
-			// File imagesFolder = new File(Environment.getExternalStorageDirectory(), "MyImages");
-			// imagesFolder.mkdirs(); // <----
-			// File image = new File(imagesFolder, "image_002.jpg");
-			// Uri uriSavedImage = Uri.fromFile(image);
-			// mCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-
-			Uri _fileUri;
-			
-			
-			String filename = "testimage001";
-
-			String TAG = "capture image";
-			File _photoFile;
-
 			String storageState = Environment.getExternalStorageState();
 			if (storageState.equals(Environment.MEDIA_MOUNTED))
 			{
-//				// context.getFilesDir()
-//				String path = getApplicationContext().getFilesDir().toString() + File.separatorChar + "Android/data/"
-//						+ CoreonMain.this.getPackageName() + "/files/" + filename + ".jpg";
-//				// String path = Environment.getExternalStorageDirectory().getName() +
-//				// File.separatorChar + "Android/data/"
-//				// + CoreonMain.this.getPackageName() + "/files/" + filename + ".jpg";
-//				_photoFile = new File(path);
-//				try
-//				{
-//					if (_photoFile.exists() == false)
-//					{
-//						_photoFile.getParentFile().mkdirs();
-//						_photoFile.createNewFile();
-//						Log.e("Success!", "created file!.");
-//					}
-//				}
-//				catch (IOException e)
-//				{
-//					Log.e("errorrrr", "Could not create file.");
-//				}
-//				// Log.i(TAG, path);
-//
-//				// _fileUri = Uri.fromFile(_photoFile);
-//				// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//				// intent.putExtra(MediaStore.EXTRA_OUTPUT, _fileUri);
-//				// startActivityForResult(intent, CAMERA_PIC_REQUEST);
-
 				picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
@@ -479,14 +544,11 @@ public class CoreonMain extends FragmentActivity
 			Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
 			toast.show();
 		}
-
-		// //picture
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-
 		if (resultCode == RESULT_OK)
 		{
 			switch (requestCode)
@@ -497,7 +559,7 @@ public class CoreonMain extends FragmentActivity
 
 					// Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
 
-//					picUri = mPhotoUri;
+					// picUri = mPhotoUri;
 					if (picUri == null)
 					{
 						Toast.makeText(getApplicationContext(), "Cannot retrieve picture", Toast.LENGTH_SHORT).show();
@@ -506,8 +568,6 @@ public class CoreonMain extends FragmentActivity
 					{
 						performCrop();
 					}
-
-					
 
 					break;
 				case PIC_CROP:
@@ -520,7 +580,7 @@ public class CoreonMain extends FragmentActivity
 					// ImageView picView = (ImageView)findViewById(R.id.picture);
 					// display the returned cropped image
 					// picView.setImageBitmap(thePic);
-					
+
 					// your ImageView
 					// ImageView photoImage = (ImageView) findViewById(R.id.imageViewCamera);
 					// photoImage.setImageBitmap(thumbnail);
@@ -534,10 +594,8 @@ public class CoreonMain extends FragmentActivity
 
 	private void performCrop()
 	{
-
 		try
 		{
-
 			// call the standard crop action intent (the user device may not support it)
 			Intent cropIntent = new Intent("com.android.camera.action.CROP");
 			// indicate image type and Uri
@@ -559,7 +617,7 @@ public class CoreonMain extends FragmentActivity
 		catch (ActivityNotFoundException anfe)
 		{
 			// display an error message
-			String errorMessage = "Whoops - your device doesn't support the crop action!";
+			String errorMessage = "Your device doesn't support the crop action!";
 			Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
 			toast.show();
 		}
@@ -568,6 +626,10 @@ public class CoreonMain extends FragmentActivity
 
 	public void showEnrollCardRegister(int category)
 	{
+		if (category == 0)
+		{
+			Log.e("conract", "category is 0");
+		}
 
 		TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(TELEPHONY_SERVICE);
 		String number = tm.getLine1Number();
@@ -585,8 +647,6 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				// Toast.makeText(getApplicationContext(), "Open Camera", Toast.LENGTH_LONG);
-				// ShowEnrollCard();
 				dispatchTakePictureIntent(1);
 			}
 		});
@@ -852,6 +912,7 @@ public class CoreonMain extends FragmentActivity
 
 	public void ShowAccountInformation()
 	{
+		historyStackAdd("accountinformation");
 		new ShowAccountInformation().execute("tester");
 	}
 
@@ -893,7 +954,6 @@ public class CoreonMain extends FragmentActivity
 
 	private class ShowHomePage extends AsyncTask<String, Void, String>
 	{
-
 		@Override
 		protected String doInBackground(String... params)
 		{
@@ -905,6 +965,9 @@ public class CoreonMain extends FragmentActivity
 			{
 				e.printStackTrace();
 			}
+
+			// _stack.add("home");
+			historyStackAdd("home");
 
 			adapterHome = new MySimpleArrayAdapter(getApplicationContext(), _title);
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -1065,6 +1128,11 @@ public class CoreonMain extends FragmentActivity
 
 	public View setPage(int id)
 	{
+		if (id == 0)
+		{
+			Log.e("conract", "id is 0");
+		}
+
 		// remove child views
 		ViewGroup layout = (ViewGroup) findViewById(R.id.dynamic_layout_main);
 		layout.removeAllViews();
@@ -1178,6 +1246,11 @@ public class CoreonMain extends FragmentActivity
 
 	public View setLayout(int id)
 	{
+		if (id == 0)
+		{
+			Log.e("conract", "id is 0");
+		}
+
 		// remove child views
 		ViewGroup layout = (ViewGroup) findViewById(R.id.dynamic_layout_main);
 		layout.removeAllViews();
@@ -1216,18 +1289,28 @@ public class CoreonMain extends FragmentActivity
 			menu.showContent(true);
 			return;
 		}
-		else if (stack == 1)
+		// else if (stack == 1)
+		// {
+		// SetHomepage();
+		// stack = 0;
+		// return;
+		// }
+		else
 		{
-			SetHomepage();
-			stack = 0;
+			historyStackShowLast();
 			return;
 		}
 
-		super.onBackPressed();
+		// super.onBackPressed();
 	}
 
 	public void openSendMoney(View view)
 	{
+		if (view == null)
+		{
+			Log.e("conract", "view is null");
+		}
+
 		Intent intent = new Intent(this, GlobeSendMoney.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		// overridePendingTransition(R.anim.righttoleft,R.anim.lefttoright);
@@ -1237,6 +1320,14 @@ public class CoreonMain extends FragmentActivity
 
 	public void openNotice(View view)
 	{
+		if (view == null)
+		{
+			Log.e("conract", "view is null");
+		}
+
+		// _stack.add("notice");
+		historyStackAdd("notice");
+
 		stack = 1;
 		removeHeaderbackColor();
 
@@ -1413,6 +1504,14 @@ public class CoreonMain extends FragmentActivity
 
 	public void openOffers(View view)
 	{
+		if (view == null)
+		{
+			Log.e("conract", "view is null");
+		}
+
+		// _stack.add("offer");
+		historyStackAdd("offer");
+
 		stack = 1;
 		removeHeaderbackColor();
 
@@ -1567,6 +1666,13 @@ public class CoreonMain extends FragmentActivity
 
 	public void openHelp(View view)
 	{
+		if (view == null)
+		{
+			Log.e("conract", "view is null");
+		}
+
+		historyStackAdd("help");
+
 		if (!helpSelected)
 		{
 			removeHeaderbackColor();
@@ -1593,6 +1699,11 @@ public class CoreonMain extends FragmentActivity
 
 	public static void hideSoftKeyboard(Activity activity)
 	{
+		if (activity == null)
+		{
+			Log.e("conract", "activity is null");
+		}
+
 		InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 	}

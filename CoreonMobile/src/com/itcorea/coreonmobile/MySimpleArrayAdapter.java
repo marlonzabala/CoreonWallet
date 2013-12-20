@@ -34,16 +34,16 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		this.context = context;
 	}
 
-	public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String> date, ArrayList<String> image,
-			ArrayList<String> type, ArrayList<String> extra)
-	{
-		this._title = title;
-		this._content = content;
-		this._date = date;
-		this._image = image;
-		this._type = type;
-		this._extra = extra;
-	}
+//	public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String> date, ArrayList<String> image,
+//			ArrayList<String> type, ArrayList<String> extra)
+//	{
+//		this._title = title;
+//		this._content = content;
+//		this._date = date;
+//		this._image = image;
+//		this._type = type;
+//		this._extra = extra;
+//	}
 
 	public void initiatizeStringsValues()
 	{
@@ -59,6 +59,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 
 	public void addStrings(String title, String content, String date, int image, String extra, String type)
 	{
+		if(title==null||content==null||date==null||extra==null||type==null)
+		{
+			Log.e("conract", "one or more of data are null");
+			//throw new IllegalArgumentException("Category 0" + category);
+		}
+		
 		_title.add(title);
 		_content.add(content);
 		_date.add(date);
@@ -78,6 +84,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
+		
 
 		// for development
 		// if (_type.size() <= position || this.getCount() <= position)
