@@ -25,7 +25,7 @@
         android:layout_alignBottom="@+id/textViewWhiteHeader"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageViewCardBackground"
+        android:layout_toRightOf="@+id/imageViewIconEmail"
         android:fontFamily="sans-serif"
         android:paddingLeft="11dp"
         android:paddingTop="11dp"
@@ -41,7 +41,7 @@
         android:layout_alignBottom="@+id/textViewWhiteHeader"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageViewCardBackground"
+        android:layout_toRightOf="@+id/imageViewIconEmail"
         android:fontFamily="sans-serif"
         android:paddingLeft="11dp"
         android:paddingTop="32dp"
@@ -50,7 +50,7 @@
         android:textSize="12sp" />
 
     <ImageView
-        android:id="@+id/imageViewCardBackground"
+        android:id="@+id/imageViewIconEmail"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textViewWhiteHeader"
