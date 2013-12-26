@@ -2,6 +2,8 @@ package com.itcorea.coreonmobile;
 
 import java.util.ArrayList;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 public class MySimpleArrayAdapter extends ArrayAdapter<String>
 {
 	private final Context	context;
+	String					ipAdd		= "192.168.123.111";
 
 	ArrayList<String>		_title		= new ArrayList<String>();
 	ArrayList<String>		_content	= new ArrayList<String>();
@@ -34,16 +37,17 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		this.context = context;
 	}
 
-//	public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String> date, ArrayList<String> image,
-//			ArrayList<String> type, ArrayList<String> extra)
-//	{
-//		this._title = title;
-//		this._content = content;
-//		this._date = date;
-//		this._image = image;
-//		this._type = type;
-//		this._extra = extra;
-//	}
+	// public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String>
+	// date, ArrayList<String> image,
+	// ArrayList<String> type, ArrayList<String> extra)
+	// {
+	// this._title = title;
+	// this._content = content;
+	// this._date = date;
+	// this._image = image;
+	// this._type = type;
+	// this._extra = extra;
+	// }
 
 	public void initiatizeStringsValues()
 	{
@@ -57,18 +61,20 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 		this.clear();
 	}
 
-	public void addStrings(String title, String content, String date, int image, String extra, String type)
+	public void addStrings(String title, String content, String date, String image, String extra, String type)
 	{
-		if(title==null||content==null||date==null||extra==null||type==null)
+		if (title == null || content == null || date == null || extra == null || type == null)
 		{
 			Log.e("conract", "one or more of data are null");
-			//throw new IllegalArgumentException("Category 0" + category);
+			// throw new IllegalArgumentException("Category 0" + category);
 		}
-		
+
+		// Integer.parseInt();
+
 		_title.add(title);
 		_content.add(content);
 		_date.add(date);
-		_image.add(String.valueOf(image));
+		_image.add(image);
 		_type.add(type);
 		_extra.add(extra);
 
@@ -84,7 +90,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
-		
 
 		// for development
 		// if (_type.size() <= position || this.getCount() <= position)
@@ -280,7 +285,16 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textTitle.setText(_title.get(position).toString());
 			textContent.setText(_content.get(position).toString());
 			textDate.setText(_date.get(position).toString());
-			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+
+			// insert urlimage viewer
+			
+			
+			String imageUrl = "http://" + ipAdd + "/android/image/" + _image.get(position).toString();
+			//Log.i("imageurl", imageUrl);
+			
+			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
+
+			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
 			rowView.setTag(tag);
 		}
@@ -325,7 +339,17 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textTitle.setText(_title.get(position).toString());
 			textContent.setText(_content.get(position).toString());
 			textDate.setText(_date.get(position).toString());
-			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+			
+			
+			
+			
+			String imageUrl = "http://" + ipAdd + "/android/image/" + _image.get(position).toString();
+			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
+			
+			//image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+			
+			
+			
 
 			TextView textButton = (TextView) rowView.findViewById(R.id.imageButtonVisit);
 			textButton.setOnClickListener(new View.OnClickListener() {
