@@ -89,8 +89,7 @@ public class CoreonMain extends FragmentActivity
 {
 	final static int				CAMERA_PIC_REQUEST	= 1;
 	final static int				PIC_CROP			= 2;
-	
-	
+
 	public Uri						picUri;
 	public static ViewPager			mPager;
 	public static int				history;
@@ -124,6 +123,7 @@ public class CoreonMain extends FragmentActivity
 	String							ipAdd				= "192.168.123.111";
 	int								timeoutsec			= 20000;					// 20 second
 																					// timeout
+	boolean							timeout				= false;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -214,6 +214,12 @@ public class CoreonMain extends FragmentActivity
 		if (_stack != null && (_stack.size() != 0))
 		{
 			// _stack.remove(_stack.size() - 1);
+
+			// if(_stack.get(_stack.size()-1).equals("ShowNoticeContent"))
+			// {
+			// _stack.remove(_stack.size() - 1);
+			// }
+
 			Log.e("removed", String.valueOf(_stack.remove(_stack.size() - 1)));
 		}
 	}
@@ -607,71 +613,10 @@ public class CoreonMain extends FragmentActivity
 			Log.e("conract", "actionCode is 0");
 		}
 
-		// Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// if (takePictureIntent.resolveActivity(getPackageManager()) != null)
-		// {
-		// startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
-		// }
-		//
 		Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
 		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
-		// we will handle the returned data in onActivityResult
 		startActivityForResult(captureIntent, CAMERA_CAPTURE);
-
-		// picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new
-		// ContentValues());
-		//
-		// //Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// //we will handle the returned data in onActivityResult
-		// captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
-		// startActivityForResult(captureIntent, CAMERA_CAPTURE);
-
-		// try
-		// {
-		// String storageState = Environment.getExternalStorageState();
-		// if (storageState.equals(Environment.MEDIA_MOUNTED))
-		// {
-		// picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new
-		// ContentValues());
-		//
-		// picUri.getPath();
-		// // picUri.getPath()
-		//
-		// File folder = new File(picUri.getPath());
-		// boolean success = false;
-		// if (!folder.exists())
-		// {
-		// success = folder.mkdirs();
-		// }
-		// if (!success)
-		// {
-		// Log.d("test", "Folder not created.");
-		// }
-		// else
-		// {
-		// Log.d("test", "Folder created!");
-		// }
-		//
-		// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// intent.putExtra(MediaStore.EXTRA_OUTPUT, picUri.getPath());
-		// startActivityForResult(intent, CAMERA_PIC_REQUEST);
-		// }
-		// else
-		// {
-		// new
-		// AlertDialog.Builder(CoreonMain.this).setMessage("External Storeage (SD Card) is required.\n\nCurrent state: "
-		// + storageState)
-		// .setCancelable(true).create().show();
-		// }
-		// }
-		// catch (ActivityNotFoundException anfe)
-		// {
-		// // display an error message
-		// String errorMessage = "Whoops - your device doesn't support capturing images!";
-		// Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-		// toast.show();
-		// }
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -1098,6 +1043,12 @@ public class CoreonMain extends FragmentActivity
 
 	public void showNoticeContent(MySimpleArrayAdapter adapter, int position)
 	{
+		historyStackAdd("ShowNoticeContent");
+
+		removeHeaderbackColor();
+		ImageButton im = (ImageButton) findViewById(R.id.imageButtonNotice);
+		im.setBackgroundColor(Color.WHITE);
+
 		String title = adapter._title.get(position).toString();
 		String date = adapter._date.get(position).toString();
 		String image = adapter._image.get(position).toString();
@@ -1106,7 +1057,7 @@ public class CoreonMain extends FragmentActivity
 
 		View noticeView = setPage(R.layout.notice_content);
 
-//		int imageInt = Integer.parseInt(image);
+		// int imageInt = Integer.parseInt(image);
 		MySimpleArrayAdapter noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 
 		noticeContentAdapter.initiatizeStringsValues();
@@ -1121,69 +1072,136 @@ public class CoreonMain extends FragmentActivity
 
 	private class ShowHomePage extends AsyncTask<String, Void, String>
 	{
+		ArrayList<String[]>	noticeRowList;
+		ArrayList<String[]>	offerRowList;
+
 		@Override
 		protected String doInBackground(String... params)
 		{
 			try
 			{
-				Thread.sleep(500);
+				// notices
+				String httpAddress = "http://" + ipAdd + "/android/notice.php";
+
+				Log.i("urlPost", httpAddress.toString());
+				String result = sendPost(httpAddress);
+				JSONArray jArray = null;
+
+				jArray = new JSONArray(result);
+				JSONObject json_data = null;
+				noticeRowList = new ArrayList<String[]>();
+
+				for (int i = 0; i < jArray.length(); i++)
+				{
+					json_data = jArray.getJSONObject(i);
+					noticeRowList.add(new String[] { json_data.getString("id"), json_data.getString("title"), json_data.getString("notice"),
+							json_data.getString("date"), json_data.getString("url"), json_data.getString("image_path") });
+				}
+
+				// offers
+				String httpAddressOffers = "http://" + ipAdd + "/android/offer.php";
+				Log.i("urlPost", httpAddressOffers.toString());
+				String resultOffer = sendPost(httpAddressOffers);
+				JSONArray jArrayOffer = null;
+
+				jArrayOffer = new JSONArray(resultOffer);
+				JSONObject json_dataOffer = null;
+				offerRowList = new ArrayList<String[]>();
+
+				for (int i = 0; i < jArrayOffer.length(); i++)
+				{
+					json_dataOffer = jArrayOffer.getJSONObject(i);
+					offerRowList.add(new String[] { json_dataOffer.getString("id"), json_dataOffer.getString("title"),
+							json_dataOffer.getString("offer"), json_dataOffer.getString("date"), json_dataOffer.getString("url"),
+							json_dataOffer.getString("image_path") });
+				}
+
+				// _stack.add("home");
+				historyStackAdd("home");
+
+				adapterHome = new MySimpleArrayAdapter(getApplicationContext(), _title);
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+				String fname = prefs.getString("fname", "firstname");
+				String lname = prefs.getString("lname", "lastname");
+				String points = prefs.getString("points", "0");
+
+				adapterHome.initiatizeStringsValues();
+
+				adapterHome.addStrings("", "", "", "", "", "space");
+
+				// user informations
+				adapterHome.addStrings("userinfo", fname, "userinfo", "", "userinfo", "userinfo");
+				adapterHome.addStrings("My Cards", "0 Cards", "userinfo", "", "userinfo", "usercontent");
+				adapterHome.addStrings("", "", "", "", "", "userline");
+				adapterHome.addStrings("Coreon Points", points + " Points", "userinfo", "", "userinfo", "usercontent");
+				adapterHome.addStrings("", "", "", "", "", "userline");
+				adapterHome.addStrings("Notice", "12", "userinfo", "", "userinfo", "usercontent");
+				adapterHome.addStrings("userinfo", "userinfo", "userinfo", "", "userinfo", "userbottom");
+
+				adapterHome.addStrings("", "", "", "", "", "space");
+				adapterHome.addStrings("Exclusive Offers", "", "", "", "header", "header");
+
+				for (int j = 0; j < offerRowList.size(); j++)
+				{
+					// noticeRowList.get(i)[1]
+					adapterHome.addStrings(offerRowList.get(j)[1], offerRowList.get(j)[2], offerRowList.get(j)[3], offerRowList.get(j)[5],
+							offerRowList.get(j)[4], "textimage");
+				}
+
+				// adapterHome.addStrings("Dong Won Restaurant",
+				// "Get 50% off on your test test test test test test test test payment of Coreon Card",
+				// "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_1),
+				// "www.google.com", "textimage");
+				// adapterHome
+				// .addStrings(
+				// "Dong Won Restaurant",
+				// "Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
+				// "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_2),
+				// "http://www.coreonmobile.com/", "textimage");
+				// adapterHome
+				// .addStrings(
+				// "Won Dong Restaurant",
+				// "Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
+				// "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_2),
+				// "http://www.coreonmobile.com/", "textimage");
+				// adapterHome.addStrings("Dong Won Restaurant", "payment of Coreon Card",
+				// "August 25, 2013 at 11:30 PM",
+				// String.valueOf(R.drawable.offer_image_1), "www.yahoo.com", "textimage");
+
+				adapterHome.addStrings("", "", "", "", "", "bottomshadow");
+				adapterHome.addStrings("", "", "", "", "", "space");
+				adapterHome.addStrings("Notice", "", "", "", "header", "header");
+
+				for (int j = 0; j < noticeRowList.size(); j++)
+				{
+					// noticeRowList.get(i)[1]
+					adapterHome.addStrings(noticeRowList.get(j)[1], noticeRowList.get(j)[2], noticeRowList.get(j)[3], noticeRowList.get(j)[5],
+							noticeRowList.get(j)[4], "textimage");
+				}
+
+				adapterHome
+						.addStrings(
+								"Dong Won Restaurant",
+								"Get 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon Card",
+								"August 25, 2013 at 11:30 PM", "", "text", "text");
+				adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", "",
+						"text", "text");
+				adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", "",
+						"text", "text");
+
+				adapterHome.addStrings("", "", "", "", "", "bottomshadow");
+				adapterHome.addStrings("", "180", "", "", "", "space");
+
 			}
-			catch (InterruptedException e)
+			catch (JSONException e1)
 			{
-				e.printStackTrace();
+				Log.e("Exception1", e1.toString());
 			}
-
-			// _stack.add("home");
-			historyStackAdd("home");
-
-			adapterHome = new MySimpleArrayAdapter(getApplicationContext(), _title);
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-			String fname = prefs.getString("fname", "firstname");
-			String lname = prefs.getString("lname", "lastname");
-			String points = prefs.getString("points", "0");
-
-			adapterHome.initiatizeStringsValues();
-
-			adapterHome.addStrings("", "", "", "", "", "space");
-
-			adapterHome.addStrings("userinfo", fname, "userinfo", "", "userinfo", "userinfo");
-			adapterHome.addStrings("My Cards", "0 Cards", "userinfo", "", "userinfo", "usercontent");
-			adapterHome.addStrings("", "", "", "", "", "userline");
-			adapterHome.addStrings("Coreon Points", points + " Points", "userinfo", "", "userinfo", "usercontent");
-			adapterHome.addStrings("", "", "", "", "", "userline");
-			adapterHome.addStrings("Notice", "12", "userinfo", "", "userinfo", "usercontent");
-			adapterHome.addStrings("userinfo", "userinfo", "userinfo", "", "userinfo", "userbottom");
-
-			adapterHome.addStrings("", "", "", "", "", "space");
-
-			adapterHome.addStrings("Exclusive Offers", "", "", "", "header", "header");
-			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your test test test test test test test test payment of Coreon Card",
-					"August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_1), "www.google.com", "textimage");
-			adapterHome
-					.addStrings(
-							"Dong Won Restaurant",
-							"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-							"August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_2), "http://www.coreonmobile.com/", "textimage");
-			adapterHome
-					.addStrings(
-							"Won Dong Restaurant",
-							"Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-							"August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_2), "http://www.coreonmobile.com/", "textimage");
-			adapterHome.addStrings("Dong Won Restaurant", "payment of Coreon Card", "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_1),
-					"www.yahoo.com", "textimage");
-			adapterHome.addStrings("", "", "", "", "", "bottomshadow");
-			adapterHome.addStrings("", "", "", "", "", "space");
-			adapterHome.addStrings("Notice", "", "", "", "header", "header");
-			adapterHome.addStrings("Dong Won Restaurant",
-					"Get 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon Card",
-					"August 25, 2013 at 11:30 PM", "", "text", "text");
-			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", "", "text",
-					"text");
-			adapterHome.addStrings("Dong Won Restaurant", "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", "", "text",
-					"text");
-			adapterHome.addStrings("", "", "", "", "", "bottomshadow");
-			adapterHome.addStrings("", "180", "", "", "", "space");
+			catch (ParseException e1)
+			{
+				Log.e("Exception2", e1.toString());
+			}
 
 			return "";
 		}
@@ -1194,6 +1212,15 @@ public class CoreonMain extends FragmentActivity
 			View view6 = setLayout(R.layout.main_info_home_list);
 
 			ListView listView = (ListView) view6.findViewById(R.id.listView1);
+
+			if (!network)
+			{
+				Toast.makeText(getApplicationContext(), "No Internet or Data Connection", Toast.LENGTH_LONG).show();
+			}
+			if (timeout)
+			{
+				Toast.makeText(getApplicationContext(), "Server cannot be reached", Toast.LENGTH_LONG).show();
+			}
 
 			listView.setAdapter(adapterHome);
 			listView.setDividerHeight(0);
@@ -1466,7 +1493,7 @@ public class CoreonMain extends FragmentActivity
 
 	private String sendPost(String httpAddress)
 	{
-		boolean timeout = false;
+		timeout = false;
 		String result = "";
 		StringBuilder sb = null;
 		InputStream is = null;
@@ -1483,6 +1510,7 @@ public class CoreonMain extends FragmentActivity
 		else
 		{
 			network = true;
+			timeout = false;
 			try
 			{
 
@@ -1500,6 +1528,7 @@ public class CoreonMain extends FragmentActivity
 			{
 				// timeout connection
 				timeout = true;
+				Log.e("logs1", "Timeout");
 				return "";
 			}
 			catch (Exception e)
@@ -1582,7 +1611,7 @@ public class CoreonMain extends FragmentActivity
 					for (int i = 0; i < jArray.length(); i++)
 					{
 						json_data = jArray.getJSONObject(i);
-						rowList.add(new String[] { json_data.getString("id"), json_data.getString("title"), json_data.getString("news"),
+						rowList.add(new String[] { json_data.getString("id"), json_data.getString("title"), json_data.getString("notice"),
 								json_data.getString("date"), json_data.getString("url"), json_data.getString("image_path") });
 					}
 				}
@@ -1616,6 +1645,10 @@ public class CoreonMain extends FragmentActivity
 				if (!network)
 				{
 					Toast.makeText(getApplicationContext(), "No Interned or Data Connection", Toast.LENGTH_LONG).show();
+				}
+				if (timeout)
+				{
+					Toast.makeText(getApplicationContext(), "Server cannot be reached", Toast.LENGTH_LONG).show();
 				}
 
 				ListView listViewNotice = (ListView) findViewById(R.id.listViewNotices);
@@ -1665,10 +1698,7 @@ public class CoreonMain extends FragmentActivity
 
 		}
 	}
-	
-	
-	
-	
+
 	public void openOffers(View view)
 	{
 		if (view == null)
@@ -1680,8 +1710,8 @@ public class CoreonMain extends FragmentActivity
 		new OpenOffersList().execute("");
 
 		return;
-	}	
-	
+	}
+
 	private class OpenOffersList extends AsyncTask<String, Void, String>
 	{
 		List<String[]>	rowList;
@@ -1754,7 +1784,11 @@ public class CoreonMain extends FragmentActivity
 
 				if (!network)
 				{
-					Toast.makeText(getApplicationContext(), "No Interned or Data Connection", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "No Internet or Data Connection", Toast.LENGTH_LONG).show();
+				}
+				if (timeout)
+				{
+					Toast.makeText(getApplicationContext(), "Server cannot be reached", Toast.LENGTH_LONG).show();
 				}
 
 				ListView listViewOffers = (ListView) findViewById(R.id.listViewOffers);
@@ -1764,9 +1798,11 @@ public class CoreonMain extends FragmentActivity
 				// list Offers
 				for (int i = 0; i < rowList.size(); i++)
 				{
-//					adapter.addStrings(rowList.get(i)[1].toString(), rowList.get(i)[2].toString(), rowList.get(i)[3].toString(),
-//							String.valueOf(R.drawable.offer_image_1), rowList.get(i)[4].toString(), "textimagenotice");
-					
+					// adapter.addStrings(rowList.get(i)[1].toString(),
+					// rowList.get(i)[2].toString(), rowList.get(i)[3].toString(),
+					// String.valueOf(R.drawable.offer_image_1), rowList.get(i)[4].toString(),
+					// "textimagenotice");
+
 					adapter.addStrings(rowList.get(i)[1].toString(), rowList.get(i)[2].toString(), rowList.get(i)[3].toString(),
 							rowList.get(i)[5].toString(), rowList.get(i)[4].toString(), "textimagenotice");
 				}
@@ -1803,7 +1839,7 @@ public class CoreonMain extends FragmentActivity
 		{
 
 		}
-	}	
+	}
 
 	public void openHelp(View view)
 	{

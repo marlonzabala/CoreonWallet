@@ -78,11 +78,11 @@
                 android:layout_height="200dp"
                 android:layout_alignLeft="@+id/lblDateText"
                 android:layout_alignRight="@+id/lblDateText"
-                android:paddingLeft="@dimen/card_inner_padding"
-                android:paddingRight="@dimen/card_inner_padding"
                 android:layout_below="@+id/lblDateText"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="@dimen/card_inner_padding"
+                android:scaleType="fitCenter"
                 android:src="@drawable/offer_image_1" />
 
             <TextView

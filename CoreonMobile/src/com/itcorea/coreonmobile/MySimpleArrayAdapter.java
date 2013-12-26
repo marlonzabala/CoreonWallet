@@ -317,7 +317,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			textTitle.setText(_title.get(position).toString());
 			textContent.setText(_content.get(position).toString());
 			textDate.setText(_date.get(position).toString());
-			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+			
+			
+			
+			
+			String imageUrl = "http://" + ipAdd + "/android/image/" + _image.get(position).toString();
+			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
+			//image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
 			rowView.setTag(tag);
 		}

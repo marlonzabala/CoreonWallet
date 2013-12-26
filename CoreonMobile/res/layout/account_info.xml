@@ -13,6 +13,7 @@
         android:cacheColorHint="@android:color/transparent"
         android:clickable="true"
         android:dividerHeight="-2dip"
+        android:scrollbars="none"
         android:listSelector="@android:color/transparent" >
     </ListView>
 

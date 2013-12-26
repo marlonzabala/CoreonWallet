@@ -88,6 +88,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/textViewHeaderMenu"
             android:dividerHeight="-1dip"
+            android:scrollbars="none"
             android:groupIndicator="@drawable/groupindicator" />
 
         <!-- android:layout_alignParentTop="true" -->
