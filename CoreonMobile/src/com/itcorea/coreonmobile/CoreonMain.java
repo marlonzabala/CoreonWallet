@@ -1,6 +1,7 @@
 package com.itcorea.coreonmobile;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,6 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -93,18 +92,17 @@ import eu.janmuller.android.simplecropimage.CropImage;
 @SuppressLint("CutPasteId")
 public class CoreonMain extends FragmentActivity
 {
-	final static int				CAMERA_PIC_REQUEST	= 1;
-	final static int				PIC_CROP			= 2;
-	final static int				CAMERA_CAPTURE		= 3;
+	final static int				PIC_CROP		= 0x1;
+	final static int				CAMERA_CAPTURE	= 0x2;
 
 	public Uri						picUri;
 	public static ViewPager			mPager;
 	public static int				history;
 	int								margin;
 
-	boolean							noticeSelected		= false;
-	boolean							offerSelected		= false;
-	boolean							helpSelected		= false;
+	boolean							noticeSelected	= false;
+	boolean							offerSelected	= false;
+	boolean							helpSelected	= false;
 
 	ExpandableListAdapter			listAdapter;
 	ListView						listViewCard;
@@ -115,22 +113,22 @@ public class CoreonMain extends FragmentActivity
 	MySimpleArrayAdapter			adapterHome;
 	Uri								mPhotoUri;
 
-	ArrayList<String>				_title				= new ArrayList<String>();
-	ArrayList<String>				_stack				= new ArrayList<String>();
+	ArrayList<String>				_title			= new ArrayList<String>();
+	ArrayList<String>				_stack			= new ArrayList<String>();
 
 	List<String>					listDataHeaderImage;
 	HashMap<String, List<String>>	listDataChildImage;
 	View							view;
-	int								dev					= 15;
+	int								dev				= 15;
 
 	SlidingMenu						menu;
 
 	// network related variables
 	// desktop set to static ip 192.168.123.111
-	String							ipAdd				= "125.5.16.155/coreonwallet";	// "192.168.123.111";
-	int								timeoutsec			= 20000;						// 20 second
-																						// timeout
-	boolean							timeout				= false;
+	String							ipAdd			= "125.5.16.155/coreonwallet";	// "192.168.123.111";
+	int								timeoutsec		= 20000;						// 20 second
+																					// timeout
+	boolean							timeout			= false;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -444,6 +442,21 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 		cardAdapter.initiatizeStringsValues();
 		cardAdapter.addStrings("", "30", "", "", "", "space");
+		
+		
+		
+		
+		
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		String cardPath = prefs.getString("card", "");
+		
+		if(!cardPath.equals(""))
+		{
+			cardAdapter.addStrings("path", cardPath, "", "0", "", "card");
+		}
+		
+		
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card1), "", "card");
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card2), "", "card");
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card3), "", "card");
@@ -459,12 +472,12 @@ public class CoreonMain extends FragmentActivity
 			public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 			{
 				// show card when clicked
-				showPhoto(Integer.parseInt(cardAdapter._image.get(position)));
+				showPhoto(Integer.parseInt(cardAdapter._image.get(position)),cardAdapter._content.get(position));
 			};
 		});
 	}
 
-	private void showPhoto(int drawable)
+	private void showPhoto(int drawable, String Image)
 	{
 		if (drawable == 0)
 		{
@@ -474,7 +487,26 @@ public class CoreonMain extends FragmentActivity
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.card_chooser_fragment, (ViewGroup) findViewById(R.id.root), false);
 		ImageView imageCard = (ImageView) rowView.findViewById(R.id.imageViewCard);
-		imageCard.setImageResource(drawable);
+		
+		
+		if(drawable==0)
+		{
+			File imgFile = new  File(Image);
+			if(imgFile.exists()){
+
+			    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			    imageCard.setImageBitmap(myBitmap);
+
+			}
+			
+		}
+		else
+		{
+			imageCard.setImageResource(drawable);
+		}
+		
+		
+		
 		final Dialog dialog = new Dialog(this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(rowView);
@@ -609,6 +641,90 @@ public class CoreonMain extends FragmentActivity
 		return output;
 	}
 
+	private void takePictureAndCrop()
+	{
+		Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+		startActivityForResult(captureIntent, CAMERA_CAPTURE);
+	}
+
+	Bitmap	bitmapImage;
+
+	private void runCropImage()
+	{
+		Intent intent = new Intent(this, CropImage.class);
+		String filePath = getRealPathFromURI(getApplicationContext(), picUri);
+		intent.putExtra(CropImage.IMAGE_PATH, filePath);
+		intent.putExtra(CropImage.SCALE, true);
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 2);
+		startActivityForResult(intent, PIC_CROP);
+	}
+
+	public String getRealPathFromURI(Context context, Uri contentUri)
+	{
+		Cursor cursor = null;
+		try
+		{
+			String[] proj = { MediaStore.Images.Media.DATA };
+			cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+			int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			cursor.moveToFirst();
+			return cursor.getString(column_index);
+		}
+		finally
+		{
+			if (cursor != null)
+			{
+				cursor.close();
+			}
+		}
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK)
+		{
+			if (requestCode == CAMERA_CAPTURE)
+			{
+				runCropImage();
+				Log.e("Camera", "Capture");
+				return;
+			}
+			else if (requestCode == PIC_CROP)
+			{
+				String path = data.getStringExtra(CropImage.IMAGE_PATH);
+
+				if (path == null)
+				{
+					return;
+				}
+
+				Bitmap bitmapTemp = BitmapFactory.decodeFile(path);
+
+				ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
+				// display the returned cropped image
+				
+				bitmapImage = getRoundedCornerBitmap(bitmapTemp);
+				
+				
+				picView.setImageBitmap(bitmapImage);
+
+				ImageView pic1 = (ImageView) findViewById(R.id.imageViewDefaultPicture);
+				ImageView pic2 = (ImageView) findViewById(R.id.imageViewPicture2);
+				pic1.setVisibility(View.GONE);
+				pic2.setVisibility(View.GONE);
+
+				TextView text1 = (TextView) findViewById(R.id.textView1Description);
+				text1.setVisibility(View.GONE);
+
+				TextView text2 = (TextView) findViewById(R.id.textView2Description);
+				text2.setVisibility(View.GONE);
+			}
+		}
+	}
+
 	public void showEnrollCardRegister(int category)
 	{
 		if (category == 0)
@@ -633,7 +749,6 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-
 			}
 		});
 
@@ -644,7 +759,7 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-
+				takePictureAndCrop();
 			}
 		});
 
@@ -666,12 +781,36 @@ public class CoreonMain extends FragmentActivity
 				}
 				else
 				{
+					try
+					{
+						FileOutputStream out = new FileOutputStream(getRealPathFromURI(getApplicationContext(), picUri));
+						bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
+						out.close();
+						
+						
+						Log.e("save path", getRealPathFromURI(getApplicationContext(), picUri));
+						
+						
+						
+						
+						
+						SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString("card", getRealPathFromURI(getApplicationContext(), picUri));
+						editor.commit();
+						
+						cardAdapter.addStrings("path", getRealPathFromURI(getApplicationContext(), picUri), "", "0", "", "card");
+					}
+					catch (Exception e)
+					{
+						Log.e("fvafva", "sdfbsdf");
+						e.printStackTrace();
+					}
 
-					BitmapFactory.Options options = new BitmapFactory.Options();
-					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-					Bitmap bitmap = BitmapFactory.decodeFile("cardPicture.png", options);
-					picView.setImageBitmap(bitmap);
-
+					// BitmapFactory.Options options = new BitmapFactory.Options();
+					// options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+					// Bitmap bitmap = BitmapFactory.decodeFile("cardPicture.png", options);
+					// picView.setImageBitmap(bitmap);
 				}
 			}
 		});

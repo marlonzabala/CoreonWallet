@@ -1,14 +1,14 @@
 package com.itcorea.coreonmobile;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-
-import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.util.Log;
@@ -20,20 +20,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serializable
 {
 	private transient static Context	context;
-	
-	private transient final String					ipAdd		= "125.5.16.155/coreonwallet";//"192.168.123.111";
-	private static final long serialVersionUID = 6529685098267757690L;
 
-	public transient ArrayList<String>		_title		= new ArrayList<String>();
-	public transient ArrayList<String>		_content	= new ArrayList<String>();
-	public transient ArrayList<String>		_date		= new ArrayList<String>();
-	public transient ArrayList<String>		_image		= new ArrayList<String>();
-	public transient ArrayList<String>		_type		= new ArrayList<String>();
-	public transient ArrayList<String>		_extra		= new ArrayList<String>();
-	
+	private transient final String		ipAdd				= "125.5.16.155/coreonwallet";	// "192.168.123.111";
+	private static final long			serialVersionUID	= 6529685098267757690L;
+
+	public transient ArrayList<String>	_title				= new ArrayList<String>();
+	public transient ArrayList<String>	_content			= new ArrayList<String>();
+	public transient ArrayList<String>	_date				= new ArrayList<String>();
+	public transient ArrayList<String>	_image				= new ArrayList<String>();
+	public transient ArrayList<String>	_type				= new ArrayList<String>();
+	public transient ArrayList<String>	_extra				= new ArrayList<String>();
+
 	public MySimpleArrayAdapter()
 	{
 		super(context, 0);
@@ -44,8 +46,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 		super(context, R.layout.card_text_image_notice_content, values);
 		this.context = context;
 	}
-	
-	
 
 	// public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String>
 	// date, ArrayList<String> image,
@@ -297,11 +297,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textDate.setText(_date.get(position).toString());
 
 			// insert urlimage viewer
-			
-			
+
 			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
-			//Log.i("imageurl", imageUrl);
-			
+			// Log.i("imageurl", imageUrl);
+
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
 
 			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
@@ -327,13 +326,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textTitle.setText(_title.get(position).toString());
 			textContent.setText(_content.get(position).toString());
 			textDate.setText(_date.get(position).toString());
-			
-			
-			
-			
+
 			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
-			//image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
 			rowView.setTag(tag);
 		}
@@ -355,17 +351,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textTitle.setText(_title.get(position).toString());
 			textContent.setText(_content.get(position).toString());
 			textDate.setText(_date.get(position).toString());
-			
-			
-			
-			
+
 			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
-			
-			//image.setImageResource(Integer.parseInt(_image.get(position).toString()));
-			
-			
-			
+
+			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
 			TextView textButton = (TextView) rowView.findViewById(R.id.imageButtonVisit);
 			textButton.setOnClickListener(new View.OnClickListener() {
@@ -515,7 +505,20 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			}
 
 			ImageView image = (ImageView) rowView.findViewById(R.id.imageViewCard);
-			image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+
+			if (_title.get(position).toString().equals("path"))
+			{
+				File imgFile = new File(_content.get(position));
+				if (imgFile.exists())
+				{
+					Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+					image.setImageBitmap(myBitmap);
+				}
+			}
+			else
+			{
+				image.setImageResource(Integer.parseInt(_image.get(position).toString()));
+			}
 
 			// }
 			// catch (Exception e)
