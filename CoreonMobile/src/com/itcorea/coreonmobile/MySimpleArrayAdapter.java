@@ -1,5 +1,6 @@
 package com.itcorea.coreonmobile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -19,23 +20,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MySimpleArrayAdapter extends ArrayAdapter<String>
+public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serializable
 {
-	private final Context	context;
-	String					ipAdd		= "192.168.123.111";
+	private transient static Context	context;
+	
+	private transient final String					ipAdd		= "125.5.16.155/coreonwallet";//"192.168.123.111";
+	private static final long serialVersionUID = 6529685098267757690L;
 
-	ArrayList<String>		_title		= new ArrayList<String>();
-	ArrayList<String>		_content	= new ArrayList<String>();
-	ArrayList<String>		_date		= new ArrayList<String>();
-	ArrayList<String>		_image		= new ArrayList<String>();
-	ArrayList<String>		_type		= new ArrayList<String>();
-	ArrayList<String>		_extra		= new ArrayList<String>();
+	public transient ArrayList<String>		_title		= new ArrayList<String>();
+	public transient ArrayList<String>		_content	= new ArrayList<String>();
+	public transient ArrayList<String>		_date		= new ArrayList<String>();
+	public transient ArrayList<String>		_image		= new ArrayList<String>();
+	public transient ArrayList<String>		_type		= new ArrayList<String>();
+	public transient ArrayList<String>		_extra		= new ArrayList<String>();
+	
+	public MySimpleArrayAdapter()
+	{
+		super(context, 0);
+	}
 
 	public MySimpleArrayAdapter(Context context, ArrayList<String> values)
 	{
 		super(context, R.layout.card_text_image_notice_content, values);
 		this.context = context;
 	}
+	
+	
 
 	// public void setValues(ArrayList<String> title, ArrayList<String> content, ArrayList<String>
 	// date, ArrayList<String> image,
@@ -289,7 +299,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			// insert urlimage viewer
 			
 			
-			String imageUrl = "http://" + ipAdd + "/android/image/" + _image.get(position).toString();
+			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			//Log.i("imageurl", imageUrl);
 			
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
@@ -321,7 +331,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			
 			
 			
-			String imageUrl = "http://" + ipAdd + "/android/image/" + _image.get(position).toString();
+			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
 			//image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
@@ -349,7 +359,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String>
 			
 			
 			
-			String imageUrl = "http://" + ipAdd + "/android/image/" + _image.get(position).toString();
+			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
 			
 			//image.setImageResource(Integer.parseInt(_image.get(position).toString()));

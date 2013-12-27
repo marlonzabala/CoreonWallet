@@ -57,7 +57,7 @@ public class LogIn extends Activity
 
 		// for dev
 		// test for errors
-		LoggedIn = true;
+		//LoggedIn = true;
 
 		// for dev
 		EditText ep = (EditText) findViewById(R.id.editPassword);
@@ -129,6 +129,9 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 	private Context		mContext;
 	private Activity	mActivity;
 	ProgressDialog		mDialog;
+	
+	// desktop set to static ip 192.168.123.111
+	String ipAdd = "125.5.16.155/coreonwallet";
 
 	public CheckCredentials(Context context, Activity activity)
 	{
@@ -211,9 +214,8 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 			network = true;
 		}
 
-		// desktop set to static ip 192.168.123.111
-		String ipAdd = "192.168.123.111";
-		String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'&request=" + params[2] + "";
+		
+		String httpAddress = "http://" + ipAdd + "/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'&request=" + params[2] + "";
 
 		Log.i("urlPost", httpAddress.toString());
 		String result = sendPost(httpAddress);
