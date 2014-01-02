@@ -1306,26 +1306,6 @@ public class CoreonMain extends FragmentActivity
 							offerRowList.get(j)[4], "textimage");
 				}
 
-				// adapterHome.addStrings("Dong Won Restaurant",
-				// "Get 50% off on your test test test test test test test test payment of Coreon Card",
-				// "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_1),
-				// "www.google.com", "textimage");
-				// adapterHome
-				// .addStrings(
-				// "Dong Won Restaurant",
-				// "Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-				// "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_2),
-				// "http://www.coreonmobile.com/", "textimage");
-				// adapterHome
-				// .addStrings(
-				// "Won Dong Restaurant",
-				// "Lorem ipsum dolor sit amet, dico simul pri ea, cum ullum euismod maiorum ex. Eum an sale copiosae, semper delenit antiopam ad vim. Eos ne accusam invidunt maiestatis, tibique legendos an pro. An discere vituperata cotidieque vis. Per laudem doming persecuti at, audire incorrupte philosophia no vis.",
-				// "August 25, 2013 at 11:30 PM", String.valueOf(R.drawable.offer_image_2),
-				// "http://www.coreonmobile.com/", "textimage");
-				// adapterHome.addStrings("Dong Won Restaurant", "payment of Coreon Card",
-				// "August 25, 2013 at 11:30 PM",
-				// String.valueOf(R.drawable.offer_image_1), "www.yahoo.com", "textimage");
-
 				adapterHome.addStrings("", "", "", "", "", "bottomshadow");
 				adapterHome.addStrings("", "", "", "", "", "space");
 				adapterHome.addStrings("Notice", "", "", "", "header", "header");
@@ -1337,17 +1317,6 @@ public class CoreonMain extends FragmentActivity
 							noticeRowList.get(j)[4], "text");
 				}
 
-				// adapterHome
-				// .addStrings(
-				// "Dong Won Restaurant",
-				// "Get 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon CardGet 50% off on your payment of Coreon Card",
-				// "August 25, 2013 at 11:30 PM", "", "text", "text");
-				// adapterHome.addStrings("Dong Won Restaurant",
-				// "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", "",
-				// "text", "text");
-				// adapterHome.addStrings("Dong Won Restaurant",
-				// "Get 50% off on your payment of Coreon Card", "August 25, 2013 at 11:30 PM", "",
-				// "text", "text");
 
 				adapterHome.addStrings("", "", "", "", "", "bottomshadow");
 				adapterHome.addStrings("", "180", "", "", "", "space");
