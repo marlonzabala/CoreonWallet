@@ -442,21 +442,15 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 		cardAdapter.initiatizeStringsValues();
 		cardAdapter.addStrings("", "30", "", "", "", "space");
-		
-		
-		
-		
-		
-		
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		String cardPath = prefs.getString("card", "");
-		
-		if(!cardPath.equals(""))
+
+		if (!cardPath.equals(""))
 		{
 			cardAdapter.addStrings("path", cardPath, "", "0", "", "card");
 		}
-		
-		
+
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card1), "", "card");
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card2), "", "card");
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card3), "", "card");
@@ -472,7 +466,7 @@ public class CoreonMain extends FragmentActivity
 			public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 			{
 				// show card when clicked
-				showPhoto(Integer.parseInt(cardAdapter._image.get(position)),cardAdapter._content.get(position));
+				showPhoto(Integer.parseInt(cardAdapter._image.get(position)), cardAdapter._content.get(position));
 			};
 		});
 	}
@@ -487,26 +481,24 @@ public class CoreonMain extends FragmentActivity
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.card_chooser_fragment, (ViewGroup) findViewById(R.id.root), false);
 		ImageView imageCard = (ImageView) rowView.findViewById(R.id.imageViewCard);
-		
-		
-		if(drawable==0)
-		{
-			File imgFile = new  File(Image);
-			if(imgFile.exists()){
 
-			    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-			    imageCard.setImageBitmap(myBitmap);
+		if (drawable == 0)
+		{
+			File imgFile = new File(Image);
+			if (imgFile.exists())
+			{
+
+				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+				imageCard.setImageBitmap(myBitmap);
 
 			}
-			
+
 		}
 		else
 		{
 			imageCard.setImageResource(drawable);
 		}
-		
-		
-		
+
 		final Dialog dialog = new Dialog(this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(rowView);
@@ -705,10 +697,9 @@ public class CoreonMain extends FragmentActivity
 
 				ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
 				// display the returned cropped image
-				
+
 				bitmapImage = getRoundedCornerBitmap(bitmapTemp);
-				
-				
+
 				picView.setImageBitmap(bitmapImage);
 
 				ImageView pic1 = (ImageView) findViewById(R.id.imageViewDefaultPicture);
@@ -740,8 +731,48 @@ public class CoreonMain extends FragmentActivity
 		final ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
 
 		// set phone number on text
-		TextView textNumber = (TextView) view2.findViewById(R.id.textViewNumber);
-		textNumber.setText(number.toString());
+		TextView textNumber = (TextView) view2.findViewById(R.id.textViewPhoneNumber);
+
+		String phoneNumber = "none";
+
+		final EditText input = new EditText(CoreonMain.this);
+		input.setText("");
+
+		if (number == null)
+		{
+			Toast.makeText(getApplicationContext(), "unable to get number", Toast.LENGTH_SHORT).show();
+
+			new AlertDialog.Builder(CoreonMain.this).setTitle("Mobile Number").setView(input)
+					.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton)
+						{
+							// phoneNumber = input.getText().toString();
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton)
+						{
+							// Do nothing.
+						}
+					}).show();
+
+			input.requestFocus();
+			input.postDelayed(new Runnable() {
+				@Override
+				public void run()
+				{
+					InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					keyboard.showSoftInput(input, 0);
+				}
+			}, 200);
+
+			phoneNumber = input.getText().toString();
+
+		}
+		else
+		{
+			phoneNumber = number.toString();
+		}
+		textNumber.setText(phoneNumber);
 
 		ImageView imDefaultImage = (ImageView) view2.findViewById(R.id.imageViewDefaultPicture);
 		// on click on capture image
@@ -786,19 +817,14 @@ public class CoreonMain extends FragmentActivity
 						FileOutputStream out = new FileOutputStream(getRealPathFromURI(getApplicationContext(), picUri));
 						bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
 						out.close();
-						
-						
+
 						Log.e("save path", getRealPathFromURI(getApplicationContext(), picUri));
-						
-						
-						
-						
-						
+
 						SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 						SharedPreferences.Editor editor = preferences.edit();
 						editor.putString("card", getRealPathFromURI(getApplicationContext(), picUri));
 						editor.commit();
-						
+
 						cardAdapter.addStrings("path", getRealPathFromURI(getApplicationContext(), picUri), "", "0", "", "card");
 					}
 					catch (Exception e)
@@ -1098,10 +1124,11 @@ public class CoreonMain extends FragmentActivity
 				// on screen on startup
 				editor.commit();
 
-				Toast.makeText(getApplicationContext(), "Logging Out..", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(), "Logging Out..",
+				// Toast.LENGTH_SHORT).show();
 
 				// finish this activity
-				
+
 				Intent newIntent = new Intent(CoreonMain.this, LogIn.class);
 				startActivity(newIntent);
 				((Activity) CoreonMain.this).finish();
@@ -1445,6 +1472,7 @@ public class CoreonMain extends FragmentActivity
 		@Override
 		protected void onProgressUpdate(Void... values)
 		{
+
 		}
 	}
 
