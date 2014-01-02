@@ -117,6 +117,11 @@ public class LogIn extends Activity
 			}
 		}
 	}
+	
+	public void openSignUp(View view)
+	{
+		Toast.makeText(getApplicationContext(), "SignUp", Toast.LENGTH_SHORT).show();
+	}
 }
 
 class CheckCredentials extends AsyncTask<String, Integer, Long>

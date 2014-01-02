@@ -47,7 +47,7 @@
     <string name="title_activity_smart_main">SmartMain</string>
     <string name="email">email</string>
     <string name="password">password</string>
-    <string name="li">Log In</string>
+    <string name="li">LOGIN</string>
     <string name="ic">IT Corea</string>
     <string name="ea">enter amount</string>
     <string name="ai">Account Information</string>
