@@ -86,10 +86,6 @@ public class MainSliderActivity extends FragmentActivity
 
 	public void openAccountInfo(View view)
 	{
-		Intent intent = new Intent(this, ZDeleteAccountInfo.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		// overridePendingTransition(R.anim.righttoleft,R.anim.lefttoright);
-		startActivity(intent);
 		return;
 	}
 
