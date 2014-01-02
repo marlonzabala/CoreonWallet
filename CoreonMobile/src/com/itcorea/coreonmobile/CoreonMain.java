@@ -452,15 +452,22 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter.addStrings("", "30", "", "", "", "space");
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		String cardPath = prefs.getString("card", "");
-
-		if (!cardPath.equals(""))
+		String cardcnt = prefs.getString("cardcount", "0");
+		
+		
+		int cardCount = Integer.parseInt(cardcnt);
+		for (int i = 0; i < cardCount; i++)
 		{
-			cardAdapter.addStrings("path", cardPath, "", "0", "", "card");
+			String cardPath = prefs.getString("card"+String.valueOf(i), "");
+			if (!cardPath.equals(""))
+			{
+				cardAdapter.addStrings("path", cardPath, "", "0", "", "card");
+			}
 		}
 
+
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card1), "", "card");
-		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card2), "", "card");
+		//cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card2), "", "card");
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card3), "", "card");
 		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card4), "", "card");
 		cardAdapter.addStrings("", "30", "", "", "", "space");
@@ -875,15 +882,37 @@ public class CoreonMain extends FragmentActivity
 					{
 						//save image to card
 						String imagePath = getFilesDir().getAbsolutePath()+"/pic.png";
+						
+						
+						
+						
+						File f2 = new File(imagePath);
+						
+						int i = 0;
+						while(f2.exists())
+						{
+							f2 = new File(getFilesDir().getAbsolutePath()+"/pic"+ String.valueOf(i) +".png");
+							imagePath = getFilesDir().getAbsolutePath()+"/pic"+ String.valueOf(i) +".png";
+							i++;
+						}
+						
+						
+						
+						
 						FileOutputStream out = new FileOutputStream(imagePath);
 						bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
 						out.close();
 
-						Log.e("save path", getRealPathFromURI(getApplicationContext(), picUri));
-
+						//Log.e("save path", getRealPathFromURI(getApplicationContext(), picUri));
+						
+						
+						
 						SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 						SharedPreferences.Editor editor = preferences.edit();
-						editor.putString("card", imagePath);
+						//editor.putString("card", imagePath);
+						editor.putString("cardcount", String.valueOf(i+1));
+						editor.putString("card"+String.valueOf(i),imagePath);
+						
 						editor.commit();
 
 						cardAdapter.addStrings("path", imagePath, "", "0", "", "card");
