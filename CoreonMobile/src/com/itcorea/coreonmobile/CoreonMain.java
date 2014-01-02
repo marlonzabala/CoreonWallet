@@ -1101,6 +1101,9 @@ public class CoreonMain extends FragmentActivity
 				Toast.makeText(getApplicationContext(), "Logging Out..", Toast.LENGTH_SHORT).show();
 
 				// finish this activity
+				
+				Intent newIntent = new Intent(CoreonMain.this, LogIn.class);
+				startActivity(newIntent);
 				((Activity) CoreonMain.this).finish();
 			}
 		});
