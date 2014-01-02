@@ -75,7 +75,7 @@ public class LogIn extends Activity
 		}
 		else
 		{
-			Toast.makeText(getApplicationContext(), "Not Logged In", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(), "Not Logged In", Toast.LENGTH_SHORT).show();
 		}
 
 		// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -306,7 +306,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 
 		if (logIn)
 		{
-			Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(mContext, CoreonMain.class);
 			// Intent intent = new Intent(mContext, LogIn.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
