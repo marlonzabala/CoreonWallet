@@ -198,8 +198,8 @@ public class CoreonMain extends FragmentActivity
 		// String filePath = this.getFilesDir().getAbsolutePath() + File.separator + "settings.dat";
 		// Import myImport = new Import(this,filePath);
 
-		String imagepath = "content://";
-		Toast.makeText(getApplicationContext(), String.valueOf(this.getFilesDir().getAbsolutePath()), Toast.LENGTH_SHORT).show();
+		//String imagepath = "content://";
+		//Toast.makeText(getApplicationContext(), String.valueOf(this.getFilesDir().getAbsolutePath()), Toast.LENGTH_SHORT).show();
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
