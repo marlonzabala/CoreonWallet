@@ -28,6 +28,7 @@
         <activity
             android:name="com.itcorea.coreonmobile.LogIn"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:noHistory="true"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
