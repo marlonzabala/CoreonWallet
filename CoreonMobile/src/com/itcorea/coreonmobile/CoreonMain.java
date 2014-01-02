@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -192,6 +193,13 @@ public class CoreonMain extends FragmentActivity
 		{
 			menu.showMenu();
 		}
+
+		// String test = ContextWrapper.getFilesDir();
+		// String filePath = this.getFilesDir().getAbsolutePath() + File.separator + "settings.dat";
+		// Import myImport = new Import(this,filePath);
+
+		String imagepath = "content://";
+		Toast.makeText(getApplicationContext(), String.valueOf(this.getFilesDir().getAbsolutePath()), Toast.LENGTH_SHORT).show();
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
@@ -635,6 +643,16 @@ public class CoreonMain extends FragmentActivity
 
 	private void takePictureAndCrop()
 	{
+
+		File mydir = getApplicationContext().getDir("mydir", Context.MODE_PRIVATE); // Creating an
+																					// internal dir;
+		File fileWithinMyDir = new File(mydir, "myfile"); // Getting a file within the dir.
+
+		File file = new File(this.getFilesDir().getAbsolutePath() + "/picture.png");
+		Uri imgUri = Uri.fromFile(fileWithinMyDir);
+
+		file.exists();
+
 		Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
 		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
@@ -698,6 +716,12 @@ public class CoreonMain extends FragmentActivity
 				ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
 				// display the returned cropped image
 
+				// copy image to preferred location
+				//copyfile(getRealPathFromURI(getApplicationContext(), picUri),this.getFilesDir().getAbsolutePath()+"/pic.png");
+				
+				//Toast.makeText(getApplicationContext(), getRealPathFromURI(getApplicationContext(), picUri), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), this.getFilesDir().getAbsolutePath()+"/pic.png", Toast.LENGTH_SHORT).show();
+
 				bitmapImage = getRoundedCornerBitmap(bitmapTemp);
 
 				picView.setImageBitmap(bitmapImage);
@@ -713,6 +737,41 @@ public class CoreonMain extends FragmentActivity
 				TextView text2 = (TextView) findViewById(R.id.textView2Description);
 				text2.setVisibility(View.GONE);
 			}
+		}
+	}
+
+	private static void copyfile(String srFile, String dtFile)
+	{
+		try
+		{
+			File f1 = new File(srFile);
+			File f2 = new File(dtFile);
+			InputStream in = new FileInputStream(f1);
+
+			// For Append the file.
+			// OutputStream out = new FileOutputStream(f2,true);
+
+			// For Overwrite the file.
+			OutputStream out = new FileOutputStream(f2);
+
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0)
+			{
+				out.write(buf, 0, len);
+			}
+			in.close();
+			out.close();
+			System.out.println("File copied.");
+		}
+		catch (FileNotFoundException ex)
+		{
+			System.out.println(ex.getMessage() + " in the specified directory.");
+			System.exit(0);
+		}
+		catch (IOException e)
+		{
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -814,7 +873,9 @@ public class CoreonMain extends FragmentActivity
 				{
 					try
 					{
-						FileOutputStream out = new FileOutputStream(getRealPathFromURI(getApplicationContext(), picUri));
+						//save image to card
+						String imagePath = getFilesDir().getAbsolutePath()+"/pic.png";
+						FileOutputStream out = new FileOutputStream(imagePath);
 						bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
 						out.close();
 
@@ -822,10 +883,10 @@ public class CoreonMain extends FragmentActivity
 
 						SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 						SharedPreferences.Editor editor = preferences.edit();
-						editor.putString("card", getRealPathFromURI(getApplicationContext(), picUri));
+						editor.putString("card", imagePath);
 						editor.commit();
 
-						cardAdapter.addStrings("path", getRealPathFromURI(getApplicationContext(), picUri), "", "0", "", "card");
+						cardAdapter.addStrings("path", imagePath, "", "0", "", "card");
 					}
 					catch (Exception e)
 					{
@@ -1316,7 +1377,6 @@ public class CoreonMain extends FragmentActivity
 					adapterHome.addStrings(noticeRowList.get(j)[1], noticeRowList.get(j)[2], noticeRowList.get(j)[3], noticeRowList.get(j)[5],
 							noticeRowList.get(j)[4], "text");
 				}
-
 
 				adapterHome.addStrings("", "", "", "", "", "bottomshadow");
 				adapterHome.addStrings("", "180", "", "", "", "space");
