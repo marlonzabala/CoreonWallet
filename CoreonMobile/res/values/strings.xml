@@ -55,5 +55,6 @@
     <string name="news">News:</string>
     <string name="cws">C Wallet Settings</string>
     <string name="pyc">Pick your Card</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>

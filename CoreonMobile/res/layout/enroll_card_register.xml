@@ -118,7 +118,7 @@
                 android:text="Use Default G-Cash Card Image" />
 
             <TextView
-                android:id="@+id/textViewNumber"
+                android:id="@+id/textViewPhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -138,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textViewNumber"
+                android:layout_below="@+id/textViewPhoneNumber"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:paddingBottom="10dp"
