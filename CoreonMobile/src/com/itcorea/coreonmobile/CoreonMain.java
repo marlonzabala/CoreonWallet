@@ -35,11 +35,11 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -58,6 +58,7 @@ import android.net.ParseException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
@@ -66,9 +67,12 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -198,8 +202,9 @@ public class CoreonMain extends FragmentActivity
 		// String filePath = this.getFilesDir().getAbsolutePath() + File.separator + "settings.dat";
 		// Import myImport = new Import(this,filePath);
 
-		//String imagepath = "content://";
-		//Toast.makeText(getApplicationContext(), String.valueOf(this.getFilesDir().getAbsolutePath()), Toast.LENGTH_SHORT).show();
+		// String imagepath = "content://";
+		// Toast.makeText(getApplicationContext(),
+		// String.valueOf(this.getFilesDir().getAbsolutePath()), Toast.LENGTH_SHORT).show();
 
 		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
 		// n.execute("test", "test", "offer");
@@ -272,8 +277,6 @@ public class CoreonMain extends FragmentActivity
 
 				viewPage(view);
 
-				// String stacks = "";
-				// for (int i = 0; i < _stack.size(); i++) stacks = stacks +"/"+ _stack.get(i);
 				// Log.e("stack",stacks);
 				exit = 1;
 			}
@@ -286,8 +289,6 @@ public class CoreonMain extends FragmentActivity
 
 	protected void onSaveInstanceState(Bundle savedInstanceState)
 	{
-		// _stack.add("home");
-		// savedInstanceState.putString("start", "start");
 		savedInstanceState.putStringArrayList("stack", _stack);
 
 		savedInstanceState.putBoolean("secondMenu", false);
@@ -450,30 +451,31 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
 		cardAdapter.initiatizeStringsValues();
 		cardAdapter.addStrings("", "30", "", "", "", "space");
+		cardAdapter.addStrings("Globe Gcash", "", "", String.valueOf(R.drawable.card1), "", "card");
+		// cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card2), "", "card");
+		cardAdapter.addStrings("Visa", "", "", String.valueOf(R.drawable.card3), "", "card");
+		cardAdapter.addStrings("Coreon ph Visa card", "", "", String.valueOf(R.drawable.card4), "", "card");
 
+		// get cards pictures from preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		String cardcnt = prefs.getString("cardcount", "0");
-		
-		
 		int cardCount = Integer.parseInt(cardcnt);
 		for (int i = 0; i < cardCount; i++)
 		{
-			String cardPath = prefs.getString("card"+String.valueOf(i), "");
+			String cardPath = prefs.getString("card" + String.valueOf(i), "");
 			if (!cardPath.equals(""))
 			{
-				cardAdapter.addStrings("path", cardPath, "", "0", "", "card");
+				cardAdapter.addStrings("Custom card", cardPath, "", "0", "path", "card");
 			}
 		}
 
-
-		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card1), "", "card");
-		//cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card2), "", "card");
-		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card3), "", "card");
-		cardAdapter.addStrings("", "", "", String.valueOf(R.drawable.card4), "", "card");
 		cardAdapter.addStrings("", "30", "", "", "", "space");
 
 		listViewCard = (ListView) findViewById(R.id.listViewCards);
 		listViewCard.setAdapter(cardAdapter);
+
+		// context menus
+		registerForContextMenu(listViewCard);
 
 		listViewCard.setOnItemClickListener(new OnItemClickListener() {
 
@@ -484,6 +486,45 @@ public class CoreonMain extends FragmentActivity
 				showPhoto(Integer.parseInt(cardAdapter._image.get(position)), cardAdapter._content.get(position));
 			};
 		});
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		if (v.getId() == R.id.listViewCards)
+		{
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			menu.setHeaderTitle(cardAdapter._title.get(info.position).toString());
+
+			String[] menuItems = new String[2];
+			menuItems[0] = "Go to card menu";
+			menuItems[1] = "Remove card";
+
+			for (int i = 0; i < menuItems.length; i++)
+			{
+				menu.add(Menu.NONE, i, i, menuItems[i]);
+			}
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		int menuItemIndex = item.getItemId();
+		
+		if(menuItemIndex==0)//go to card menu
+		{
+			Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
+		}
+		else if (menuItemIndex==1)//remove card
+		{
+			//Toast.makeText(getApplicationContext(), String.valueOf(info.position), Toast.LENGTH_SHORT).show();
+			cardAdapter.removeValue(info.position);
+			cardAdapter.notifyDataSetChanged();
+		}
+		
+		return true;
 	}
 
 	private void showPhoto(int drawable, String Image)
@@ -648,20 +689,44 @@ public class CoreonMain extends FragmentActivity
 		return output;
 	}
 
+	String	tempPicturePath;
+
 	private void takePictureAndCrop()
 	{
 
-		File mydir = getApplicationContext().getDir("mydir", Context.MODE_PRIVATE); // Creating an
-																					// internal dir;
-		File fileWithinMyDir = new File(mydir, "myfile"); // Getting a file within the dir.
+		// File mydir = getApplicationContext().getDir("mydir", Context.MODE_PRIVATE); // Creating
+		// an
+		// internal dir;
+		// File fileWithinMyDir = new File(mydir, "myfile"); // Getting a file within the dir.
 
-		File file = new File(this.getFilesDir().getAbsolutePath() + "/picture.png");
-		Uri imgUri = Uri.fromFile(fileWithinMyDir);
+		// File file = new File(this.getFilesDir().getAbsolutePath() + "/picture.png");
+		// Uri imgUri = Uri.fromFile(fileWithinMyDir);
 
-		file.exists();
+		// file.exists();
+
+		if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED)
+		{
+			tempPicturePath = Environment.getExternalStorageDirectory().toString() + "/temp.png";// "/sdcard/flashCropped.png";//getFilesDir().getAbsolutePath()
+																									// +
+																									// "/temp.png";
+		}
+		else
+		{
+			tempPicturePath = "";
+			Toast.makeText(getApplicationContext(), "Cannot store to external storage", Toast.LENGTH_SHORT).show();
+			Log.e("storage error path", Environment.getExternalStorageDirectory().toString() + "/temp.png");
+			Log.e("storage error state", Environment.getExternalStorageState().toString());
+			return;
+		}
+		// Toast.makeText(getApplicationContext(),
+		// Environment.getExternalStorageDirectory().toString()+"temp.png",
+		// Toast.LENGTH_SHORT).show();
+
+		picUri = Uri.fromFile(new File(tempPicturePath));
 
 		Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+		// picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new
+		// ContentValues());
 		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
 		startActivityForResult(captureIntent, CAMERA_CAPTURE);
 	}
@@ -671,7 +736,7 @@ public class CoreonMain extends FragmentActivity
 	private void runCropImage()
 	{
 		Intent intent = new Intent(this, CropImage.class);
-		String filePath = getRealPathFromURI(getApplicationContext(), picUri);
+		String filePath = tempPicturePath;// getRealPathFromURI(getApplicationContext(), picUri);
 		intent.putExtra(CropImage.IMAGE_PATH, filePath);
 		intent.putExtra(CropImage.SCALE, true);
 		intent.putExtra(CropImage.ASPECT_X, 3);
@@ -724,10 +789,13 @@ public class CoreonMain extends FragmentActivity
 				// display the returned cropped image
 
 				// copy image to preferred location
-				//copyfile(getRealPathFromURI(getApplicationContext(), picUri),this.getFilesDir().getAbsolutePath()+"/pic.png");
-				
-				//Toast.makeText(getApplicationContext(), getRealPathFromURI(getApplicationContext(), picUri), Toast.LENGTH_SHORT).show();
-				//Toast.makeText(getApplicationContext(), this.getFilesDir().getAbsolutePath()+"/pic.png", Toast.LENGTH_SHORT).show();
+				// copyfile(getRealPathFromURI(getApplicationContext(),
+				// picUri),this.getFilesDir().getAbsolutePath()+"/pic.png");
+
+				// Toast.makeText(getApplicationContext(),
+				// getRealPathFromURI(getApplicationContext(), picUri), Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(),
+				// this.getFilesDir().getAbsolutePath()+"/pic.png", Toast.LENGTH_SHORT).show();
 
 				bitmapImage = getRoundedCornerBitmap(bitmapTemp);
 
@@ -788,6 +856,8 @@ public class CoreonMain extends FragmentActivity
 		{
 			Log.e("conract", "category is 0");
 		}
+
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(TELEPHONY_SERVICE);
 		String number = tm.getLine1Number();
@@ -880,46 +950,45 @@ public class CoreonMain extends FragmentActivity
 				{
 					try
 					{
-						//save image to card
-						String imagePath = getFilesDir().getAbsolutePath()+"/pic.png";
-						
-						
-						
-						
+						// save image to card
+						String imagePath = getFilesDir().getAbsolutePath() + "/pic.png";
+
 						File f2 = new File(imagePath);
-						
+
 						int i = 0;
-						while(f2.exists())
+						while (f2.exists())
 						{
-							f2 = new File(getFilesDir().getAbsolutePath()+"/pic"+ String.valueOf(i) +".png");
-							imagePath = getFilesDir().getAbsolutePath()+"/pic"+ String.valueOf(i) +".png";
+							f2 = new File(getFilesDir().getAbsolutePath() + "/pic" + String.valueOf(i) + ".png");
+							imagePath = getFilesDir().getAbsolutePath() + "/pic" + String.valueOf(i) + ".png";
 							i++;
 						}
-						
-						
-						
-						
+
 						FileOutputStream out = new FileOutputStream(imagePath);
 						bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, out);
 						out.close();
 
-						//Log.e("save path", getRealPathFromURI(getApplicationContext(), picUri));
-						
-						
-						
+						// Log.e("save path", getRealPathFromURI(getApplicationContext(), picUri));
+
 						SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 						SharedPreferences.Editor editor = preferences.edit();
-						//editor.putString("card", imagePath);
-						editor.putString("cardcount", String.valueOf(i+1));
-						editor.putString("card"+String.valueOf(i),imagePath);
-						
+						editor.putString("cardcount", String.valueOf(i + 1));
+						editor.putString("card" + String.valueOf(i), imagePath);
+
 						editor.commit();
 
-						cardAdapter.addStrings("path", imagePath, "", "0", "", "card");
+						cardAdapter.removeValue(cardAdapter.getCount() - 1);
+						cardAdapter.addStrings("Custom card", imagePath, "", "0", "path", "card");
+						cardAdapter.addStrings("", "30", "", "", "", "space");
+
+						Toast.makeText(getApplicationContext(), "Card was succesfully enrolled", Toast.LENGTH_SHORT).show();
+
+						// scroll to bottom of list
+						listViewCard.setSelection(cardAdapter.getCount() - 1);
+						menu.showSecondaryMenu(true);
 					}
 					catch (Exception e)
 					{
-						Log.e("fvafva", "sdfbsdf");
+						Log.e("error", "sdfbsdf");
 						e.printStackTrace();
 					}
 

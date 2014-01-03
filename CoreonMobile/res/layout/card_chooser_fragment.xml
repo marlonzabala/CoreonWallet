@@ -10,10 +10,14 @@
         android:id="@+id/imageViewCardShadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
+        android:layout_alignBottom="@+id/imageViewCard"
+        android:layout_alignTop="@+id/imageViewCard"
         android:scaleType="fitCenter"
         android:src="@drawable/cardshadow" />
+<!--         android:layout_alignParentTop="true" -->
+<!--         android:layout_alignRight="@+id/imageViewCard" -->
+<!--         android:layout_alignLeft="@+id/imageViewCard" -->
 
     <ImageView
         android:id="@+id/imageViewCard"

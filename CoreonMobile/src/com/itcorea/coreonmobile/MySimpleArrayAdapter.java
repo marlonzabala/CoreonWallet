@@ -70,6 +70,24 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 		this.clear();
 	}
+	
+	public void removeValue(int position)
+	{
+		if (position == 0)
+		{
+			Log.e("conract", "one or more of data are 0");
+			// throw new IllegalArgumentException("Category 0" + category);
+		}
+
+		// Integer.parseInt();
+		
+		_title.remove(position);
+		_content.remove(position);
+		_date.remove(position);
+		_image.remove(position);
+		_type.remove(position);
+		_extra.remove(position);
+	}
 
 	public void addStrings(String title, String content, String date, String image, String extra, String type)
 	{
@@ -505,8 +523,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			}
 
 			ImageView image = (ImageView) rowView.findViewById(R.id.imageViewCard);
-
-			if (_title.get(position).toString().equals("path"))
+			if (_extra.get(position).toString().equals("path"))
 			{
 				File imgFile = new File(_content.get(position));
 				if (imgFile.exists())
