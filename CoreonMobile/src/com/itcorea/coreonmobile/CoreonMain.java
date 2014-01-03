@@ -465,7 +465,7 @@ public class CoreonMain extends FragmentActivity
 			String cardPath = prefs.getString("card" + String.valueOf(i), "");
 			if (!cardPath.equals(""))
 			{
-				cardAdapter.addStrings("Custom card", cardPath, "", "0", "path", "card");
+				cardAdapter.addStrings("Custom card", cardPath, "card" + String.valueOf(i), "0", "path", "card");
 			}
 		}
 
@@ -516,9 +516,20 @@ public class CoreonMain extends FragmentActivity
 		if(menuItemIndex==0)//go to card menu
 		{
 			Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
+			
+			
 		}
 		else if (menuItemIndex==1)//remove card
 		{
+			//remove from preferences
+			String preferenceName = cardAdapter._date.get(info.position).toString();
+			//Toast.makeText(getApplicationContext(), cardAdapter._date.get(info.position).toString(), Toast.LENGTH_SHORT).show();
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putString(preferenceName, "");
+			editor.commit();
+			
+			
 			//Toast.makeText(getApplicationContext(), String.valueOf(info.position), Toast.LENGTH_SHORT).show();
 			cardAdapter.removeValue(info.position);
 			cardAdapter.notifyDataSetChanged();
@@ -977,7 +988,7 @@ public class CoreonMain extends FragmentActivity
 
 						//add card to adapter list
 						cardAdapter.removeValue(cardAdapter.getCount() - 1);
-						cardAdapter.addStrings("Custom card", imagePath, "", "0", "path", "card");
+						cardAdapter.addStrings("Custom card", imagePath, "card" + String.valueOf(i), "0", "path", "card");
 						cardAdapter.addStrings("", "30", "", "", "", "space");
 
 						Toast.makeText(getApplicationContext(), "Card was succesfully enrolled", Toast.LENGTH_SHORT).show();
