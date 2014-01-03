@@ -23,3 +23,9 @@ public class GlobeSendMoney extends Activity
 		return true;
 	}
 }
+
+
+
+
+
+
