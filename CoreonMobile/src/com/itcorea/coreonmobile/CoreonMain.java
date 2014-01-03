@@ -916,6 +916,7 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
+				
 			}
 		});
 
@@ -952,7 +953,6 @@ public class CoreonMain extends FragmentActivity
 					{
 						// save image to card
 						String imagePath = getFilesDir().getAbsolutePath() + "/pic.png";
-
 						File f2 = new File(imagePath);
 
 						int i = 0;
@@ -973,15 +973,15 @@ public class CoreonMain extends FragmentActivity
 						SharedPreferences.Editor editor = preferences.edit();
 						editor.putString("cardcount", String.valueOf(i + 1));
 						editor.putString("card" + String.valueOf(i), imagePath);
-
 						editor.commit();
 
+						//add card to adapter list
 						cardAdapter.removeValue(cardAdapter.getCount() - 1);
 						cardAdapter.addStrings("Custom card", imagePath, "", "0", "path", "card");
 						cardAdapter.addStrings("", "30", "", "", "", "space");
 
 						Toast.makeText(getApplicationContext(), "Card was succesfully enrolled", Toast.LENGTH_SHORT).show();
-
+						
 						// scroll to bottom of list
 						listViewCard.setSelection(cardAdapter.getCount() - 1);
 						menu.showSecondaryMenu(true);
@@ -1022,6 +1022,11 @@ public class CoreonMain extends FragmentActivity
 			try
 			{
 				Thread.sleep(400);
+				
+				
+				
+				
+				//get values here
 			}
 			catch (InterruptedException e)
 			{
