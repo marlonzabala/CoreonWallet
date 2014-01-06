@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -61,6 +63,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
@@ -80,6 +83,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -104,6 +108,7 @@ public class CoreonMain extends FragmentActivity
 	public static ViewPager			mPager;
 	public static int				history;
 	int								margin;
+	int								cards			= 0;
 
 	boolean							noticeSelected	= false;
 	boolean							offerSelected	= false;
@@ -310,7 +315,7 @@ public class CoreonMain extends FragmentActivity
 		listAdapter = new ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild, listDataHeaderImage, listDataChildImage);
 		expListView.setAdapter(listAdapter);
 
-		// align expandable list indicator to  right
+		// align expandable list indicator to right
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
 		int mScreenWidth = displayMetrics.widthPixels;
@@ -434,6 +439,8 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter.addStrings("Visa", "", "", String.valueOf(R.drawable.card3), "", "card");
 		cardAdapter.addStrings("Coreon ph Visa card", "", "", String.valueOf(R.drawable.card4), "", "card");
 
+		cards = 0;
+
 		// get card pictures saved from preference file
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		String cardcnt = prefs.getString("cardcount", "0");
@@ -444,6 +451,7 @@ public class CoreonMain extends FragmentActivity
 			if (!cardPath.equals(""))
 			{
 				cardAdapter.addStrings("Custom card", cardPath, "card" + String.valueOf(i), "0", "path", "card");
+				cards++;
 			}
 		}
 
@@ -490,27 +498,28 @@ public class CoreonMain extends FragmentActivity
 	{
 		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int menuItemIndex = item.getItemId();
-		
-		if(menuItemIndex==0)//go to card menu
+
+		if (menuItemIndex == 0)// go to card menu
 		{
 			Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
 		}
-		else if (menuItemIndex==1)//remove card
+		else if (menuItemIndex == 1)// remove card
 		{
-			//dialog for approval of card removal
-			new AlertDialog.Builder(CoreonMain.this).setTitle("Delete this Card?")
-			.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			// dialog for approval of card removal
+			new AlertDialog.Builder(CoreonMain.this).setTitle("Delete this Card?").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton)
 				{
-					//remove from preferences
+					// remove from preferences
 					String preferenceName = cardAdapter._date.get(info.position).toString();
-					//Toast.makeText(getApplicationContext(), cardAdapter._date.get(info.position).toString(), Toast.LENGTH_SHORT).show();
+					// Toast.makeText(getApplicationContext(),
+					// cardAdapter._date.get(info.position).toString(), Toast.LENGTH_SHORT).show();
 					SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 					SharedPreferences.Editor editor = preferences.edit();
 					editor.putString(preferenceName, "");
 					editor.commit();
-					
-					//Toast.makeText(getApplicationContext(), String.valueOf(info.position), Toast.LENGTH_SHORT).show();
+
+					// Toast.makeText(getApplicationContext(), String.valueOf(info.position),
+					// Toast.LENGTH_SHORT).show();
 					cardAdapter.removeValue(info.position);
 					cardAdapter.notifyDataSetChanged();
 				}
@@ -913,7 +922,7 @@ public class CoreonMain extends FragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				
+
 			}
 		});
 
@@ -972,13 +981,13 @@ public class CoreonMain extends FragmentActivity
 						editor.putString("card" + String.valueOf(i), imagePath);
 						editor.commit();
 
-						//add card to adapter list
+						// add card to adapter list
 						cardAdapter.removeValue(cardAdapter.getCount() - 1);
 						cardAdapter.addStrings("Custom card", imagePath, "card" + String.valueOf(i), "0", "path", "card");
 						cardAdapter.addStrings("", "30", "", "", "", "space");
 
 						Toast.makeText(getApplicationContext(), "Card was succesfully enrolled", Toast.LENGTH_SHORT).show();
-						
+
 						// scroll to bottom of list
 						listViewCard.setSelection(cardAdapter.getCount() - 1);
 						menu.showSecondaryMenu(true);
@@ -1013,47 +1022,99 @@ public class CoreonMain extends FragmentActivity
 		MySimpleArrayAdapter	noticeContentAdapter;
 		ListView				listView2;
 
+		String					fname		= "";
+		String					lname		= "";
+		String					mname		= "";
+		String					bday		= "";
+		String					address		= "";
+		String					email		= "";
+		String					points		= "";
+		String					accountid	= "";
+		String					mobile_no	= "";
+
 		@Override
 		protected String doInBackground(String... params)
 		{
 			try
 			{
-				Thread.sleep(400);
-				
-				
-				
-				
-				//get values here
+				// Thread.sleep(400);
+
+				// get values here
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				accountid = prefs.getString("accountid", "0");
+				_accountid = accountid;
+
+				if (accountid.equals("0"))
+				{
+					// error
+				}
+
+				// get notices
+				String httpAddress = "http://" + ipAdd + "/accountinfo.php?id=" + accountid;
+
+				Log.i("urlPost", httpAddress.toString());
+				String result = sendPost(httpAddress);
+				JSONArray jArray = null;
+
+				jArray = new JSONArray(result);
+				JSONObject json_data = null;
+
+				for (int i = 0; i < jArray.length(); i++)
+				{
+					json_data = jArray.getJSONObject(i);
+
+					fname = json_data.getString("fname");
+					lname = json_data.getString("lname");
+					// mname = json_data.getString("mname");
+					bday = json_data.getString("bday");
+					address = json_data.getString("address");
+					email = json_data.getString("email");
+					points = json_data.getString("points");
+				}
+
+				if (fname.equals("null"))
+					fname = "";
+				if (lname.equals("null"))
+					lname = "";
+				if (mname.equals("null"))
+					mname = "";
+				if (bday.equals("null"))
+					bday = "";
+				if (email.equals("null"))
+					email = "";
+				if (address.equals("null"))
+					address = "";
+				mobile_no = "0999568291";
+
+				noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
+
+				noticeContentAdapter.initiatizeStringsValues();
+				noticeContentAdapter.addStrings("EMAIL ACCOUNT", "", "", "", "", "accountheader");
+				noticeContentAdapter.addStrings("", email, "", "", "", "accountemail");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlineorange");
+				noticeContentAdapter.addStrings("ACCOUNT INFORMATION", "", "", "", "", "accountheader");
+				noticeContentAdapter.addStrings("First Name", fname, "", "", "", "accountcontent");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
+				noticeContentAdapter.addStrings("Middle Name", "Belo", "", "", "", "accountcontent");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
+				noticeContentAdapter.addStrings("Last Name", lname, "", "", "", "accountcontent");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
+				noticeContentAdapter.addStrings("Birthday", bday, "", "", "", "accountcontent");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
+				noticeContentAdapter.addStrings("Mobile Number", mobile_no, "", "", "", "accountcontentmobile");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
+				noticeContentAdapter.addStrings("Address", address, "", "", "", "accountcontentaddress");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlineorange");
+				noticeContentAdapter.addStrings("WALLET INFORMATION", "", "", "", "", "accountheader");
+				noticeContentAdapter.addStrings("My Cards", " Cards", "", "", "", "accountcontent");
+				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
+				noticeContentAdapter.addStrings("Coreon Points", points + " Points", "", "", "", "accountcontent");
 			}
-			catch (InterruptedException e)
+			catch (JSONException e)
 			{
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			noticeContentAdapter = new MySimpleArrayAdapter(getApplicationContext(), _title);
-
-			noticeContentAdapter.initiatizeStringsValues();
-			noticeContentAdapter.addStrings("EMAIL ACCOUNT", "", "", "", "", "accountheader");
-			noticeContentAdapter.addStrings("", "emails@yahoo.com", "", "", "", "accountemail");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlineorange");
-			noticeContentAdapter.addStrings("ACCOUNT INFORMATION", "", "", "", "", "accountheader");
-			noticeContentAdapter.addStrings("First Name", "Ariel", "", "", "", "accountcontent");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-			noticeContentAdapter.addStrings("Middle Name", "Belo", "", "", "", "accountcontent");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-			noticeContentAdapter.addStrings("Last Name", "Surca", "", "", "", "accountcontent");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-			noticeContentAdapter.addStrings("Birthday", "June 19 1979", "", "", "", "accountcontent");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-			noticeContentAdapter.addStrings("Mobile Number", "09177896541", "", "", "", "accountcontentmobile");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-			noticeContentAdapter.addStrings("Address", "29 Sitio Upper Manalite II Brgy. Sta. Cruz Antipolo City Rizal 12700", "", "", "",
-					"accountcontentaddress");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlineorange");
-			noticeContentAdapter.addStrings("WALLET INFORMATION", "", "", "", "", "accountheader");
-			noticeContentAdapter.addStrings("My Cards", "7 Cards", "", "", "", "accountcontent");
-			noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-			noticeContentAdapter.addStrings("Coreon Points", "Points", "", "", "", "accountcontent");
 
 			return "";
 		}
@@ -1090,6 +1151,10 @@ public class CoreonMain extends FragmentActivity
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
 										Editable value = input.getText();
+
+										// update firstname
+										new UpdateAccountInformation().execute("fname", input.getText().toString(), accountid);
+
 									}
 								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
@@ -1152,6 +1217,8 @@ public class CoreonMain extends FragmentActivity
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
 										Editable value = input.getText();
+
+										new UpdateAccountInformation().execute("lname", input.getText().toString(), accountid);
 									}
 								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
@@ -1178,28 +1245,54 @@ public class CoreonMain extends FragmentActivity
 						input.setText(noticeContentAdapter._content.get(position).toString());
 						// input.selectAll();
 
-						new AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
-								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton)
-									{
-										Editable value = input.getText();
-									}
-								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton)
-									{
-										// Do nothing.
-									}
-								}).show();
+						// final Calendar c = Calendar.getInstance();
+						// int year = c.get(Calendar.YEAR);
+						// int month = c.get(Calendar.MONTH);
+						// int day = c.get(Calendar.DAY_OF_MONTH);
+						// //new DatePickerDialog(getApplicationContext(), null, year, month,
+						// day).show();
 
-						input.requestFocus();
-						input.postDelayed(new Runnable() {
-							@Override
-							public void run()
-							{
-								InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-								keyboard.showSoftInput(input, 0);
-							}
-						}, 200);
+						DialogFragment newFragment = new DatePickerFragment();
+						newFragment.show(getSupportFragmentManager(), "datePicker");
+
+						// new
+						// AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
+						// .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						// public void onClick(DialogInterface dialog, int whichButton)
+						// {
+						// Editable value = input.getText();
+						//
+						//
+						//
+						//
+						//
+						// final Calendar c = Calendar.getInstance();
+						// int year = c.get(Calendar.YEAR);
+						// int month = c.get(Calendar.MONTH);
+						// int day = c.get(Calendar.DAY_OF_MONTH);
+						// new DatePickerDialog(getApplicationContext(), null, year, month,
+						// day).show();
+						//
+						//
+						//
+						// }
+						// }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						// public void onClick(DialogInterface dialog, int whichButton)
+						// {
+						// // Do nothing.
+						// }
+						// }).show();
+						//
+						// input.requestFocus();
+						// input.postDelayed(new Runnable() {
+						// @Override
+						// public void run()
+						// {
+						// InputMethodManager keyboard = (InputMethodManager)
+						// getSystemService(Context.INPUT_METHOD_SERVICE);
+						// keyboard.showSoftInput(input, 0);
+						// }
+						// }, 200);
 					}
 					else if (position == 12)
 					{
@@ -1216,7 +1309,9 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										Editable value = input.getText();
+										String add = input.getText().toString();
+										add = add.replace(" ", "%20");
+										new UpdateAccountInformation().execute("address", add, accountid);
 									}
 								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
@@ -1245,7 +1340,6 @@ public class CoreonMain extends FragmentActivity
 					}
 				}
 			});
-
 		}
 
 		@Override
@@ -1258,6 +1352,133 @@ public class CoreonMain extends FragmentActivity
 		@Override
 		protected void onProgressUpdate(Void... values)
 		{
+
+		}
+	}
+
+	static String	birthdatePicker	= "";
+	static String	_accountid	= "";
+
+	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+	{
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState)
+		{
+			// Use the current date as the default date in the picker
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+
+			// Create a new instance of DatePickerDialog and return it
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+
+		public void onDateSet(DatePicker view, int year, int month, int day)
+		{
+
+			String monthString = "";
+			if (month < 10)
+			{
+				monthString = "0" + String.valueOf(month+1);
+			}
+			else
+			{
+				monthString = String.valueOf(month);
+			}
+			
+			
+			
+			String dayString = "";
+			if (month < 10)
+			{
+				dayString = "0" + String.valueOf(day);
+			}
+			else
+			{
+				dayString = String.valueOf(day);
+			}
+			
+			
+			
+
+			birthdatePicker = String.valueOf(year) + "-" + monthString + "-" + dayString;
+			// Do something with the date chosen by the user
+
+			Toast.makeText(getActivity(), birthdatePicker, Toast.LENGTH_SHORT).show();
+
+			
+			
+			//new UpdateAccountInformation().execute("bday", birthdatePicker, _accountid);
+
+		}
+	}
+
+	private class UpdateAccountInformation extends AsyncTask<String, Void, String>
+	{
+
+		String	address	= "";
+
+		@Override
+		protected String doInBackground(String... params)
+		{
+			try
+			{
+				// get values here
+				String httpAddress = "http://" + ipAdd + "/edit.php?request=" + params[0] + "&" + params[0] + "=" + params[1] + "&id=" + params[2];
+				address = httpAddress;
+
+				Log.i("urlPost", httpAddress.toString());
+				String result = sendPost(httpAddress);
+				JSONArray jArray = null;
+
+				jArray = new JSONArray(result);
+				JSONObject json_data = null;
+
+				for (int i = 0; i < jArray.length(); i++)
+				{
+					json_data = jArray.getJSONObject(i);
+				}
+
+				// json_dataOffer.getString("offer")
+
+				if (result.equals("success"))
+				{
+					// success
+				}
+				else
+				{
+					// failed
+				}
+			}
+			catch (JSONException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return "";
+		}
+
+		@Override
+		protected void onPostExecute(String result)
+		{
+			Log.e("address", address);
+			Toast.makeText(getApplicationContext(), address, Toast.LENGTH_SHORT).show();
+
+			new ShowAccountInformation().execute();
+		}
+
+		@Override
+		protected void onPreExecute()
+		{
+
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values)
+		{
+
 		}
 	}
 
@@ -1390,7 +1611,6 @@ public class CoreonMain extends FragmentActivity
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 
 		@Override
@@ -1399,21 +1619,25 @@ public class CoreonMain extends FragmentActivity
 			try
 			{
 				// get notices
-				String httpAddress = "http://" + ipAdd + "/notice.php";
+				String httpAddressNotices = "http://" + ipAdd + "/notice.php";
 
-				Log.i("urlPost", httpAddress.toString());
-				String result = sendPost(httpAddress);
+				Log.i("urlPost", httpAddressNotices.toString());
+				String result = sendPost(httpAddressNotices);
 				JSONArray jArray = null;
 
 				jArray = new JSONArray(result);
 				JSONObject json_data = null;
 				noticeRowList = new ArrayList<String[]>();
 
+				int noticeCount = 0;
+
 				for (int i = 0; i < jArray.length(); i++)
 				{
 					json_data = jArray.getJSONObject(i);
 					noticeRowList.add(new String[] { json_data.getString("id"), json_data.getString("title"), json_data.getString("notice"),
 							json_data.getString("date"), json_data.getString("url"), json_data.getString("image_path") });
+
+					noticeCount++;
 				}
 
 				// get offers
@@ -1439,10 +1663,38 @@ public class CoreonMain extends FragmentActivity
 
 				adapterHome = new MySimpleArrayAdapter(getApplicationContext(), _title);
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				String accountid = prefs.getString("accountid", "0");
 
-				String fname = prefs.getString("fname", "firstname");
-				String lname = prefs.getString("lname", "lastname");
-				String points = prefs.getString("points", "0");
+				String fname = "";
+				String points = "";
+
+				if (accountid.equals("0"))
+				{
+					// error
+				}
+
+				// get notices
+				String httpAddressAccount = "http://" + ipAdd + "/accountinfo.php?id=" + accountid;
+
+				Log.i("urlPost", httpAddressAccount.toString());
+				String resultAccount = sendPost(httpAddressAccount);
+				JSONArray jArrayAccount = null;
+
+				jArrayAccount = new JSONArray(resultAccount);
+				JSONObject json_dataAccount = null;
+
+				for (int i = 0; i < jArrayAccount.length(); i++)
+				{
+					json_dataAccount = jArrayAccount.getJSONObject(i);
+
+					fname = json_dataAccount.getString("fname");
+					points = json_dataAccount.getString("points");
+				}
+
+				if (fname.equals("null"))
+					fname = "";
+				if (points.equals("null"))
+					points = "";
 
 				adapterHome.initiatizeStringsValues();
 
@@ -1450,11 +1702,11 @@ public class CoreonMain extends FragmentActivity
 
 				// user informations
 				adapterHome.addStrings("userinfo", fname, "userinfo", "", "userinfo", "userinfo");
-				adapterHome.addStrings("My Cards", "0 Cards", "userinfo", "", "userinfo", "usercontent");
+				adapterHome.addStrings("My Cards", String.valueOf(cards) + " Cards", "userinfo", "", "userinfo", "usercontent");
 				adapterHome.addStrings("", "", "", "", "", "userline");
 				adapterHome.addStrings("Coreon Points", points + " Points", "userinfo", "", "userinfo", "usercontent");
 				adapterHome.addStrings("", "", "", "", "", "userline");
-				adapterHome.addStrings("Notice", "12", "userinfo", "", "userinfo", "usercontent");
+				adapterHome.addStrings("Notice", String.valueOf(noticeCount), "userinfo", "", "userinfo", "usercontent");
 				adapterHome.addStrings("userinfo", "userinfo", "userinfo", "", "userinfo", "userbottom");
 
 				adapterHome.addStrings("", "", "", "", "", "space");
