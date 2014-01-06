@@ -1243,56 +1243,10 @@ public class CoreonMain extends FragmentActivity
 
 						final EditText input = new EditText(CoreonMain.this);
 						input.setText(noticeContentAdapter._content.get(position).toString());
-						// input.selectAll();
-
-						// final Calendar c = Calendar.getInstance();
-						// int year = c.get(Calendar.YEAR);
-						// int month = c.get(Calendar.MONTH);
-						// int day = c.get(Calendar.DAY_OF_MONTH);
-						// //new DatePickerDialog(getApplicationContext(), null, year, month,
-						// day).show();
 
 						DialogFragment newFragment = new DatePickerFragment();
 						newFragment.show(getSupportFragmentManager(), "datePicker");
 
-						// new
-						// AlertDialog.Builder(CoreonMain.this).setTitle(noticeContentAdapter._title.get(position).toString()).setView(input)
-						// .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-						// public void onClick(DialogInterface dialog, int whichButton)
-						// {
-						// Editable value = input.getText();
-						//
-						//
-						//
-						//
-						//
-						// final Calendar c = Calendar.getInstance();
-						// int year = c.get(Calendar.YEAR);
-						// int month = c.get(Calendar.MONTH);
-						// int day = c.get(Calendar.DAY_OF_MONTH);
-						// new DatePickerDialog(getApplicationContext(), null, year, month,
-						// day).show();
-						//
-						//
-						//
-						// }
-						// }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-						// public void onClick(DialogInterface dialog, int whichButton)
-						// {
-						// // Do nothing.
-						// }
-						// }).show();
-						//
-						// input.requestFocus();
-						// input.postDelayed(new Runnable() {
-						// @Override
-						// public void run()
-						// {
-						// InputMethodManager keyboard = (InputMethodManager)
-						// getSystemService(Context.INPUT_METHOD_SERVICE);
-						// keyboard.showSoftInput(input, 0);
-						// }
-						// }, 200);
 					}
 					else if (position == 12)
 					{
@@ -1357,7 +1311,7 @@ public class CoreonMain extends FragmentActivity
 	}
 
 	static String	birthdatePicker	= "";
-	static String	_accountid	= "";
+	static String	_accountid		= "";
 
 	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 	{
@@ -1380,15 +1334,13 @@ public class CoreonMain extends FragmentActivity
 			String monthString = "";
 			if (month < 10)
 			{
-				monthString = "0" + String.valueOf(month+1);
+				monthString = "0" + String.valueOf(month + 1);
 			}
 			else
 			{
 				monthString = String.valueOf(month);
 			}
-			
-			
-			
+
 			String dayString = "";
 			if (month < 10)
 			{
@@ -1398,25 +1350,23 @@ public class CoreonMain extends FragmentActivity
 			{
 				dayString = String.valueOf(day);
 			}
-			
-			
-			
 
 			birthdatePicker = String.valueOf(year) + "-" + monthString + "-" + dayString;
 			// Do something with the date chosen by the user
 
 			Toast.makeText(getActivity(), birthdatePicker, Toast.LENGTH_SHORT).show();
 
-			
-			
 			//new UpdateAccountInformation().execute("bday", birthdatePicker, _accountid);
 
+			// CoreonMain myActivity = new CoreonMain();
+			// CoreonMain.UpdateAccountInformation asyncTask = myActivity.new
+			// UpdateAccountInformation();
+			// asyncTask.execute("bday", birthdatePicker, _accountid);
 		}
 	}
 
 	private class UpdateAccountInformation extends AsyncTask<String, Void, String>
 	{
-
 		String	address	= "";
 
 		@Override
