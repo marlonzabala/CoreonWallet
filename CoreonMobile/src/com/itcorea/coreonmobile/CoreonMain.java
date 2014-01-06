@@ -159,10 +159,6 @@ public class CoreonMain extends FragmentActivity
 		InitializeMenu();
 		InitializeCardList();
 
-		// dev set to capture image
-		// showEnrollCardRegister(1);
-		// home page as starting page
-
 		// return state
 		// _stack = null;
 		boolean secondMenu = false;
@@ -197,17 +193,6 @@ public class CoreonMain extends FragmentActivity
 		{
 			menu.showMenu();
 		}
-
-		// String test = ContextWrapper.getFilesDir();
-		// String filePath = this.getFilesDir().getAbsolutePath() + File.separator + "settings.dat";
-		// Import myImport = new Import(this,filePath);
-
-		// String imagepath = "content://";
-		// Toast.makeText(getApplicationContext(),
-		// String.valueOf(this.getFilesDir().getAbsolutePath()), Toast.LENGTH_SHORT).show();
-
-		// GetInfoAsync n = new GetInfoAsync(getApplicationContext(), CoreonMain.this);
-		// n.execute("test", "test", "offer");
 	}
 
 	public void historyStackAdd(String view)
@@ -231,13 +216,6 @@ public class CoreonMain extends FragmentActivity
 	{
 		if (_stack != null && (_stack.size() != 0))
 		{
-			// _stack.remove(_stack.size() - 1);
-
-			// if(_stack.get(_stack.size()-1).equals("ShowNoticeContent"))
-			// {
-			// _stack.remove(_stack.size() - 1);
-			// }
-
 			Log.e("removed", String.valueOf(_stack.remove(_stack.size() - 1)));
 		}
 	}
@@ -332,12 +310,12 @@ public class CoreonMain extends FragmentActivity
 		listAdapter = new ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild, listDataHeaderImage, listDataChildImage);
 		expListView.setAdapter(listAdapter);
 
-		// align expandable list indicator
+		// align expandable list indicator to  right
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
 		int mScreenWidth = displayMetrics.widthPixels;
 
-		mScreenWidth = (mScreenWidth - 150);// convertDpToPixel(R.dimen.main_margin,con));
+		mScreenWidth = (mScreenWidth - 150);
 
 		// get width of screen to programmatically adjust the expandable list indicator
 		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -456,7 +434,7 @@ public class CoreonMain extends FragmentActivity
 		cardAdapter.addStrings("Visa", "", "", String.valueOf(R.drawable.card3), "", "card");
 		cardAdapter.addStrings("Coreon ph Visa card", "", "", String.valueOf(R.drawable.card4), "", "card");
 
-		// get cards pictures from preferences
+		// get card pictures saved from preference file
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		String cardcnt = prefs.getString("cardcount", "0");
 		int cardCount = Integer.parseInt(cardcnt);
@@ -510,31 +488,39 @@ public class CoreonMain extends FragmentActivity
 	@Override
 	public boolean onContextItemSelected(MenuItem item)
 	{
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int menuItemIndex = item.getItemId();
 		
 		if(menuItemIndex==0)//go to card menu
 		{
 			Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
-			
-			
 		}
 		else if (menuItemIndex==1)//remove card
 		{
-			//remove from preferences
-			String preferenceName = cardAdapter._date.get(info.position).toString();
-			//Toast.makeText(getApplicationContext(), cardAdapter._date.get(info.position).toString(), Toast.LENGTH_SHORT).show();
-			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(preferenceName, "");
-			editor.commit();
-			
-			
-			//Toast.makeText(getApplicationContext(), String.valueOf(info.position), Toast.LENGTH_SHORT).show();
-			cardAdapter.removeValue(info.position);
-			cardAdapter.notifyDataSetChanged();
+			//dialog for approval of card removal
+			new AlertDialog.Builder(CoreonMain.this).setTitle("Delete this Card?")
+			.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton)
+				{
+					//remove from preferences
+					String preferenceName = cardAdapter._date.get(info.position).toString();
+					//Toast.makeText(getApplicationContext(), cardAdapter._date.get(info.position).toString(), Toast.LENGTH_SHORT).show();
+					SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+					SharedPreferences.Editor editor = preferences.edit();
+					editor.putString(preferenceName, "");
+					editor.commit();
+					
+					//Toast.makeText(getApplicationContext(), String.valueOf(info.position), Toast.LENGTH_SHORT).show();
+					cardAdapter.removeValue(info.position);
+					cardAdapter.notifyDataSetChanged();
+				}
+			}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton)
+				{
+					// Do nothing.
+				}
+			}).show();
 		}
-		
 		return true;
 	}
 
