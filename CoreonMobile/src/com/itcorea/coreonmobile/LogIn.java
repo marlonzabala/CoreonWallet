@@ -230,6 +230,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		String fname = null;
 		String lname = null;
 		String points = null;
+		String id = null;
 
 		try
 		{
@@ -249,6 +250,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 				fname = json_data.getString("fname");
 				lname = json_data.getString("lname");
 				points = json_data.getString("points");
+				id = json_data.getString("id");
 			}
 		}
 		catch (JSONException e1)
@@ -279,6 +281,7 @@ class CheckCredentials extends AsyncTask<String, Integer, Long>
 		editor.putString("fname", fname); // value to store
 		editor.putString("lname", lname); // value to store
 		editor.putString("points", points); // value to store
+		editor.putString("accountid", id); // value to store
 		editor.commit();
 
 		return null;
