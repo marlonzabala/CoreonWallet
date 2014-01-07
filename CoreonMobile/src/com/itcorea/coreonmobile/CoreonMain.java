@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -67,7 +66,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
-import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -533,6 +531,7 @@ public class CoreonMain extends FragmentActivity
 		return true;
 	}
 
+	@SuppressLint("InlinedApi")
 	private void showPhoto(int drawable, String Image)
 	{
 		if (drawable == 0)
@@ -588,15 +587,17 @@ public class CoreonMain extends FragmentActivity
 
 	public void ShowPromos()
 	{
-		View viewChild1 = setPage(R.layout.promos);
-		removeHeaderbackColor();// ((View) viewChild1.getParent().getParent());
+		// View viewChild =
+		setPage(R.layout.promos);
+		removeHeaderbackColor();
 	}
 
 	public void ShowChangePassword()
 	{
 		historyStackAdd("changepassword");
-		View viewChild1 = setPage(R.layout.change_password);
-		removeHeaderbackColor();// ((View) viewChild1.getParent().getParent());
+		// View viewChild =
+		setPage(R.layout.change_password);
+		removeHeaderbackColor();
 	}
 
 	public void ShowPoints()
@@ -821,40 +822,40 @@ public class CoreonMain extends FragmentActivity
 		}
 	}
 
-	private static void copyfile(String srFile, String dtFile)
-	{
-		try
-		{
-			File f1 = new File(srFile);
-			File f2 = new File(dtFile);
-			InputStream in = new FileInputStream(f1);
-
-			// For Append the file.
-			// OutputStream out = new FileOutputStream(f2,true);
-
-			// For Overwrite the file.
-			OutputStream out = new FileOutputStream(f2);
-
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0)
-			{
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
-			System.out.println("File copied.");
-		}
-		catch (FileNotFoundException ex)
-		{
-			System.out.println(ex.getMessage() + " in the specified directory.");
-			System.exit(0);
-		}
-		catch (IOException e)
-		{
-			System.out.println(e.getMessage());
-		}
-	}
+//	private static void copyfile(String srFile, String dtFile)
+//	{
+//		try
+//		{
+//			File f1 = new File(srFile);
+//			File f2 = new File(dtFile);
+//			InputStream in = new FileInputStream(f1);
+//
+//			// For Append the file.
+//			// OutputStream out = new FileOutputStream(f2,true);
+//
+//			// For Overwrite the file.
+//			OutputStream out = new FileOutputStream(f2);
+//
+//			byte[] buf = new byte[1024];
+//			int len;
+//			while ((len = in.read(buf)) > 0)
+//			{
+//				out.write(buf, 0, len);
+//			}
+//			in.close();
+//			out.close();
+//			System.out.println("File copied.");
+//		}
+//		catch (FileNotFoundException ex)
+//		{
+//			System.out.println(ex.getMessage() + " in the specified directory.");
+//			System.exit(0);
+//		}
+//		catch (IOException e)
+//		{
+//			System.out.println(e.getMessage());
+//		}
+//	}
 
 	public void showEnrollCardRegister(int category)
 	{
@@ -870,7 +871,7 @@ public class CoreonMain extends FragmentActivity
 
 		View view2 = setPage(R.layout.enroll_card_register);
 
-		final ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
+		//final ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
 
 		// set phone number on text
 		TextView textNumber = (TextView) view2.findViewById(R.id.textViewPhoneNumber);
@@ -1112,7 +1113,6 @@ public class CoreonMain extends FragmentActivity
 			}
 			catch (JSONException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -1150,7 +1150,7 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										Editable value = input.getText();
+										//Editable value = input.getText();
 
 										// update firstname
 										new UpdateAccountInformation().execute("fname", input.getText().toString(), accountid);
@@ -1186,7 +1186,7 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										Editable value = input.getText();
+										//Editable value = input.getText();
 									}
 								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
@@ -1216,7 +1216,7 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										Editable value = input.getText();
+										//Editable value = input.getText();
 
 										new UpdateAccountInformation().execute("lname", input.getText().toString(), accountid);
 									}
@@ -1356,7 +1356,7 @@ public class CoreonMain extends FragmentActivity
 
 			Toast.makeText(getActivity(), birthdatePicker, Toast.LENGTH_SHORT).show();
 
-			//new UpdateAccountInformation().execute("bday", birthdatePicker, _accountid);
+			// new UpdateAccountInformation().execute("bday", birthdatePicker, _accountid);
 
 			// CoreonMain myActivity = new CoreonMain();
 			// CoreonMain.UpdateAccountInformation asyncTask = myActivity.new
@@ -1374,23 +1374,20 @@ public class CoreonMain extends FragmentActivity
 		{
 			try
 			{
-				// get values here
 				String httpAddress = "http://" + ipAdd + "/edit.php?request=" + params[0] + "&" + params[0] + "=" + params[1] + "&id=" + params[2];
 				address = httpAddress;
 
 				Log.i("urlPost", httpAddress.toString());
 				String result = sendPost(httpAddress);
-				JSONArray jArray = null;
 
-				jArray = new JSONArray(result);
-				JSONObject json_data = null;
-
-				for (int i = 0; i < jArray.length(); i++)
-				{
-					json_data = jArray.getJSONObject(i);
-				}
-
-				// json_dataOffer.getString("offer")
+				// JSONArray jArray = null;
+				// jArray = new JSONArray(result);
+				// JSONObject json_data = null;
+				// for (int i = 0; i < jArray.length(); i++)
+				// {
+				// json_data = jArray.getJSONObject(i);
+				// // json_dataOffer.getString("offer")
+				// }
 
 				if (result.equals("success"))
 				{
@@ -1401,9 +1398,8 @@ public class CoreonMain extends FragmentActivity
 					// failed
 				}
 			}
-			catch (JSONException e)
+			catch (Exception e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -1546,19 +1542,16 @@ public class CoreonMain extends FragmentActivity
 			catch (FileNotFoundException e)
 			{
 				tempFileLoaded = false;
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (IOException e)
 			{
 				tempFileLoaded = false;
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (ClassNotFoundException e)
 			{
 				tempFileLoaded = false;
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -1694,12 +1687,10 @@ public class CoreonMain extends FragmentActivity
 				}
 				catch (FileNotFoundException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				catch (IOException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
