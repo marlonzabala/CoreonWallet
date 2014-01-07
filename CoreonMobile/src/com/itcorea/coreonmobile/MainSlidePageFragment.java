@@ -34,7 +34,7 @@ public class MainSlidePageFragment extends Fragment
 
 		if (pageNum == 0)
 		{
-			rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_information, container, false);
+			rootView = (ViewGroup) inflater.inflate(R.layout.gcash_main_information, container, false);
 		}
 		else if (pageNum == 1)
 		{
@@ -42,7 +42,7 @@ public class MainSlidePageFragment extends Fragment
 		}
 		else if (pageNum == 2)
 		{
-			rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_information, container, false);
+			rootView = (ViewGroup) inflater.inflate(R.layout.gcash_main_information, container, false);
 		}
 
 		return rootView;

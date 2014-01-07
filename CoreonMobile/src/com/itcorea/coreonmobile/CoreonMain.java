@@ -597,6 +597,13 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		setPage(R.layout.promos);
 		removeHeaderbackColor();
 	}
+	
+	public void ShowGcash()
+	{
+		// TODO
+		setPage(R.layout.promos);
+		removeHeaderbackColor();
+	}
 
 	public void ShowChangePassword()
 	{
@@ -706,42 +713,34 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 
 	private void takePictureAndCrop()
 	{
-
-		// File mydir = getApplicationContext().getDir("mydir", Context.MODE_PRIVATE); // Creating
-		// an
-		// internal dir;
-		// File fileWithinMyDir = new File(mydir, "myfile"); // Getting a file within the dir.
-
-		// File file = new File(this.getFilesDir().getAbsolutePath() + "/picture.png");
-		// Uri imgUri = Uri.fromFile(fileWithinMyDir);
-
-		// file.exists();
-
-		if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED)
+		try
 		{
-			tempPicturePath = Environment.getExternalStorageDirectory().toString() + "/temp.png";// "/sdcard/flashCropped.png";//getFilesDir().getAbsolutePath()
-																									// +
-																									// "/temp.png";
+			// file.exists();
+
+			if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED)
+			{
+				tempPicturePath = Environment.getExternalStorageDirectory().toString() + "/temp.png";
+			}
+			else
+			{
+				tempPicturePath = "";
+				Toast.makeText(getApplicationContext(), "Cannot store to external storage", Toast.LENGTH_SHORT).show();
+				Log.e("storage error path", Environment.getExternalStorageDirectory().toString() + "/temp.png");
+				Log.e("storage error state", Environment.getExternalStorageState().toString());
+				return;
+			}
+
+			picUri = Uri.fromFile(new File(tempPicturePath));
+
+			Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+			startActivityForResult(captureIntent, CAMERA_CAPTURE);
 		}
-		else
+		catch (Exception e)
 		{
-			tempPicturePath = "";
-			Toast.makeText(getApplicationContext(), "Cannot store to external storage", Toast.LENGTH_SHORT).show();
-			Log.e("storage error path", Environment.getExternalStorageDirectory().toString() + "/temp.png");
-			Log.e("storage error state", Environment.getExternalStorageState().toString());
-			return;
+			Log.e("crop error", e.toString());
+			// TODO: handle exception
 		}
-		// Toast.makeText(getApplicationContext(),
-		// Environment.getExternalStorageDirectory().toString()+"temp.png",
-		// Toast.LENGTH_SHORT).show();
-
-		picUri = Uri.fromFile(new File(tempPicturePath));
-
-		Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// picUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new
-		// ContentValues());
-		captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
-		startActivityForResult(captureIntent, CAMERA_CAPTURE);
 	}
 
 	Bitmap	bitmapImage;
@@ -1262,8 +1261,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 						DialogFragment picker = new DatePickerDialogFragment();
 						picker.setArguments(b);
 						picker.show(getSupportFragmentManager(), "frag_date_picker");
-						
-						//setting of new date is on method named onDateSet()
+
+						// setting of new date is on method named onDateSet()
 					}
 					else if (position == 12)
 					{
@@ -2266,21 +2265,9 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				// list Offers
 				for (int i = 0; i < rowList.size(); i++)
 				{
-					// adapter.addStrings(rowList.get(i)[1].toString(),
-					// rowList.get(i)[2].toString(), rowList.get(i)[3].toString(),
-					// String.valueOf(R.drawable.offer_image_1), rowList.get(i)[4].toString(),
-					// "textimagenotice");
-
 					adapter.addStrings(rowList.get(i)[1].toString(), rowList.get(i)[2].toString(), rowList.get(i)[3].toString(),
 							rowList.get(i)[5].toString(), rowList.get(i)[4].toString(), "textimagenotice");
 				}
-
-				// adapter.addStrings("Dong Won Restaurant",
-				// "Get 50% off on your payment of Coreon Card",
-				// "August 25, 2013 at 11:30 PM",
-				// R.drawable.offer_image_1,
-				// "www.google.com",
-				// "textimagenotice");
 
 				listViewOffers.setAdapter(adapter);
 				listViewOffers.setDividerHeight(0);
@@ -2355,8 +2342,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 	{
-		// updating of birthdate
-		
+		// updating of birthdate;m send post
+
 		String monthString = "";
 		if (monthOfYear < 10)
 		{
