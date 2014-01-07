@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,6 +68,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -96,8 +100,8 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import eu.janmuller.android.simplecropimage.CropImage;
 
-@SuppressLint("CutPasteId")
-public class CoreonMain extends FragmentActivity
+@SuppressLint({ "CutPasteId", "ValidFragment" })
+public class CoreonMain extends FragmentActivity implements OnDateSetListener
 {
 	final static int				PIC_CROP		= 0x1;
 	final static int				CAMERA_CAPTURE	= 0x2;
@@ -105,6 +109,8 @@ public class CoreonMain extends FragmentActivity
 	public Uri						picUri;
 	public static ViewPager			mPager;
 	public static int				history;
+	static String					birthdatePicker	= "";
+	static String					_accountid		= "";
 	int								margin;
 	int								cards			= 0;
 
@@ -822,40 +828,40 @@ public class CoreonMain extends FragmentActivity
 		}
 	}
 
-//	private static void copyfile(String srFile, String dtFile)
-//	{
-//		try
-//		{
-//			File f1 = new File(srFile);
-//			File f2 = new File(dtFile);
-//			InputStream in = new FileInputStream(f1);
-//
-//			// For Append the file.
-//			// OutputStream out = new FileOutputStream(f2,true);
-//
-//			// For Overwrite the file.
-//			OutputStream out = new FileOutputStream(f2);
-//
-//			byte[] buf = new byte[1024];
-//			int len;
-//			while ((len = in.read(buf)) > 0)
-//			{
-//				out.write(buf, 0, len);
-//			}
-//			in.close();
-//			out.close();
-//			System.out.println("File copied.");
-//		}
-//		catch (FileNotFoundException ex)
-//		{
-//			System.out.println(ex.getMessage() + " in the specified directory.");
-//			System.exit(0);
-//		}
-//		catch (IOException e)
-//		{
-//			System.out.println(e.getMessage());
-//		}
-//	}
+	// private static void copyfile(String srFile, String dtFile)
+	// {
+	// try
+	// {
+	// File f1 = new File(srFile);
+	// File f2 = new File(dtFile);
+	// InputStream in = new FileInputStream(f1);
+	//
+	// // For Append the file.
+	// // OutputStream out = new FileOutputStream(f2,true);
+	//
+	// // For Overwrite the file.
+	// OutputStream out = new FileOutputStream(f2);
+	//
+	// byte[] buf = new byte[1024];
+	// int len;
+	// while ((len = in.read(buf)) > 0)
+	// {
+	// out.write(buf, 0, len);
+	// }
+	// in.close();
+	// out.close();
+	// System.out.println("File copied.");
+	// }
+	// catch (FileNotFoundException ex)
+	// {
+	// System.out.println(ex.getMessage() + " in the specified directory.");
+	// System.exit(0);
+	// }
+	// catch (IOException e)
+	// {
+	// System.out.println(e.getMessage());
+	// }
+	// }
 
 	public void showEnrollCardRegister(int category)
 	{
@@ -871,7 +877,7 @@ public class CoreonMain extends FragmentActivity
 
 		View view2 = setPage(R.layout.enroll_card_register);
 
-		//final ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
+		// final ImageView picView = (ImageView) findViewById(R.id.imageViewPic);
 
 		// set phone number on text
 		TextView textNumber = (TextView) view2.findViewById(R.id.textViewPhoneNumber);
@@ -1150,7 +1156,7 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										//Editable value = input.getText();
+										// Editable value = input.getText();
 
 										// update firstname
 										new UpdateAccountInformation().execute("fname", input.getText().toString(), accountid);
@@ -1186,7 +1192,7 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										//Editable value = input.getText();
+										// Editable value = input.getText();
 									}
 								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
@@ -1216,7 +1222,7 @@ public class CoreonMain extends FragmentActivity
 								.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton)
 									{
-										//Editable value = input.getText();
+										// Editable value = input.getText();
 
 										new UpdateAccountInformation().execute("lname", input.getText().toString(), accountid);
 									}
@@ -1240,13 +1246,24 @@ public class CoreonMain extends FragmentActivity
 					else if (position == 10)
 					{
 						// birth day
+						String[] parts = noticeContentAdapter._content.get(position).toString().split("-");
+						String part1 = parts[0];
+						String part2 = parts[1];
+						String part3 = parts[2];
 
-						final EditText input = new EditText(CoreonMain.this);
-						input.setText(noticeContentAdapter._content.get(position).toString());
+						int year = Integer.parseInt(part1); // year
+						int month = Integer.parseInt(part2) - 1; // month
+						int day = Integer.parseInt(part3); // day
 
-						DialogFragment newFragment = new DatePickerFragment();
-						newFragment.show(getSupportFragmentManager(), "datePicker");
-
+						Bundle b = new Bundle();
+						b.putInt(DatePickerDialogFragment.YEAR, year);
+						b.putInt(DatePickerDialogFragment.MONTH, month);
+						b.putInt(DatePickerDialogFragment.DATE, day);
+						DialogFragment picker = new DatePickerDialogFragment();
+						picker.setArguments(b);
+						picker.show(getSupportFragmentManager(), "frag_date_picker");
+						
+						//setting of new date is on method named onDateSet()
 					}
 					else if (position == 12)
 					{
@@ -1310,61 +1327,6 @@ public class CoreonMain extends FragmentActivity
 		}
 	}
 
-	static String	birthdatePicker	= "";
-	static String	_accountid		= "";
-
-	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
-	{
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState)
-		{
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-
-			// Create a new instance of DatePickerDialog and return it
-			return new DatePickerDialog(getActivity(), this, year, month, day);
-		}
-
-		public void onDateSet(DatePicker view, int year, int month, int day)
-		{
-
-			String monthString = "";
-			if (month < 10)
-			{
-				monthString = "0" + String.valueOf(month + 1);
-			}
-			else
-			{
-				monthString = String.valueOf(month);
-			}
-
-			String dayString = "";
-			if (month < 10)
-			{
-				dayString = "0" + String.valueOf(day);
-			}
-			else
-			{
-				dayString = String.valueOf(day);
-			}
-
-			birthdatePicker = String.valueOf(year) + "-" + monthString + "-" + dayString;
-			// Do something with the date chosen by the user
-
-			Toast.makeText(getActivity(), birthdatePicker, Toast.LENGTH_SHORT).show();
-
-			// new UpdateAccountInformation().execute("bday", birthdatePicker, _accountid);
-
-			// CoreonMain myActivity = new CoreonMain();
-			// CoreonMain.UpdateAccountInformation asyncTask = myActivity.new
-			// UpdateAccountInformation();
-			// asyncTask.execute("bday", birthdatePicker, _accountid);
-		}
-	}
-
 	private class UpdateAccountInformation extends AsyncTask<String, Void, String>
 	{
 		String	address	= "";
@@ -1410,7 +1372,7 @@ public class CoreonMain extends FragmentActivity
 		protected void onPostExecute(String result)
 		{
 			Log.e("address", address);
-			Toast.makeText(getApplicationContext(), address, Toast.LENGTH_SHORT).show();
+			// Toast.makeText(getApplicationContext(), address, Toast.LENGTH_SHORT).show();
 
 			new ShowAccountInformation().execute();
 		}
@@ -2388,5 +2350,35 @@ public class CoreonMain extends FragmentActivity
 
 		InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	}
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+	{
+		// updating of birthdate
+		
+		String monthString = "";
+		if (monthOfYear < 10)
+		{
+			monthString = "0" + String.valueOf(monthOfYear + 1);
+		}
+		else
+		{
+			monthString = String.valueOf(monthOfYear + 1);
+		}
+
+		String dayString = "";
+		if (dayOfMonth < 10)
+		{
+			dayString = "0" + String.valueOf(dayOfMonth);
+		}
+		else
+		{
+			dayString = String.valueOf(dayOfMonth);
+		}
+
+		String stringbirthdate = String.valueOf(year) + "-" + monthString + "-" + dayString;
+
+		new UpdateAccountInformation().execute("bday", stringbirthdate, _accountid);
 	}
 }
