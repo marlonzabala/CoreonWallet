@@ -473,7 +473,9 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 			public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 			{
 				// show card when clicked
-				showPhoto(Integer.parseInt(cardAdapter._image.get(position)), cardAdapter._content.get(position));
+				//showPhoto(Integer.parseInt(cardAdapter._image.get(position)), cardAdapter._content.get(position));
+				ShowGcash();
+				menu.toggle();
 			};
 		});
 	}
@@ -487,7 +489,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 			menu.setHeaderTitle(cardAdapter._title.get(info.position).toString());
 
 			String[] menuItems = new String[2];
-			menuItems[0] = "Go to card menu";
+			menuItems[0] = "Show card";
 			menuItems[1] = "Remove card";
 
 			for (int i = 0; i < menuItems.length; i++)
@@ -505,9 +507,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 
 		if (menuItemIndex == 0)// go to card menu
 		{
-			Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
-			ShowGcash();
-			//go directly to app menu
+			showPhoto(Integer.parseInt(cardAdapter._image.get(info.position)), cardAdapter._content.get(info.position));
+			//Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
 		}
 		else if (menuItemIndex == 1)// remove card
 		{
@@ -602,6 +603,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 	
 	public void ShowGcash()
 	{
+		// TODO
 		setPage(R.layout.gcash_main_information);
 		removeHeaderbackColor();
 	}
@@ -717,6 +719,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		try
 		{
 			// file.exists();
+
 			if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED)
 			{
 				tempPicturePath = Environment.getExternalStorageDirectory().toString() + "/temp.png";
@@ -739,6 +742,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		catch (Exception e)
 		{
 			Log.e("crop error", e.toString());
+			// TODO: handle exception
 		}
 	}
 
@@ -1100,7 +1104,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				noticeContentAdapter.addStrings("ACCOUNT INFORMATION", "", "", "", "", "accountheader");
 				noticeContentAdapter.addStrings("First Name", fname, "", "", "", "accountcontent");
 				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
-				noticeContentAdapter.addStrings("Middle Name", "Belo", "", "", "", "accountcontent");
+				noticeContentAdapter.addStrings("Middle Name", "", "", "", "", "accountcontent");
 				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
 				noticeContentAdapter.addStrings("Last Name", lname, "", "", "", "accountcontent");
 				noticeContentAdapter.addStrings("", "", "", "", "", "accountlinegray");
