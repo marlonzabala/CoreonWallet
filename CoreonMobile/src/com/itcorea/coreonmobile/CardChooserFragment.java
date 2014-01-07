@@ -17,7 +17,6 @@ public class CardChooserFragment extends Fragment
 	@SuppressLint("ValidFragment")
 	public CardChooserFragment(int position)
 	{
-		// TODO Auto-generated constructor stub
 		pageNum = position;
 	}
 

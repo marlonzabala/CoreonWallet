@@ -506,6 +506,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		if (menuItemIndex == 0)// go to card menu
 		{
 			Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
+			ShowGcash();
+			//go directly to app menu
 		}
 		else if (menuItemIndex == 1)// remove card
 		{
@@ -600,8 +602,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 	
 	public void ShowGcash()
 	{
-		// TODO
-		setPage(R.layout.promos);
+		setPage(R.layout.gcash_main_information);
 		removeHeaderbackColor();
 	}
 
@@ -716,7 +717,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		try
 		{
 			// file.exists();
-
 			if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED)
 			{
 				tempPicturePath = Environment.getExternalStorageDirectory().toString() + "/temp.png";
@@ -739,7 +739,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		catch (Exception e)
 		{
 			Log.e("crop error", e.toString());
-			// TODO: handle exception
 		}
 	}
 

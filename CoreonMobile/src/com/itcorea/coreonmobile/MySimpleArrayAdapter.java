@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 		super(context, 0);
 	}
 
+	@SuppressWarnings("static-access")
 	public MySimpleArrayAdapter(Context context, ArrayList<String> values)
 	{
 		super(context, R.layout.card_text_image_notice_content, values);
@@ -115,6 +117,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 		return this._title.size();
 	}
 
+	@SuppressLint("InlinedApi")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
