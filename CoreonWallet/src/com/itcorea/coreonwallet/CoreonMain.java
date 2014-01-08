@@ -108,8 +108,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 	static String					_accountid		= "";
 	int								margin;
 	int								cards			= 0;
-	//yeah
-
 	boolean							noticeSelected	= false;
 	boolean							offerSelected	= false;
 	boolean							helpSelected	= false;
