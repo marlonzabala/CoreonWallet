@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewWhiteHeader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#f8f8f8"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewWhiteHeader"
+        android:layout_alignTop="@+id/textViewWhiteHeader"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="GLOBE G-CASH + POWERPAY"
+        android:textColor="#555555"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ImageViewBackButton2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/textViewWhiteHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/button_back_clickable"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/left_arrow" />
+
+    <TextView
+        android:id="@+id/shadowTops"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/textViewWhiteHeader"
+        android:background="@drawable/shadow_menu_info_top" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textViewWhiteHeader" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/imageViewCardBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/card_selection_background" />
+
+            <ImageView
+                android:id="@+id/imageViewPic"
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/card_selection_card" />
+            <!-- android:layout_below="@+id/textViewWhiteHeader" -->
+
+
+            <!-- android:layout_alignTop="@+id/shadowTops" -->
+
+
+            <!-- android:layout_alignTop="@+id/shadowTops" -->
+
+            <TextView
+                android:id="@+id/textView1Description"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@+id/imageViewPicture2"
+                android:layout_alignRight="@+id/imageViewPicture2"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/imageViewDefaultPicture2"
+                android:gravity="center"
+                android:text="Card Picture Will Display your Actual Card Image" />
+
+            <TextView
+                android:id="@+id/textView2Description"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@+id/imageViewDefaultPicture"
+                android:layout_alignLeft="@+id/imageViewDefaultPicture"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/imageViewDefaultPicture"
+                android:gravity="center"
+                android:text="Use Default G-Cash Card Image" />
+
+            <TextView
+                android:id="@+id/textViewPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/imageViewPic"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="sans-serif"
+                android:paddingTop="10dp"
+                android:text="00000000"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewNumberInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textViewPhoneNumber"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="Your G-Cash must be registered to the number above"
+                android:textSize="15sp" />
+
+            <!-- <EditText -->
+            <!-- android:id="@+id/editText1" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_alignParentLeft="true" -->
+            <!-- android:layout_alignParentRight="true" -->
+            <!-- android:layout_below="@+id/textViewNumberInfo" -->
+            <!-- android:ems="10" -->
+            <!-- android:hint="G-Cash Card Number" > -->
+
+
+            <!-- <requestFocus /> -->
+            <!-- </EditText> -->
+
+            <EditText
+                android:id="@+id/editTextGcashNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/textViewNumberInfo"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edittext_style"
+                android:ems="10"
+                android:hint="G-Cash Card Number"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:textColor="#000000"
+                android:textCursorDrawable="@null" >
+            </EditText>
+
+            <EditText
+                android:id="@+id/editTextMPin"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/editTextGcashNumber"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_style"
+                android:ems="10"
+                android:hint="4 Digit M-Pin"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:textColor="#000000"
+                android:textCursorDrawable="@null" >
+            </EditText>
+
+            <TextView
+                android:id="@+id/imageButtonEnroll"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/editTextMPin"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_clickable"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                android:shadowColor="#000000"
+                android:shadowDx="-1"
+                android:shadowDy="-1"
+                android:shadowRadius="0.01"
+                android:text="Enroll G-Cash Card"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/imageButtonEnroll" />
+
+            <ImageView
+                android:id="@+id/imageViewPicture2"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingBottom="70dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="30dp"
+                android:paddingTop="70dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/clickable_camera" />
+
+            <ImageView
+                android:id="@+id/imageViewDefaultPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:paddingBottom="70dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="50dp"
+                android:paddingTop="70dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/clickable_default_picture" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/line5"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/ImageViewBackButton2"
+        android:background="@color/line_card_color" />
+
+</RelativeLayout>

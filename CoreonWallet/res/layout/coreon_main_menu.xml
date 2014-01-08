@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- android:paddingRight="@dimen/main_margin" -->
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7f3800"
+        android:orientation="vertical" >
+
+        <!-- android:background="@drawable/menu_bg" -->
+
+        <TextView
+            android:id="@+id/textViewHeaderMenu"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/menu_header_bg"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="0dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="5dp"
+            android:paddingTop="8dp"
+            android:shadowColor="#000000"
+            android:shadowDx="-1"
+            android:shadowDy="-1"
+            android:shadowRadius="0.01"
+            android:text="@string/cws"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textSize="27sp"
+            android:textStyle="normal" />
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/textViewHome" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="40dp" -->
+        <!-- android:layout_alignParentLeft="true" -->
+        <!-- android:layout_alignParentRight="true" -->
+        <!-- android:layout_below="@+id/textViewHeaderMenu" -->
+        <!-- android:background="@drawable/home_bg" -->
+        <!-- android:clickable="true" -->
+        <!-- android:fontFamily="sans-serif" -->
+        <!-- android:onClick="openHome" -->
+        <!-- android:paddingBottom="0dp" -->
+        <!-- android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" -->
+        <!-- android:paddingTop="7dp" -->
+        <!-- android:shadowColor="#000000" -->
+        <!-- android:shadowDx="-1" -->
+        <!-- android:shadowDy="-1" -->
+        <!-- android:shadowRadius="0.01" -->
+        <!-- android:text="Home" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceLarge" -->
+        <!-- android:textColor="@color/white" -->
+        <!-- android:textSize="22sp" /> -->
+
+
+        <!-- <ImageView -->
+        <!-- android:id="@+id/imageView2" -->
+        <!-- android:layout_width="40dp" -->
+        <!-- android:layout_height="40dp" -->
+        <!-- android:layout_alignParentLeft="true" -->
+        <!-- android:layout_alignTop="@+id/textViewHome" -->
+        <!-- android:paddingBottom="@dimen/image_menu_margin" -->
+        <!-- android:paddingLeft="@dimen/image_menu_margin" -->
+        <!-- android:paddingRight="@dimen/image_menu_margin" -->
+        <!-- android:paddingTop="@dimen/image_menu_margin" -->
+        <!-- android:src="@drawable/home_icon" /> -->
+
+
+        <!-- <View -->
+        <!-- android:id="@+id/line1" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="1dp" -->
+        <!-- android:layout_below="@+id/textViewHome" -->
+        <!-- android:background="#5f2a00" /> -->
+
+        <ExpandableListView
+            android:id="@+id/lvExp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textViewHeaderMenu"
+            android:dividerHeight="-1dip"
+            android:scrollbars="none"
+            android:groupIndicator="@drawable/groupindicator" />
+
+        <!-- android:layout_alignParentTop="true" -->
+
+        <TextView
+            android:id="@+id/shadowRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/right_shadow" />
+
+        <TextView
+            android:id="@+id/shadowTop"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@+id/textViewHeaderMenu"
+            android:background="@drawable/shadow_menu_top" />
+
+        <!-- android:layout_alignParentRight="true" -->
+    </RelativeLayout>
+
+</RelativeLayout>

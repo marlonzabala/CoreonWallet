@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Coreon Mobile</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_mainy">Mainy</string>
+    <string name="title_activity_main_options">MainOptions</string>
+    <string name="title_activity_account_info">AccountInfo</string>
+    <string name="title_activity_activity_option1">ActivityOption1</string>
+    <string name="title_activity_activity_option2">ActivityOption2</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main_information">MainInformation</string>
+    <string name="title_activity_activity_card_chooser">Coreon Mobile App</string>
+    <string name="title_activity_main_slider">ITCorea</string>
+    <string name="title_activity_send_money">SendMoney</string>
+    <string name="myaccount">My Account</string>
+    <string name="ts">Transaction Summary</string>
+    <string name="date">As of Date</string>
+    <string name="php">PHP 0.00</string>
+    <string name="deb">GCash Debit</string>
+    <string name="cred">GCash Credit</string>
+    <string name="cur">Current Balance</string>
+    <string name="username">Marlon Zabala</string>
+    <string name="num">09266504891</string>
+    <string name="am">Amount</string>
+    <string name="dm">Delivery Method</string>
+    <string name="re">Recipient</string>
+    <string name="pr">Purpose</string>
+    <string name="send">Send</string>
+    <string name="mpin">MPIN</string>
+    <string name="pn">Phone Number:</string>
+    <string name="name">Name:</string>
+    <string name="add">Address:</string>
+    <string name="cr">COREON CARD</string>
+    <string name="cc">Choose Card</string>
+    <string name="c1">Card 1</string>
+    <string name="c2">Smart</string>
+    <string name="c3">GCASH</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Drawer Close</string>
+    <string name="sm">Send Money</string>
+    <string name="pb">Payy Bills</string>
+    <string name="bl">Buy Load</string>
+    <string name="sq">Shop QR</string>
+    <string name="donate">Donate</string>
+    <string name="title_activity_smart_main">SmartMain</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="li">LOGIN</string>
+    <string name="ic">IT Corea</string>
+    <string name="ea">enter amount</string>
+    <string name="ai">Account Information</string>
+    <string name="title_activity_coreon_main">CoreonMain</string>
+    <string name="news">News:</string>
+    <string name="cws">C Wallet Settings</string>
+    <string name="pyc">Pick your Card</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+
+</resources>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/card_horizontal_margin"
+    android:paddingRight="@dimen/card_horizontal_margin" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_content_notice"
+        android:clickable="true" >
+
+        <!-- android:layout_height="match_parent" -->
+
+
+        <!-- <View -->
+        <!-- android:id="@+id/lblContentBox" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="80dp" -->
+        <!-- android:background="@drawable/clickable_card_content" -->
+        <!-- android:clickable="true" /> -->
+
+        <View
+            android:id="@+id/lineHeaderBottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:background="@color/line_card_color" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="5dp"
+     
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp" >
+
+            <TextView
+                android:id="@+id/lblSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="0dp"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="0dp"
+                android:paddingTop="2dp"
+                android:text="Title"
+                android:textColor="@color/card_font_color_text"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblDateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lblSubTitleText"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="0dp"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:text="Date Date"
+                android:textColor="@color/card_font_color_text"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/imageViewContentImage"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_alignLeft="@+id/lblDateText"
+                android:layout_alignRight="@+id/lblDateText"
+                android:layout_below="@+id/lblDateText"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="@dimen/card_inner_padding"
+                android:scaleType="fitCenter"
+                android:src="@drawable/offer_image_1" />
+
+            <TextView
+                android:id="@+id/lblContentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/imageViewContentImage"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="@dimen/card_inner_padding"
+                android:paddingRight="@dimen/card_inner_padding"
+                android:text="Content"
+                android:textColor="@color/card_font_color_text"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/lineHeaderBottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:layout_below="@+id/relativeLayout1"
+            android:background="@color/line_card_color" />
+
+        <TextView
+            android:id="@+id/imageButtonVisit"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/lineHeaderBottom"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_clickable"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:textStyle="bold"
+            android:shadowColor="#000000"
+            android:shadowDx="-1"
+            android:shadowDy="-1"
+            android:shadowRadius="0.01"
+            android:text="Visit Website"
+            android:clickable="true"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+        <!-- android:background="@null" -->
+        
+        <View
+            android:id="@+id/lineHeader"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imageButtonVisit"
+            android:background="@color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

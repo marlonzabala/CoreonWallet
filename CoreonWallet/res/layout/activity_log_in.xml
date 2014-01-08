@@ -1,0 +1,162 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:windowSoftInputMode="adjustPan|adjustResize"
+    tools:context=".LogIn" >
+
+    <EditText
+        android:id="@+id/editUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonLogIn"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/buttonLogIn"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/edittext_style_login"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Email Address"
+        android:inputType="textNoSuggestions"
+        android:paddingBottom="10dp"
+        android:textColor="#7f7f7f"
+        android:textSize="20sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonLogIn"
+        android:layout_alignRight="@+id/buttonLogIn"
+        android:layout_below="@+id/editUsername"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edittext_style_login"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingBottom="10dp"
+        android:textColor="#7f7f7f"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@+id/buttonLogIn"
+        android:layout_centerHorizontal="true" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:fontFamily="sans-serif"
+            android:text="Not Yet Registered?"
+            android:textColor="#7f7f7f"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/textView1"
+            android:background="@drawable/login_signup_edittext"
+            android:onClick="openSignUp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Signup"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageViewLogoMain"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logincwallet" />
+
+    <ImageView
+        android:id="@+id/imageViewFooter"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/loginbottom" />
+
+    <TextView
+        android:id="@+id/textViewDevelopers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageViewFooter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="IT.COREA DEVELOPERS"
+        android:textColor="#7f7f7f"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/textViewTM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewDevelopers"
+        android:layout_toRightOf="@+id/textViewDevelopers"
+        android:text="TM"
+        android:textColor="#7f7f7f"
+        android:textSize="5sp" />
+
+    <TextView
+        android:id="@+id/TextViewCoreonWallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewDevelopers"
+        android:layout_centerHorizontal="true"
+        android:text="COREON WALLET APP VERSION "
+        android:textColor="#7f7f7f"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/TextViewAppVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextViewCoreonWallet"
+        android:layout_alignBottom="@+id/TextViewCoreonWallet"
+        android:layout_toRightOf="@+id/TextViewCoreonWallet"
+        android:text="1.0"
+        android:textColor="#7f7f7f"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/buttonLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editPassword"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_bg_clickable"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:onClick="CheckLogIn"
+        android:shadowColor="#000000"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="0.01"
+        android:text="@string/li"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</RelativeLayout>
