@@ -603,7 +603,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 	
 	public void ShowGcash()
 	{
-		// TODO
 		setPage(R.layout.gcash_main_information);
 		removeHeaderbackColor();
 	}
@@ -741,8 +740,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		}
 		catch (Exception e)
 		{
-			Log.e("crop error", e.toString());
-			// TODO: handle exception
+			Log.e("Crop error", e.toString());
 		}
 	}
 
@@ -1705,12 +1703,16 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 				{
-					if (position == 2)
+					
+					if (position == 1)
+					{
+						// clicked Name greeting
+						ShowAccountInformation();
+					}
+					else if (position == 2)
 					{
 						// clicked my cards
 						menu.showSecondaryMenu(true);
-
-						// CoreonMain.mPager.setCurrentItem(2);
 					}
 					else if (position == 4)
 					{
