@@ -473,7 +473,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 			public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 			{
 				// show card when clicked
-				//showPhoto(Integer.parseInt(cardAdapter._image.get(position)), cardAdapter._content.get(position));
+				// showPhoto(Integer.parseInt(cardAdapter._image.get(position)),
+				// cardAdapter._content.get(position));
 				ShowGcash();
 				menu.toggle();
 			};
@@ -508,7 +509,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		if (menuItemIndex == 0)// go to card menu
 		{
 			showPhoto(Integer.parseInt(cardAdapter._image.get(info.position)), cardAdapter._content.get(info.position));
-			//Toast.makeText(getApplicationContext(), "Go to card menu", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(getApplicationContext(), "Go to card menu",
+			// Toast.LENGTH_SHORT).show();
 		}
 		else if (menuItemIndex == 1)// remove card
 		{
@@ -600,7 +602,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		setPage(R.layout.promos);
 		removeHeaderbackColor();
 	}
-	
+
 	public void ShowGcash()
 	{
 		setPage(R.layout.gcash_main_information);
@@ -1404,24 +1406,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id)
 			{
-				// User clicked OK button
-
-				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				SharedPreferences.Editor editor = preferences.edit();
-				Boolean fl = false;
-				editor.putBoolean("LoggedIn", fl);
-				// set value of Logged In to false to invoke log in
-				// on screen on startup
-				editor.commit();
-
-				// Toast.makeText(getApplicationContext(), "Logging Out..",
-				// Toast.LENGTH_SHORT).show();
-
-				// finish this activity
-
-				Intent newIntent = new Intent(CoreonMain.this, LogIn.class);
-				startActivity(newIntent);
-				((Activity) CoreonMain.this).finish();
+				logoutAccount();
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1434,6 +1419,22 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		// build the dialog then show
 		AlertDialog dialog = builder.create();
 		dialog.show();
+	}
+	
+	public void logoutAccount()
+	{
+		// User clicked OK button
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = preferences.edit();
+		// set value of Logged In to false to invoke log in on screen on startup
+		Boolean fl = false;
+		editor.putBoolean("LoggedIn", fl);
+		editor.commit();
+
+		// finish this activity
+		Intent newIntent = new Intent(CoreonMain.this, LogIn.class);
+		startActivity(newIntent);
+		((Activity) CoreonMain.this).finish();
 	}
 
 	public void showNoticeContent(MySimpleArrayAdapter adapter, int position)
@@ -1535,13 +1536,11 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				noticeRowList = new ArrayList<String[]>();
 
 				int noticeCount = 0;
-
 				for (int i = 0; i < jArray.length(); i++)
 				{
 					json_data = jArray.getJSONObject(i);
 					noticeRowList.add(new String[] { json_data.getString("id"), json_data.getString("title"), json_data.getString("notice"),
 							json_data.getString("date"), json_data.getString("url"), json_data.getString("image_path") });
-
 					noticeCount++;
 				}
 
@@ -1563,12 +1562,12 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 							json_dataOffer.getString("image_path") });
 				}
 
-				// _stack.add("home");
 				historyStackAdd("home");
 
 				adapterHome = new MySimpleArrayAdapter(getApplicationContext(), _title);
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				String accountid = prefs.getString("accountid", "0");
+				_accountid = accountid;
 
 				String fname = "";
 				String points = "";
@@ -1576,6 +1575,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				if (accountid.equals("0"))
 				{
 					// error
+					// go to login page?
+					return "No account";
 				}
 
 				// get notices
@@ -1591,7 +1592,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				for (int i = 0; i < jArrayAccount.length(); i++)
 				{
 					json_dataAccount = jArrayAccount.getJSONObject(i);
-
 					fname = json_dataAccount.getString("fname");
 					points = json_dataAccount.getString("points");
 				}
@@ -1602,10 +1602,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 					points = "";
 
 				adapterHome.initiatizeStringsValues();
-
 				adapterHome.addStrings("", "", "", "", "", "space");
-
-				// user informations
+				// user information
 				adapterHome.addStrings("userinfo", fname, "userinfo", "", "userinfo", "userinfo");
 				adapterHome.addStrings("My Cards", String.valueOf(cards) + " Cards", "userinfo", "", "userinfo", "usercontent");
 				adapterHome.addStrings("", "", "", "", "", "userline");
@@ -1619,7 +1617,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 
 				for (int j = 0; j < offerRowList.size(); j++)
 				{
-					// noticeRowList.get(i)[1]
 					adapterHome.addStrings(offerRowList.get(j)[1], offerRowList.get(j)[2], offerRowList.get(j)[3], offerRowList.get(j)[5],
 							offerRowList.get(j)[4], "textimage");
 				}
@@ -1630,7 +1627,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 
 				for (int j = 0; j < noticeRowList.size(); j++)
 				{
-					// noticeRowList.get(i)[1]
 					adapterHome.addStrings(noticeRowList.get(j)[1], noticeRowList.get(j)[2], noticeRowList.get(j)[3], noticeRowList.get(j)[5],
 							noticeRowList.get(j)[4], "text");
 				}
@@ -1640,12 +1636,10 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 
 				try
 				{
-
 					FileOutputStream fileOutputStream = getApplicationContext().openFileOutput("homeadapter", Context.MODE_PRIVATE);
 					ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 					objectOutputStream.writeObject(adapterHome);
 					objectOutputStream.close();
-
 				}
 				catch (FileNotFoundException e)
 				{
@@ -1655,7 +1649,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				{
 					e.printStackTrace();
 				}
-
 			}
 			catch (JSONException e1)
 			{
@@ -1672,9 +1665,15 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 		@Override
 		protected void onPostExecute(String result)
 		{
-
+			if (_accountid.equals("0"))
+			{
+				Toast.makeText(getApplicationContext(), "No logged in account detected. Logging out..", Toast.LENGTH_SHORT).show();
+				logoutAccount();
+				return;
+			}
 			if (!tempFileLoaded)
 			{
+				// TODO cache of home content
 				view6 = setLayout(R.layout.main_info_home_list);
 				listView = (ListView) view6.findViewById(R.id.listView1);
 			}
@@ -1703,7 +1702,6 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
 				{
-					
 					if (position == 1)
 					{
 						// clicked Name greeting
