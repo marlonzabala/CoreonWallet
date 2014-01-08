@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;

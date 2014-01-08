@@ -1,11 +1,4 @@
-package com.itcorea.coreonmobile;
-
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.PropertyInfo;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
+package com.itcorea.coreonwallet;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 @SuppressLint("ValidFragment")
 public class MainSlidePageFragment extends Fragment

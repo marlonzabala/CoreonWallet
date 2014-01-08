@@ -1,4 +1,4 @@
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -30,21 +30,115 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.Toast;
 
-class GetInfoAsync extends AsyncTask<String, Integer, Long>
+public class LogIn extends Activity
 {
-	boolean				RetrieveSuccess	= false;
-	String				useremail		= "";
-	boolean				network			= true;
-	boolean				timeout			= false;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activity_log_in);
+
+		// Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
+
+		// check if user is logged in
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean LoggedIn = prefs.getBoolean("LoggedIn", false);
+
+		// for dev
+		// test for errors
+		//LoggedIn = true;
+
+		// for dev
+		EditText ep = (EditText) findViewById(R.id.editPassword);
+		EditText eu = (EditText) findViewById(R.id.editUsername);
+		ep.setText("admin");
+		eu.setText("admin");
+
+		if (LoggedIn == true)
+		{
+			Intent intent = new Intent(getApplicationContext(), CoreonMain.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			getApplicationContext().startActivity(intent);
+
+			finish();
+		}
+		else
+		{
+			//Toast.makeText(getApplicationContext(), "Not Logged In", Toast.LENGTH_SHORT).show();
+		}
+
+		// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.log_in, menu);
+		return true;
+	}
+
+	public void CheckLogIn(View view)
+	{
+		// get text values
+		EditText editUsername = (EditText) findViewById(R.id.editUsername);
+		EditText editPassword = (EditText) findViewById(R.id.editPassword);
+
+		// check if incomplete
+		if (editUsername.getText().toString().equals("") || editPassword.getText().toString().equals(""))
+		{
+			Toast.makeText(getBaseContext(), "Please complete the fields", Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			// Check login credentials then proceed
+			// execute in asynchronous task
+			new CheckCredentials(getApplicationContext(), LogIn.this).execute(editUsername.getText().toString(), editPassword.getText().toString(),
+					"login");
+
+			
+			
+			// to be removed code
+			// used for early testing
+			if (editUsername.getText().toString().equals("admin") && editPassword.getText().toString().equals("admin"))
+			{
+				// Intent intent = new Intent(this, MainSliderActivity.class);
+				// startActivity(intent);
+			}
+		}
+	}
+	
+	public void openSignUp(View view)
+	{
+		Toast.makeText(getApplicationContext(), "SignUp", Toast.LENGTH_SHORT).show();
+	}
+}
+
+class CheckCredentials extends AsyncTask<String, Integer, Long>
+{
+
+	String				useremail	= "";
+	boolean				logIn		= false;
+	boolean				network		= true;
+	boolean				timeout		= false;
 	private Context		mContext;
 	private Activity	mActivity;
 	ProgressDialog		mDialog;
+	
+	// desktop set to static ip 192.168.123.111
+	String ipAdd = "125.5.16.155/coreonwallet";
 
-	public GetInfoAsync(Context context, Activity activity)
+	public CheckCredentials(Context context, Activity activity)
 	{
 		mContext = context;
 		mActivity = activity;
@@ -125,9 +219,8 @@ class GetInfoAsync extends AsyncTask<String, Integer, Long>
 			network = true;
 		}
 
-		// desktop set to static ip 192.168.123.111
-		String ipAdd = "192.168.123.111";
-		String httpAddress = "http://" + ipAdd + "/android/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'&request=" + params[2] + "";
+		
+		String httpAddress = "http://" + ipAdd + "/androidsql.php?email='" + params[0] + "'&pw='" + params[1] + "'&request=" + params[2] + "";
 
 		Log.i("urlPost", httpAddress.toString());
 		String result = sendPost(httpAddress);
@@ -137,18 +230,19 @@ class GetInfoAsync extends AsyncTask<String, Integer, Long>
 		String fname = null;
 		String lname = null;
 		String points = null;
+		String id = null;
 
 		try
 		{
 			jArray = new JSONArray(result);
 			JSONObject json_data = null;
-
+			
 			List<String[]> rowList = new ArrayList<String[]>();
 
-			rowList.add(new String[] { "title", "content", "image", "date", "url" });
-			rowList.add(new String[] { "title", "content", "image", "date", "url" });
-			rowList.add(new String[] { "title", "content", "image", "date", "url" });
-
+		    rowList.add(new String[] { "title", "content", "image", "date", "url" });
+		    rowList.add(new String[] { "title", "content", "image", "date", "url" });
+		    rowList.add(new String[] { "title", "content", "image", "date", "url" });
+		    
 			for (int i = 0; i < jArray.length(); i++)
 			{
 				json_data = jArray.getJSONObject(i);
@@ -156,6 +250,7 @@ class GetInfoAsync extends AsyncTask<String, Integer, Long>
 				fname = json_data.getString("fname");
 				lname = json_data.getString("lname");
 				points = json_data.getString("points");
+				id = json_data.getString("id");
 			}
 		}
 		catch (JSONException e1)
@@ -171,13 +266,11 @@ class GetInfoAsync extends AsyncTask<String, Integer, Long>
 
 		if (useremail.equals("No data found"))
 		{
-			RetrieveSuccess = false;
-			// logIn = false;
+			logIn = false;
 		}
 		else
 		{
-			RetrieveSuccess = true;
-			// logIn = true;
+			logIn = true;
 		}
 
 		useremail = "mpin: " + name;
@@ -188,6 +281,7 @@ class GetInfoAsync extends AsyncTask<String, Integer, Long>
 		editor.putString("fname", fname); // value to store
 		editor.putString("lname", lname); // value to store
 		editor.putString("points", points); // value to store
+		editor.putString("accountid", id); // value to store
 		editor.commit();
 
 		return null;
@@ -210,11 +304,16 @@ class GetInfoAsync extends AsyncTask<String, Integer, Long>
 
 	protected void onPostExecute(Long result)
 	{
+		// remove progress dialog
 		mDialog.dismiss();
-		if (RetrieveSuccess)
+
+		if (logIn)
 		{
-			
-			Toast.makeText(mContext, "success", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(mContext, useremail, Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(mContext, CoreonMain.class);
+			// Intent intent = new Intent(mContext, LogIn.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			mContext.startActivity(intent);
 		}
 		else
 		{

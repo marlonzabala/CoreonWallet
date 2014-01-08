@@ -1,4 +1,4 @@
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 
 import android.app.Activity;
 import android.content.Intent;

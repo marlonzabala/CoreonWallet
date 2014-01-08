@@ -1,4 +1,4 @@
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 
 import java.io.File;
 import java.io.Serializable;

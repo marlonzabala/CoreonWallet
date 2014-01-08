@@ -1,4 +1,4 @@
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.itcorea.coreonmobile.R;
 
 @SuppressLint("ValidFragment")
 public class CardChooserFragment extends Fragment

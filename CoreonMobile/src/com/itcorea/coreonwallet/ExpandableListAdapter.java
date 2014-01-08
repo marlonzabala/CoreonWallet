@@ -1,13 +1,11 @@
-package com.itcorea.coreonmobile;
+package com.itcorea.coreonwallet;
 
 import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
