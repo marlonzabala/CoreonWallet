@@ -1710,6 +1710,7 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 					else if (position == 4)
 					{
 						// clicked coreon points
+						//test update
 						ShowPoints();
 					}
 					else if (position == 6)
