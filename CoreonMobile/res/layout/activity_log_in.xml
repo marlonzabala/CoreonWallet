@@ -44,88 +44,6 @@
         android:textColor="#7f7f7f"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/buttonLogIn"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/editPassword"
-        android:layout_marginTop="30dp"
-        
-        android:background="@drawable/button_bg_clickable"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:onClick="CheckLogIn"
-        android:shadowColor="#000000"
-        android:shadowDx="-1"
-        android:shadowDy="-1"
-        android:shadowRadius="0.01"
-        android:text="@string/li"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-<!--     android:background="@drawable/button_bg" -->
-    
-    
-    
-    
-    
-
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:scaleType="fitXY"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/loginbottom" />
-
-    <TextView
-        android:id="@+id/textViewDevelopers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:textColor="#7f7f7f"
-        android:textSize="10sp"
-        android:text="IT.COREA DEVELOPERS" />
-
-    <TextView
-        android:id="@+id/textViewTM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textViewDevelopers"
-        android:textColor="#7f7f7f"
-        android:layout_toRightOf="@+id/textViewDevelopers"
-        android:text="TM"
-        android:textSize="5sp" />
-
-    <TextView
-        android:id="@+id/TextViewCoreonWallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewDevelopers"
-        android:layout_centerHorizontal="true"
-        android:text="COREON WALLET APP VERSION "
-        android:textColor="#7f7f7f"
-        android:textSize="10sp" />
-
-    <TextView
-        android:id="@+id/TextViewAppVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/TextViewCoreonWallet"
-        android:layout_alignBottom="@+id/TextViewCoreonWallet"
-        android:layout_toRightOf="@+id/TextViewCoreonWallet"
-        android:text="1.0"
-        android:textColor="#7f7f7f"
-        android:textSize="10sp" />
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -151,10 +69,10 @@
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/textView1"
             android:background="@drawable/login_signup_edittext"
+            android:onClick="openSignUp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Signup"
-            android:onClick="openSignUp"
             android:textColor="#ffffff" />
     </RelativeLayout>
 
@@ -166,5 +84,79 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:src="@drawable/logincwallet" />
+
+    <ImageView
+        android:id="@+id/imageViewFooter"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/loginbottom" />
+
+    <TextView
+        android:id="@+id/textViewDevelopers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageViewFooter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="IT.COREA DEVELOPERS"
+        android:textColor="#7f7f7f"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/textViewTM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewDevelopers"
+        android:layout_toRightOf="@+id/textViewDevelopers"
+        android:text="TM"
+        android:textColor="#7f7f7f"
+        android:textSize="5sp" />
+
+    <TextView
+        android:id="@+id/TextViewCoreonWallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewDevelopers"
+        android:layout_centerHorizontal="true"
+        android:text="COREON WALLET APP VERSION "
+        android:textColor="#7f7f7f"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/TextViewAppVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextViewCoreonWallet"
+        android:layout_alignBottom="@+id/TextViewCoreonWallet"
+        android:layout_toRightOf="@+id/TextViewCoreonWallet"
+        android:text="1.0"
+        android:textColor="#7f7f7f"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/buttonLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editPassword"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_bg_clickable"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:onClick="CheckLogIn"
+        android:shadowColor="#000000"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="0.01"
+        android:text="@string/li"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </RelativeLayout>
