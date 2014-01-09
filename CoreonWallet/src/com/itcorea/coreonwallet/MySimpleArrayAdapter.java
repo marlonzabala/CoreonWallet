@@ -28,7 +28,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 	private transient static Context	context;
 
 	private transient final String		ipAdd				= "125.5.16.155/coreonwallet";	// "192.168.123.111";
-	private static final long			serialVersionUID	= 6529685098267757690L;
+	private static final long			serialVersionUID	= 6529685098267757690L; //test
 
 	public transient ArrayList<String>	_title				= new ArrayList<String>();
 	public transient ArrayList<String>	_content			= new ArrayList<String>();
@@ -78,11 +78,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 		if (position == 0)
 		{
 			Log.e("conract", "one or more of data are 0");
-			// throw new IllegalArgumentException("Category 0" + category);
 		}
 
-		// Integer.parseInt();
-		
 		_title.remove(position);
 		_content.remove(position);
 		_date.remove(position);
@@ -96,10 +93,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 		if (title == null || content == null || date == null || extra == null || type == null)
 		{
 			Log.e("conract", "one or more of data are null");
-			// throw new IllegalArgumentException("Category 0" + category);
 		}
-
-		// Integer.parseInt();
 
 		_title.add(title);
 		_content.add(content);
@@ -121,28 +115,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
 	{
-
-		// for development
-		// if (_type.size() <= position || this.getCount() <= position)
-		// {
-		//
-		// Log.i("small size", String.valueOf(this.getItem(position - 1)) + " " +
-		// String.valueOf(position));
-		// View v = new View(context);
-		// v.setTag("null");
-		// return v;
-		// }
-
 		View rowView;
-
 		String type = _type.get(position).toString();
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		String tag = "null";
-		// Log.i("type", type.toString());
 
-		if (type.equals("userinfo"))
+		if (type.equals(tag = "userinfo"))
 		{
-			tag = "userinfo";
+			//tag = "userinfo";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -162,9 +142,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setTag(tag);
 		}
-		else if (type.equals("usercontent"))
+		else if (type.equals(tag = "usercontent"))
 		{
-			tag = "usercontent";
+			//tag = "usercontent";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -182,9 +162,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setTag(tag);
 		}
-		else if (type.equals("userline"))
+		else if (type.equals(tag = "userline"))
 		{
-			tag = "userline";
+			//tag = "userline";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -195,9 +175,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			}
 			rowView.setTag(tag);
 		}
-		else if (type.equals("userbottom"))
+		else if (type.equals(tag = "userbottom"))
 		{
-			tag = "userbottom";
+			//tag = "userbottom";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -208,9 +188,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			}
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("header"))
+		else if (type.toString().equals(tag = "header"))
 		{
-			tag = "header";
+			//tag = "header";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -224,11 +204,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("space"))
+		else if (type.toString().equals(tag = "space"))
 		{
-			// try
-			// {
-			tag = "space";
+			//tag = "space";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -249,19 +227,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setEnabled(false);
 			rowView.setOnClickListener(null);
-
-			// }
-			// catch (Exception e)
-			// {
-			// View v = new View(context);
-			// rowView = v;
-			// }
-
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("bottomshadow"))
+		else if (type.toString().equals(tag = "bottomshadow"))
 		{
-			tag = "bottomshadow";
+			//tag = "bottomshadow";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -276,9 +246,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("text"))
+		else if (type.toString().equals(tag = "text"))
 		{
-			tag = "text";
+			//tag = "text";
 
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
@@ -298,9 +268,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("textimagenotice"))
+		else if (type.toString().equals(tag = "textimagenotice"))
 		{
-			tag = "textimagenotice";
+			//tag = "textimagenotice";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -318,19 +288,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textDate.setText(_date.get(position).toString());
 
 			// insert urlimage viewer
-
 			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
-			// Log.i("imageurl", imageUrl);
-
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
-
-			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
-
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("textimage"))
+		else if (type.toString().equals(tag = "textimage"))
 		{
-			tag = "textimage";
+			//tag = "textimage";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -350,13 +314,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
-			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
-
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("noticecontent"))
+		else if (type.toString().equals(tag = "noticecontent"))
 		{
-			tag = "noticecontent";
+			//tag = "noticecontent";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -375,8 +337,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			String imageUrl = "http://" + ipAdd + "/image/" + _image.get(position).toString();
 			UrlImageViewHelper.setUrlDrawable(image, imageUrl);
-
-			// image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 
 			TextView textButton = (TextView) rowView.findViewById(R.id.imageButtonVisit);
 			textButton.setOnClickListener(new View.OnClickListener() {
@@ -399,9 +359,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountheader"))
+		else if (type.toString().equals(tag = "accountheader"))
 		{
-			tag = "accountheader";
+			//tag = "accountheader";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -414,9 +374,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textTitle.setText(_title.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountemail"))
+		else if (type.toString().equals(tag = "accountemail"))
 		{
-			tag = "accountemail";
+			//tag = "accountemail";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -429,9 +389,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textEmail.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountcontent"))
+		else if (type.toString().equals(tag = "accountcontent"))
 		{
-			tag = "accountcontent";
+			//tag = "accountcontent";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -446,9 +406,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textContent.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountcontentmobile"))
+		else if (type.toString().equals(tag = "accountcontentmobile"))
 		{
-			tag = "accountcontentmobile";
+			//tag = "accountcontentmobile";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -463,9 +423,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textContent.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountcontentaddress"))
+		else if (type.toString().equals(tag = "accountcontentaddress"))
 		{
-			tag = "accountcontentaddress";
+			//tag = "accountcontentaddress";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -480,9 +440,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			textContent.setText(_content.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountlinegray"))
+		else if (type.toString().equals(tag = "accountlinegray"))
 		{
-			tag = "accountlinegray";
+			//tag = "accountlinegray";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -491,13 +451,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			{
 				rowView = inflater.inflate(R.layout.account_line_gray, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("accountlineorange"))
+		else if (type.toString().equals(tag = "accountlineorange"))
 		{
-			tag = "accountlineorange";
+			//tag = "accountlineorange";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -506,16 +464,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			{
 				rowView = inflater.inflate(R.layout.account_line_orange, parent, false);
 			}
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
 			rowView.setTag(tag);
 		}
-		else if (type.toString().equals("card"))
+		else if (type.toString().equals(tag = "card"))
 		{
-			tag = "card";
-			// try
-			// {
-
+			//tag = "card";
 			if (convertView != null && convertView.getTag().equals(tag))
 			{
 				rowView = convertView;
@@ -539,15 +492,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Serial
 			{
 				image.setImageResource(Integer.parseInt(_image.get(position).toString()));
 			}
-
-			// }
-			// catch (Exception e)
-			// {
-			// View v = new View(context);
-			// rowView = v;
-			// }
-			// TextView textTitle = (TextView) rowView.findViewById(R.id.lblSubTitleText);
-			// textTitle.setText(_title.get(position).toString());
+			
 			rowView.setTag(tag);
 		}
 		else
