@@ -243,8 +243,11 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 			ShowEnrollCard();
 		else if (view.equals("changepassword"))
 			ShowChangePassword();
+		else if (view.equals("gcash"))
+			ShowGcash();
 		else if (view.equals("shownotice"))
 			;// ShowAccountInformation();
+		//TODO
 	}
 
 	public void historyStackShowLast()
@@ -469,6 +472,8 @@ public class CoreonMain extends FragmentActivity implements OnDateSetListener
 				// show card when clicked
 				// showPhoto(Integer.parseInt(cardAdapter._image.get(position)),
 				// cardAdapter._content.get(position));
+				//TODO
+				historyStackAdd("gcash");
 				ShowGcash();
 				menu.toggle();
 			};
